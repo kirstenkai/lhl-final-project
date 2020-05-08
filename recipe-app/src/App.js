@@ -2,6 +2,8 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Axios from "axios";
+import Header from "./components/Header";
+import Registration from "./components/Registration";
 
 import Button from "react-bootstrap/Button";
 
