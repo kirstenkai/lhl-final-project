@@ -1,8 +1,24 @@
-import React from 'react';
+import React from "react";
 
-export default function Search() {
-  return(
+export default function Search({ getRecipe, title, image, recipes }) {
+  const nestedRecipes = recipes.flat();
+  return (
+    <div>
+      <form onSubmit={getRecipe}>
+        <input type="text" name="recipeName"></input>
+        <button>Search!</button>
 
-    <h1>Search</h1>
-  )
+        {nestedRecipes.map((recipe, index) => {
+          return (
+            <div key={index}>
+              {recipe.title}
+              <img src={recipe.image}></img>
+            </div>
+          );
+        })}
+      </form>
+    </div>
+  );
 }
+
+// <Route path="/" component={Search} />} />
