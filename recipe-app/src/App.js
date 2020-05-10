@@ -11,6 +11,7 @@ import SavedRecipes from './components/SavedRecipes';
 import Inventory from './components/Inventory';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
+import RecipeCard from './components/RecipeCard'
 
 function App() {
   Axios({
@@ -34,6 +35,7 @@ function App() {
           <Route path="/search" component={Search} />
           <Route path="/saved" component={SavedRecipes} /> 
           <Route path="/inventory" component={Inventory} />  
+          <Route path="/recipecard" component={RecipeCard} />
           <Route component={NotFound} />
         </Switch>
       </div>
