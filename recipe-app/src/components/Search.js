@@ -2,6 +2,7 @@ import React from "react";
 
 export default function Search({ getRecipe, title, image, recipes }) {
   const nestedRecipes = recipes.flat();
+  console.log(recipes);
   return (
     <div>
       <form onSubmit={getRecipe}>
