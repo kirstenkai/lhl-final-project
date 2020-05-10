@@ -13,8 +13,9 @@ import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 
+require("dotenv").config();
 
-require('dotenv').config()
+const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -41,7 +42,7 @@ function App() {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": 
+        "x-rapidapi-key": `${SPOONACULAR_API}`
       },
       params: {
         number: "5",
