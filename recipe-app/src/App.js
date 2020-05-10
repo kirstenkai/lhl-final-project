@@ -8,10 +8,10 @@ import Registration from "./components/Registration";
 import LandingPage from "./components/LandingPage";
 import Search from "./components/Search";
 import SavedRecipes from "./components/SavedRecipes";
+import RecipeCard from "./components/RecipeCard";
 import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import RecipeCard from "./components/RecipeCard";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -77,6 +77,10 @@ function App() {
     // console.log(recipeName);
   };
 
+  const renderInfo = () => {
+    console.log("hello");
+  };
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -92,7 +96,12 @@ function App() {
           <Route
             path="/search"
             render={props => (
-              <Search {...props} getRecipe={getRecipe} recipes={recipes} />
+              <Search
+                {...props}
+                getRecipe={getRecipe}
+                recipes={recipes}
+                renderInfo={renderInfo}
+              />
             )}
           />
           <Route path="/saved" component={SavedRecipes} />
