@@ -1,20 +1,24 @@
-import React from 'react';
+import React from "react";
 
-export default function Search() {
-  const search = e => {
-    e.preventDefault();
-    console.log("search button is pressed")
-  }
+export default function Search({ getRecipe, title, image, recipes }) {
+  const nestedRecipes = recipes.flat();
   return (
-    <>
-      <h2>Search</h2>
-      <form onSubmit={search}>
-        <div>
-          <p> Enter what you have in a fridge</p>{" "}
-          <input type="text" placeholder="your ingredients here" autoFocus />
-        </div>
-        <button className="button">Search</button>
+    <div>
+      <form onSubmit={getRecipe}>
+        <input type="text" name="recipeName"></input>
+        <button>Search!</button>
+
+        {nestedRecipes.map((recipe, index) => {
+          return (
+            <div key={index}>
+              {recipe.title}
+              <img src={recipe.image}></img>
+            </div>
+          );
+        })}
       </form>
-    </>
+    </div>
   );
 }
+
+// <Route path="/" component={Search} />} />
