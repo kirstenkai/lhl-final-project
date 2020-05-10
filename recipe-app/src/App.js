@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
+
 import Axios from "axios";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
@@ -81,10 +81,11 @@ function App() {
       <div className="App">
         <Header />
         <Switch>
+          <Route path="/" component={LandingPage} exact={true} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
           <Route
-            path="/"
+            path="/search"
             render={props => (
               <Search {...props} getRecipe={getRecipe} recipes={recipes} />
             )}
