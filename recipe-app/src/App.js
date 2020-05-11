@@ -13,6 +13,9 @@ import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 
+require("dotenv").config();
+const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
+
 function App() {
   const [recipes, setRecipes] = useState([]);
 
