@@ -41,7 +41,7 @@ function App() {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": "8e58753bbdmshc4258aeb5e189b2p134b94jsn6fec77643a52"
+        "x-rapidapi-key": `${SPOONACULAR_API}`
       },
       params: {
         number: "5",
