@@ -8,6 +8,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { NavLink } from "react-router-dom";
+import Modal from "react-modal";
 
 const useStyles = makeStyles({
   root: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function RecipeCard({ image, title, renderInfo }) {
+export default function RecipeCard({ image, title, renderInfo, id }) {
   const classes = useStyles();
 
   return (
@@ -32,6 +34,16 @@ export default function RecipeCard({ image, title, renderInfo }) {
             title="Contemplative Reptile"
           />
 
+          <button>
+            <NavLink
+              to={{
+                pathname: `/recipe/${id}`,
+                state: { recipe: id, modal: true }
+              }}
+            >
+              View Recipe
+            </NavLink>
+          </button>
           <Typography gutterBottom variant="h5" component="h2">
             {(title = title)}
           </Typography>

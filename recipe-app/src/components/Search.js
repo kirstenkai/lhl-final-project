@@ -18,18 +18,8 @@ export default function Search({ getRecipe, recipes, renderInfo }) {
                 key={index}
                 title={recipe.title}
                 image={recipe.image}
+                id={recipe.id}
               />
-
-              <button>
-                <NavLink
-                  to={{
-                    pathname: `/recipe/${recipe.id}`,
-                    state: { recipe: recipe.id }
-                  }}
-                >
-                  View Recipe
-                </NavLink>
-              </button>
             </div>
           );
         })}

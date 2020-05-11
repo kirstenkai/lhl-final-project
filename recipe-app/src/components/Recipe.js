@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import Modal from "react-modal";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -41,14 +42,15 @@ const Recipe = props => {
           <div key={index}>
             <h3>Title: {recipe.title}</h3>
             <img src={recipe.image}></img>
-            {recipe.summary}
+            <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+
             <p>Preparation time: {recipe.readyInMinutes} minutes</p>
             <p>Serving: {recipe.servings}</p>
             <span>
               Source URL:
               <a href={recipe.sourceUrl}> {recipe.sourceUrl}</a>
             </span>
-            <p>Instructions: {recipe.instructions}</p>
+            {recipe.instructions && <p>Instructions: {recipe.instructions}</p>}
           </div>
         );
       })}

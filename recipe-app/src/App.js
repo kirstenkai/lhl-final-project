@@ -12,6 +12,7 @@ import RecipeCard from "./components/RecipeCard";
 import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
+
 import Recipe from "./components/Recipe";
 
 require("dotenv").config();
