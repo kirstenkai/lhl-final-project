@@ -12,6 +12,7 @@ import RecipeCard from "./components/RecipeCard";
 import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
+import Recipe from "./components/Recipe";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -80,8 +81,8 @@ function App() {
     // console.log(recipeName);
   };
 
-  const renderInfo = () => {
-    console.log("hello");
+  const renderInfo = recipes => {
+    console.log(recipes.id);
   };
 
   return (
@@ -92,7 +93,6 @@ function App() {
           <Route path="/" component={LandingPage} exact={true} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
@@ -107,6 +107,8 @@ function App() {
               />
             )}
           />
+
+          <Route path="/recipe/:id" component={Recipe} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route component={NotFound} />
@@ -125,3 +127,5 @@ export default App;
 //   title: "",
 //   image: ""
 // });
+
+// feature/spoonacular-second-api-call

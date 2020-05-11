@@ -1,5 +1,6 @@
 import React from "react";
 import RecipeCard from "./RecipeCard";
+import { NavLink } from "react-router-dom";
 
 export default function Search({ getRecipe, recipes, renderInfo }) {
   const nestedRecipes = recipes.flat();
@@ -12,12 +13,24 @@ export default function Search({ getRecipe, recipes, renderInfo }) {
 
         {nestedRecipes.map((recipe, index) => {
           return (
-            <RecipeCard
-              renderInfo={renderInfo}
-              key={index}
-              title={recipe.title}
-              image={recipe.image}
-            />
+            <div>
+              <RecipeCard
+                key={index}
+                title={recipe.title}
+                image={recipe.image}
+              />
+
+              <button>
+                <NavLink
+                  to={{
+                    pathname: `/recipe/${recipe.id}`,
+                    state: { recipe: recipe.id }
+                  }}
+                >
+                  View Recipe
+                </NavLink>
+              </button>
+            </div>
           );
         })}
       </form>

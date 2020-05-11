@@ -28,7 +28,6 @@ export default function RecipeCard({ image, title, renderInfo }) {
           <CardMedia
             component="img"
             className={classes.media}
-            onClick={renderInfo}
             image={image}
             title="Contemplative Reptile"
           />
