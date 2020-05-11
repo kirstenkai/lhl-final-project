@@ -24,7 +24,6 @@ db.query('SELECT * FROM users').then(data => {
 app.use(cors());
 
 const userRoutes = require('./routes/users')
-
 app.use("/users", userRoutes(db))
 
 

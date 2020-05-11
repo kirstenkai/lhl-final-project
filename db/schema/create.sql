@@ -17,7 +17,7 @@ CREATE TABLE recipes (
   picture VARCHAR(255),
   description TEXT,
   ingredients TEXT,
-  instraction TEXT
+  instruction TEXT
 )
 
 CREATE TABLE inventory_items (
