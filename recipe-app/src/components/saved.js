@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Axios from "axios";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,7 +9,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import Axios from "axios";
 import { NavLink } from "react-router-dom";
 import Modal from "react-modal";
 
@@ -28,17 +28,19 @@ export default function RecipeCard({ image, title, id }) {
   const classes = useStyles();
   const [currentId, setCurrentId] = useState(null);
   const [state, setState] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-
-  Modal.setAppElement("#root");
 
   const renderInfo = e => {
     e.preventDefault();
-    setIsOpen(true);
     setCurrentId(id);
+
+    console.log("run useEffect here to fetch stuff from API");
+    console.log("id:", id);
+  };
+
+  useEffect(() => {
     Axios({
       method: "GET",
-      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
+      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${currentId}/information`,
       headers: {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
@@ -56,11 +58,7 @@ export default function RecipeCard({ image, title, id }) {
       .catch(error => {
         console.log(error);
       });
-  };
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  }, [currentId]);
 
   return (
     <Card className={classes.root}>
@@ -71,34 +69,10 @@ export default function RecipeCard({ image, title, id }) {
             className={classes.media}
             image={image}
             title="Contemplative Reptile"
-            onClick={renderInfo}
           />
 
-          <Modal isOpen={isOpen} onRequestClose={closeModal}>
-            <div>
-              {state.map((recipes, index) => {
-                const recipe = recipes.data;
-                return (
-                  <div key={index}>
-                    <h3>Title: {recipe.title}</h3>
-                    <img src={recipe.image}></img>
-                    <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+          <button onClick={renderInfo}>View Recipe</button>
 
-                    <p>Preparation time: {recipe.readyInMinutes} minutes</p>
-                    <p>Serving: {recipe.servings}</p>
-                    <span>
-                      Source URL:
-                      <a href={recipe.sourceUrl}> {recipe.sourceUrl}</a>
-                    </span>
-                    {recipe.instructions && (
-                      <p>Instructions: {recipe.instructions}</p>
-                    )}
-                    <button onClick={closeModal}>close</button>
-                  </div>
-                );
-              })}
-            </div>
-          </Modal>
           <Typography gutterBottom variant="h5" component="h2">
             {(title = title)}
           </Typography>
@@ -115,11 +89,3 @@ export default function RecipeCard({ image, title, id }) {
     </Card>
   );
 }
-// <NavLink
-// to={{
-//   pathname: `/recipe/${id}`,
-//   state: { recipe: id, modal: true }
-// }}
-// >
-// View Recipe
-// </NavLink>
