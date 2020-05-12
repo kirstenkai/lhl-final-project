@@ -13,8 +13,6 @@ import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 
-import Recipe from "./components/Recipe";
-
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
@@ -109,7 +107,6 @@ function App() {
             )}
           />
 
-          <Route path="/recipe/:id" component={Recipe} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route component={NotFound} />
