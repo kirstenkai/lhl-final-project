@@ -20,6 +20,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-share": "^4.1.0",
+    "react-to-print": "^2.7.0",
     "save": "^2.4.0",
     "scrivito": "^1.13.0-rc1",
     "typeface-roboto": "0.0.75"

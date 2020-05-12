@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -11,6 +11,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
+import ReactToPrint from "react-to-print";
 
 import Modal from "react-modal";
 
@@ -32,7 +33,7 @@ export default function RecipeCard({ image, title, id }) {
   const [state, setState] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const source = [];
+  const componentRef = useRef();
 
   Modal.setAppElement("#root");
 
@@ -101,6 +102,7 @@ export default function RecipeCard({ image, title, id }) {
                         <FacebookIcon size={32} round={true}></FacebookIcon>
                       }
                     />
+
                     <button onClick={closeModal}>close</button>
                   </div>
                 );
