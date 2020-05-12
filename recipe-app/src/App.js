@@ -129,7 +129,6 @@ function App() {
             )}
           />
 
-          <Route path="/recipe/:id" component={Recipe} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route component={NotFound} />

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = (db) => {
+module.exports = db => {
   // router.post("/", (req, res) => {
   //   const { address } = req.body;
   //   db.query("INSERT INTO address (address) VALUES ($1) RETURNING *; ", [
@@ -16,10 +16,10 @@ module.exports = (db) => {
     let query = `SELECT * FROM users`;
     console.log(query);
     db.query(query)
-      .then((data) => {
-        res.json({users: data.rows });
+      .then(data => {
+        res.json({ users: data.rows });
       })
-      .catch((err) => {
+      .catch(err => {
         res.status(500).json({ error: err.message });
       });
   });
