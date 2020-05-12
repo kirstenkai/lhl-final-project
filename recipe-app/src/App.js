@@ -21,6 +21,7 @@ import { useAuth0 } from "./react-auth0-spa";
 // New - import profile page component
 import Profile from "./components/Profile";
 import history from "./utils/history";
+import PrivateRoute from "./components/PrivateRoute";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -112,7 +113,7 @@ function App() {
           <Route path="/" component={LandingPage} exact={true} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-          <Route path="/profile" component={Profile} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
