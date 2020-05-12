@@ -81,28 +81,57 @@ export default function RecipeCard({ image, title, id }) {
             <div>
               {state.map((recipes, index) => {
                 const recipe = recipes.data;
+                {
+                  console.log("REECIPE: ", recipe);
+                }
                 return (
                   <div key={index}>
                     <h3>Title: {recipe.title}</h3>
                     <img src={recipe.image}></img>
                     <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+                    <p>{recipe.id}</p>
+                    <h2> Preparation time:</h2>
+                    <div>{<h3>{recipe.readyInMinutes} minutes</h3>} </div>
+                    <h2>Serving: </h2>
 
-                    <p>Preparation time: {recipe.readyInMinutes} minutes</p>
-                    <p>Serving: {recipe.servings}</p>
-                    <span>
-                      Source URL:
-                      <a href={recipe.sourceUrl}> {recipe.sourceUrl}</a>
-                    </span>
-                    {recipe.instructions && (
-                      <p>Instructions: {recipe.instructions}</p>
+                    {recipe.servings === 1 ? (
+                      <h3>{recipe.servings} person</h3>
+                    ) : (
+                      <h3> {recipe.servings} people</h3>
                     )}
+                    <span>
+                      <h2>Source URL:</h2>
+                      <a href={recipe.sourceUrl}>
+                        {" "}
+                        {<p>{recipe.sourceUrl}</p>}
+                      </a>
+                    </span>
+                    <h2>Required Ingredients</h2>
+                    {recipe.extendedIngredients &&
+                      recipe.extendedIngredients.map((ingredient, index) => {
+                        return (
+                          <div key={index}>
+                            {<h3>☞ {ingredient.original}</h3>}
+                          </div>
+                        );
+                      })}
+                    <h2>Instructions</h2>
+                    {recipe.analyzedInstructions &&
+                      recipe.analyzedInstructions.map((instruction, index) => {
+                        return instruction.steps.map((key2, index) => {
+                          return (
+                            <div key={index}>
+                              {<b>{index + 1}</b>}. {key2.step}
+                            </div>
+                          );
+                        });
+                      })}
                     <FacebookShareButton
                       url={recipe.sourceUrl}
                       children={
                         <FacebookIcon size={32} round={true}></FacebookIcon>
                       }
                     />
-
                     <button onClick={closeModal}>close</button>
                   </div>
                 );
@@ -131,3 +160,6 @@ export default function RecipeCard({ image, title, id }) {
 // >
 // View Recipe
 // </NavLink>
+// {recipe.instructions && (
+//   <h1>Instructions: {<p>{recipe.instructions}</p>}</h1>
+// )}

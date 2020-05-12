@@ -13,9 +13,8 @@ export default function Search({ getRecipe, recipes, renderInfo }) {
 
         {nestedRecipes.map((recipe, index) => {
           return (
-            <div>
+            <div key={index}>
               <RecipeCard
-                key={index}
                 title={recipe.title}
                 image={recipe.image}
                 id={recipe.id}
