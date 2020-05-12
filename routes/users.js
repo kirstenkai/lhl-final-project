@@ -17,7 +17,6 @@ module.exports = (db) => {
     console.log(query);
     db.query(query)
       .then((data) => {
-      
         res.json({users: data.rows });
       })
       .catch((err) => {
