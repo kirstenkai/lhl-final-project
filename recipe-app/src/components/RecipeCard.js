@@ -9,7 +9,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
-import { NavLink } from "react-router-dom";
+import { FacebookShareButton } from "react-share";
+import { FacebookIcon } from "react-share";
+
 import Modal from "react-modal";
 
 require("dotenv").config();
@@ -30,6 +32,8 @@ export default function RecipeCard({ image, title, id }) {
   const [state, setState] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const source = [];
+
   Modal.setAppElement("#root");
 
   const renderInfo = e => {
@@ -48,7 +52,6 @@ export default function RecipeCard({ image, title, id }) {
       }
     })
       .then(response => {
-        console.log("response: ", response.data);
         setState(prev => {
           return [...prev, response];
         });
@@ -71,7 +74,6 @@ export default function RecipeCard({ image, title, id }) {
             className={classes.media}
             image={image}
             title="Contemplative Reptile"
-            onClick={renderInfo}
           />
 
           <Modal isOpen={isOpen} onRequestClose={closeModal}>
@@ -93,6 +95,12 @@ export default function RecipeCard({ image, title, id }) {
                     {recipe.instructions && (
                       <p>Instructions: {recipe.instructions}</p>
                     )}
+                    <FacebookShareButton
+                      url={recipe.sourceUrl}
+                      children={
+                        <FacebookIcon size={32} round={true}></FacebookIcon>
+                      }
+                    />
                     <button onClick={closeModal}>close</button>
                   </div>
                 );
@@ -106,11 +114,9 @@ export default function RecipeCard({ image, title, id }) {
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
           <FavoriteBorderIcon />
         </Button>
+        <button onClick={renderInfo}>View Recipe!</button>
       </CardActions>
     </Card>
   );
