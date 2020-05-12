@@ -21,17 +21,14 @@ db.connect();
 //   console.log(data.rows)
 // })
 
-
 app.use(cors());
 
+//you need to write routes here V to import them to another files.
+const userRoutes = require("./routes/users");
+app.use("/users", userRoutes(db));
 
-//you need to write routes here V to import them to another files. 
-const userRoutes = require('./routes/users')
-app.use("/users", userRoutes(db))
-
-const savedRecipes = require('./routes/saved')
-app.use("/saved", savedRecipes(db))
-
+const savedRecipes = require("./routes/saved");
+app.use("/saved", savedRecipes(db));
 
 app.listen(port, () => console.log("Backend server live on " + port));
 

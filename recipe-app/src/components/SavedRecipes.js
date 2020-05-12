@@ -1,19 +1,25 @@
-import React, { useState } from "react";
-import useApplicationData from "../hooks/useApplicationData";
+import React, { useState, useEffect } from "react";
 
+import axios from "axios";
 
 export default function SavedRecipes() {
-  const [recipes, setRecipes] = useState();
+  const [recipes, setRecipes] = useState([]);
 
-  useApplicationData().then((res) => { 
-    setRecipes(res)
-    
-  });
-  console.log(recipes);
+  console.log("recipes current state: ", recipes);
+  useEffect(() => {
+    axios.get("/saved").then(response => {
+      console.log("response: ", response.data);
+      setRecipes(prev => {
+        return [...prev, ...response.data];
+      });
+    });
+  }, []);
+
   return (
-    <>
-      <h1>Saved Recipes</h1>
-    <div>{recipes && recipes[0].recipe_name}</div>
-    </>
+    <div>
+      {recipes.map((recipe, index) => {
+        return <div key={index}> {recipe.recipe_name}</div>;
+      })}
+    </div>
   );
 }
