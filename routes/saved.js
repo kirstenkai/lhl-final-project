@@ -8,8 +8,9 @@ module.exports = (db) => {
     let query = `SELECT * FROM recipes`;
     console.log(query);
     db.query(query)
+
       .then((data) => {
-        res.json({ users: data.rows });
+        res.json(data.rows);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
