@@ -121,7 +121,10 @@ export default function RecipeCard({ image, title, id }) {
                         return instruction.steps.map((key2, index) => {
                           return (
                             <div key={index}>
-                              {<b>{index + 1}</b>}. {key2.step}
+                              <ol>
+                                {" "}
+                                {index + 1}. {key2.step}
+                              </ol>
                             </div>
                           );
                         });
@@ -138,9 +141,7 @@ export default function RecipeCard({ image, title, id }) {
               })}
             </div>
           </Modal>
-          <Typography gutterBottom variant="h5" component="h2">
-            {(title = title)}
-          </Typography>
+          <Typography gutterBottom variant="h5" component="h2"></Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
