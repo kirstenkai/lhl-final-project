@@ -15,6 +15,14 @@ import NotFound from "./components/NotFound";
 
 import Recipe from "./components/Recipe";
 
+// NEW - login/register functionality. Importing useAuth0 hook
+import { useAuth0 } from "./react-auth0-spa";
+
+// New - import profile page component
+import Profile from "./components/Profile";
+import history from "./utils/history";
+import PrivateRoute from "./components/PrivateRoute";
+
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
@@ -80,20 +88,32 @@ function App() {
       });
 
     // console.log(recipeName);
+
   };
 
   const renderInfo = recipes => {
     console.log(recipes.id);
   };
 
+  // NEW - Header component login/register functionality
+  // Shows loading state
+  const { loading } = useAuth0();
+    
+  if (loading) {
+   return <div>Loading...</div>;
+  }
+
   return (
-    <BrowserRouter>
+    <BrowserRouter history={history}>
       <div className="App">
-        <Header />
+        <header>
+          <Header />
+        </header>
         <Switch>
           <Route path="/" component={LandingPage} exact={true} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
@@ -109,7 +129,6 @@ function App() {
             )}
           />
 
-          <Route path="/recipe/:id" component={Recipe} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route component={NotFound} />

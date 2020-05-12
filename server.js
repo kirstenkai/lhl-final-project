@@ -1,9 +1,6 @@
-require ("dotenv").config();
+require("dotenv").config();
 
- const { Pool } = require("pg");
-
- 
-
+const { Pool } = require("pg");
 
 const express = require("express"),
   app = express(),
@@ -18,7 +15,6 @@ const db = new Pool({
   port: process.env.DBPORT
 });
 db.connect();
-
 
 //query to test db function.
 // db.query('SELECT * FROM users').then(data => {
@@ -39,10 +35,7 @@ app.use("/saved", savedRecipes(db))
 
 app.listen(port, () => console.log("Backend server live on " + port));
 
-
 //testing routes in console!
 app.get("/", (req, res) => {
   res.send({ message: "We did it!" });
 });
-
-
