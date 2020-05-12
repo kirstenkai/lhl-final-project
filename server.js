@@ -21,9 +21,9 @@ db.connect();
 
 
 //query to test db function.
-db.query('SELECT * FROM users').then(data => {
-  console.log(data.rows)
-})
+// db.query('SELECT * FROM users').then(data => {
+//   console.log(data.rows)
+// })
 
 
 app.use(cors());
@@ -32,6 +32,9 @@ app.use(cors());
 //you need to write routes here V to import them to another files. 
 const userRoutes = require('./routes/users')
 app.use("/users", userRoutes(db))
+
+const savedRecipes = require('./routes/saved')
+app.use("/saved", savedRecipes(db))
 
 
 app.listen(port, () => console.log("Backend server live on " + port));
