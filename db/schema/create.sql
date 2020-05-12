@@ -8,7 +8,7 @@ CREATE TABLE users (
   last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE recipes (
   id SERIAL PRIMARY KEY NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE recipes (
   description TEXT,
   ingredients TEXT,
   instruction TEXT
-)
+);
 
 CREATE TABLE inventory_items (
   id SERIAL PRIMARY KEY NOT NULL,
@@ -26,4 +26,4 @@ CREATE TABLE inventory_items (
   ingridient_name VARCHAR(255) NOT NULL,
   picture VARCHAR(255),
   expiry_date DATE
-)
+);
