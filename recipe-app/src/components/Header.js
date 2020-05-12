@@ -40,8 +40,10 @@ export default function ButtonAppBar() {
           {/* NEW - add a link to the home and profile pages */}
           {isAuthenticated && (
             <span>
-              <Link to="/">Home</Link>&nbsp;
+              <Link to="/inventory">Inventory</Link>&nbsp;
+              <Link to="/saved">Saved Recipes</Link>
               <Link to="/profile">Profile</Link>
+              <Link to="/search">Search</Link>
             </span>
           )}
           {isAuthenticated && <button onClick={() => logout()}>Log out</button>}

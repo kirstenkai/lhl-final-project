@@ -59,8 +59,7 @@ function App() {
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
-          <Route path="/search" component={Search} />
-
+          <PrivateRoute path="/search" component={Search} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route component={NotFound} />
