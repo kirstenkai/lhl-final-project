@@ -14,7 +14,7 @@ module.exports = db => {
 
   router.get("/", (req, res) => {
     let query = `SELECT * FROM users`;
-    console.log(query);
+    //console.log(query);
     db.query(query)
       .then(data => {
         res.json({ users: data.rows });

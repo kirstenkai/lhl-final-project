@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import RecipeCard from "./RecipeCard";
-import Axios from "axios";
+import axios from "axios";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
-
+  // console.log(recipes[0])
   const getRecipe = e => {
     const recipeName = e.target.elements.recipeName.value;
     e.preventDefault();
     setRecipes([]);
-    Axios({
+    axios({
       method: "GET",
       url:
         "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients",
@@ -51,16 +51,25 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
+        console.log(recipes)
       })
       .catch(error => {
         console.log(error);
       });
-
-    // console.log(recipeName);
-  };
+   };
 
   const nestedRecipes = recipes.flat();
 
+  const handleClick = (recipe) => {
+    console.log(recipe)
+    //e.preventDefault();
+    // console.log(recipes)
+    return axios
+    .post("/api/savedfavorite", {...recipe})
+    .then((res) => console.log(res));
+  
+
+  }
   return (
     <div>
       <form onSubmit={getRecipe}>
@@ -75,7 +84,10 @@ export default function Search({ renderInfo }) {
                 title={recipe.title}
                 image={recipe.image}
                 id={recipe.id}
+                
               />
+              <a href="#" onClick={() => handleClick(recipe)}>Save to favorite</a>
+
             </div>
           );
         })}

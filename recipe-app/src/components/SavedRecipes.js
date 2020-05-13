@@ -14,6 +14,7 @@ import { FacebookIcon } from "react-share";
 import ReactToPrint from "react-to-print";
 import Modal from "react-modal";
 import axios from "axios";
+import RecipeCard from "./RecipeCard";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -38,10 +39,10 @@ export default function SavedRecipes() {
 
   console.log("recipes current state: ", recipes);
   useEffect(() => {
-    axios.get("/saved").then(response => {
-      console.log("response: ", response.data);
-      setRecipes(prev => {
-        return [...prev, ...response.data];
+    axios.get("/api/saved").then((res) => {
+      console.log(res.data)
+      setRecipes((prev) => {
+        return [...prev, ...res.data];
       });
     });
   }, []);
@@ -67,8 +68,8 @@ export default function SavedRecipes() {
                   key={index}
                   component="img"
                   className={classes.media}
-                  image={recipe.picture}
-                  title={recipe.recipe_name}
+                  image={recipe.image}
+                  title={recipe.title}
                 />
               </CardContent>
             </CardActionArea>

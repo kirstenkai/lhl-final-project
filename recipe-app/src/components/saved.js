@@ -64,12 +64,14 @@ export default function RecipeCard({ image, title, id }) {
     <Card className={classes.root}>
       <CardActionArea>
         <CardContent>
-          <CardMedia
-            component="img"
-            className={classes.media}
-            image={image}
-            title="Contemplative Reptile"
-          />
+          <button type="submit" onClick>
+            <CardMedia
+              component="img"
+              className={classes.media}
+              image={image}
+              title="Contemplative Reptile"
+            />
+          </button>
 
           <button onClick={renderInfo}>View Recipe</button>
 
