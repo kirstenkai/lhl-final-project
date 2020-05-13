@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Axios from "axios";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Header from "./components/Header";
 import Registration from "./components/Registration";
@@ -27,8 +27,6 @@ require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 function App() {
-  // NEW - Header component login/register functionality
-  // Shows loading state
 
   Axios({
     method: "GET",
@@ -39,33 +37,37 @@ function App() {
   }).then(res => {
     console.log(res.data.message);
   });
-  const { loading } = useAuth0();
+
+  const { loading, isAuthenticated } = useAuth0();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <BrowserRouter history={history}>
+    <Router history={history}>
       <div className="App">
         <header>
           <Header />
         </header>
         <Switch>
-          <Route path="/" component={LandingPage} exact={true} />
+          <Route exact path="/">
+            { isAuthenticated ?  <Redirect to="/search" /> : <LandingPage /> }
+          </Route> 
+          {console.log(isAuthenticated)}
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-          <PrivateRoute path="/profile" component={Profile} />
-          <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
-          <PrivateRoute path="/search" component={Search} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
+          <Route to="/search" component={Search} />
           <Route component={NotFound} />
+
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 

@@ -63,15 +63,15 @@ export default function Search({ renderInfo }) {
 
   const nestedRecipes = recipes.flat();
 
-  const { loading, user } = useAuth0();
+  // const { loading, user } = useAuth0();
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
-  if (loading || !user) {
-    return <div>Loading...</div>;
-  }
+  // if (loading || !user) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
-    <div>
+    <div class="App">
       <form onSubmit={getRecipe}>
         <input type="text" name="recipeName"></input>
         <button>Search!</button>
