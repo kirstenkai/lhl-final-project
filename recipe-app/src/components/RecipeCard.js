@@ -74,7 +74,7 @@ export default function RecipeCard({ image, title, id }) {
             component="img"
             className={classes.media}
             image={image}
-            title="Contemplative Reptile"
+            title={title}
           />
 
           <Modal isOpen={isOpen} onRequestClose={closeModal}>
@@ -142,6 +142,7 @@ export default function RecipeCard({ image, title, id }) {
             </div>
           </Modal>
           <Typography gutterBottom variant="h5" component="h2"></Typography>
+          {(title = title)}
         </CardContent>
       </CardActionArea>
       <CardActions>

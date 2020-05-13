@@ -68,6 +68,7 @@ export default function Search({ renderInfo }) {
         <button>Search!</button>
 
         {nestedRecipes.map((recipe, index) => {
+          console.log("recipe name: ", recipe.title);
           return (
             <div key={index}>
               <RecipeCard
