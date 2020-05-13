@@ -6,12 +6,12 @@ VALUES
 
 
 INSERT INTO inventory_items
-  (user_id, name, daysleft, expiry_date)
+  (user_id, name, expiry_date, daysleft)
 VALUES
-  ('1', 'milk', '5', '2020-05-18'),
-  ('1', 'egg', '10', '2020-05-23'),
-  ('1', 'cheese', '60', '2020-08-13'),
-('1', 'sour cream', '7', '2020-05-20');
+  ('1', 'milk', '2020-05-23', '5'),
+  ('1', 'egg', '2020-05-28', '4');
+
+
 
 INSERT INTO custom_recipes
   (user_id, name, image, description, ingredients, instruction)

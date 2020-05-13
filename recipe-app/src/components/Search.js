@@ -4,7 +4,6 @@ import axios from "axios";
 // import Axios from "axios";
 import { useAuth0 } from "../react-auth0-spa";
 
-
 // NEW - IMPLEMENT SEARCH BAR
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -20,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1)
   }
 }));
-
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -71,25 +69,15 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
-        console.log(recipes)
+        console.log(recipes);
       })
       .catch(error => {
         console.log(error);
       });
-   };
+  };
 
   const nestedRecipes = recipes.flat();
 
-  const handleClick = (recipe) => {
-    console.log(recipe)
-    //e.preventDefault();
-    // console.log(recipes)
-    return axios
-    .post("/api/savedfavorite", {...recipe})
-    .then((res) => console.log(res));
-  
-
-  }
   // const { loading, user } = useAuth0();
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
@@ -98,11 +86,9 @@ export default function Search({ renderInfo }) {
   // }
   const classes = useStyles();
   return (
-   
-
-    <div className={classes.root}>    
-     <form onSubmit={getRecipe}>
-      <Grid container spacing={1} alignItems="flex-end">
+    <div className={classes.root}>
+      <form onSubmit={getRecipe}>
+        <Grid container spacing={1} alignItems="flex-end">
           <Grid item>
             <SearchIcon />
           </Grid>
@@ -119,11 +105,9 @@ export default function Search({ renderInfo }) {
                 shrink: true
               }}
             />
+            <button>Search!</button>
           </Grid>
         </Grid>
-        {/* <input type="text" name="recipeName"></input> */}
-        <button>Search!</button> 
-  
 
         {nestedRecipes.map((recipe, index) => {
           console.log("recipe name: ", recipe.title);
@@ -133,10 +117,7 @@ export default function Search({ renderInfo }) {
                 title={recipe.title}
                 image={recipe.image}
                 id={recipe.id}
-                
               />
-              <a href="#" onClick={() => handleClick(recipe)}>Save to favorite</a>
-
             </div>
           );
         })}
@@ -144,5 +125,3 @@ export default function Search({ renderInfo }) {
     </div>
   );
 }
-
-
