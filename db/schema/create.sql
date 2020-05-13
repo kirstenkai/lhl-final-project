@@ -17,6 +17,7 @@ CREATE TABLE users
 CREATE TABLE recipes
 (
   id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   spoonacular_id INTEGER,
   title VARCHAR(255),
   image VARCHAR(255)
