@@ -56,6 +56,15 @@ export default function SavedRecipes() {
     console.log("CLIIICKED");
   };
 
+  const save = () => {
+    console.log("ABLE TO SAVEEE!");
+    //e.preventDefault();
+    // console.log(recipes)
+    // return axios
+    // .post("/api/savedfavorite", {...recipe})
+    // .then((res) => console.log(res));
+  };
+
   console.log("recipes: ", recipes);
   return (
     <div>
@@ -76,7 +85,7 @@ export default function SavedRecipes() {
             <Typography gutterBottom variant="h5" component="h2"></Typography>
             {recipe.title}
             <CardActions>
-              <Button size="small" color="primary">
+              <Button onClick={save} size="small" color="primary">
                 <FavoriteBorderIcon />
               </Button>
               <button onClick={renderInfo}>View Recipe!</button>
