@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import RecipeCard from "./RecipeCard";
-<<<<<<< HEAD
 import axios from "axios";
-=======
-import Axios from "axios";
+// import Axios from "axios";
 import { useAuth0 } from "../react-auth0-spa";
 
 
@@ -23,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
->>>>>>> feature/implement-auth0-pages
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -83,7 +80,6 @@ export default function Search({ renderInfo }) {
 
   const nestedRecipes = recipes.flat();
 
-<<<<<<< HEAD
   const handleClick = (recipe) => {
     console.log(recipe)
     //e.preventDefault();
@@ -94,7 +90,6 @@ export default function Search({ renderInfo }) {
   
 
   }
-=======
   // const { loading, user } = useAuth0();
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
@@ -102,7 +97,6 @@ export default function Search({ renderInfo }) {
   //   return <div>Loading...</div>;
   // }
   const classes = useStyles();
->>>>>>> feature/implement-auth0-pages
   return (
    
 
