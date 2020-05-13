@@ -12,7 +12,7 @@ import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
 import ReactToPrint from "react-to-print";
-
+import axios from "axios";
 import Modal from "react-modal";
 
 require("dotenv").config();
@@ -66,8 +66,12 @@ export default function RecipeCard({ image, title, id }) {
 
   const save = () => {
     console.log("saved!");
+    return axios
+      .post("localhost:5000/api/saved")
+      .then(res => console.log("post", res));
   };
 
+  // { ...recipes })
   return (
     <Card className={classes.root}>
       <CardActionArea>

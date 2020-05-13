@@ -51,25 +51,13 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
-        console.log(recipes)
+        console.log(recipes);
       })
       .catch(error => {
         console.log(error);
       });
-   };
-
+  };
   const nestedRecipes = recipes.flat();
-
-  const handleClick = (recipe) => {
-    console.log(recipe)
-    //e.preventDefault();
-    // console.log(recipes)
-    return axios
-    .post("/api/savedfavorite", {...recipe})
-    .then((res) => console.log(res));
-  
-
-  }
   return (
     <div>
       <form onSubmit={getRecipe}>
@@ -84,10 +72,7 @@ export default function Search({ renderInfo }) {
                 title={recipe.title}
                 image={recipe.image}
                 id={recipe.id}
-                
               />
-              <a href="#" onClick={() => handleClick(recipe)}>Save to favorite</a>
-
             </div>
           );
         })}
