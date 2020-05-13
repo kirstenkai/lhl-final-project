@@ -64,6 +64,10 @@ export default function RecipeCard({ image, title, id }) {
     setIsOpen(false);
   }
 
+  const save = () => {
+    console.log("saved!");
+  };
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -144,7 +148,7 @@ export default function RecipeCard({ image, title, id }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button onClick={save} size="small" color="primary">
           <FavoriteBorderIcon />
         </Button>
         <button onClick={renderInfo}>View Recipe!</button>
