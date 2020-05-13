@@ -55,7 +55,6 @@ function App() {
           <Route exact path="/">
             { isAuthenticated ?  <Redirect to="/search" /> : <LandingPage /> }
           </Route> 
-          {console.log(isAuthenticated)}
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
