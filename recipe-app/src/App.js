@@ -28,15 +28,16 @@ require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 function App() {
-  // Axios({
-  //   method: "GET",
-  //   url: "http://localhost:5000/",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   }
-  // }).then(res => {
-  //   console.log(res.data.message);
-  // });
+
+  Axios({
+    method: "GET",
+    url: "http://localhost:5000/",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(res => {
+    console.log(res.data.message);
+  });
 
   const { loading, isAuthenticated } = useAuth0();
 
@@ -52,8 +53,8 @@ function App() {
         </header>
         <Switch>
           <Route exact path="/">
-            {isAuthenticated ? <Redirect to="/search" /> : <LandingPage />}
-          </Route>
+            { isAuthenticated ?  <Redirect to="/search" /> : <LandingPage /> }
+          </Route> 
           {console.log(isAuthenticated)}
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
@@ -64,7 +65,6 @@ function App() {
           <Route path="/inventory" component={Inventory} />
           <Route path="/create" component={CreateRecipe} />
           <Route to="/search" component={Search} />
-
           <Route component={NotFound} />
         </Switch>
       </div>
