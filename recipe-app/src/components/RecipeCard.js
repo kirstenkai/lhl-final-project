@@ -140,6 +140,7 @@ export default function RecipeCard({ image, title, id }) {
             </div>
           </Modal>
           <Typography gutterBottom variant="h5" component="h2"></Typography>
+          {(title = title)}
         </CardContent>
       </CardActionArea>
       <CardActions>

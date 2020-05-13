@@ -73,6 +73,7 @@ export default function SavedRecipes() {
               </CardContent>
             </CardActionArea>
             <Typography gutterBottom variant="h5" component="h2"></Typography>
+            {recipe.recipe_name}
             <CardActions>
               <Button size="small" color="primary">
                 <FavoriteBorderIcon />
