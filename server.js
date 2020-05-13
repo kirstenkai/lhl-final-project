@@ -4,9 +4,12 @@ const { Pool } = require("pg");
 
 const express = require("express"),
   app = express(),
+
   port = process.env.PORT || 5000,
   cors = require("cors");
-
+  bodyParser = require("body-parser");
+  // app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
 const db = new Pool({
   host: process.env.DBHOST,
   user: process.env.DBUSER,
@@ -30,7 +33,8 @@ app.use("/users", userRoutes(db));
 const savedRecipes = require("./routes/saved");
 app.use("/api/saved", savedRecipes(db));
 
-
+const savedFavorite = require("./routes/saved_favorite");
+app.use("/api/savedfavorite", savedFavorite(db));
 
 app.listen(port, () => console.log("Backend server live on " + port));
 
