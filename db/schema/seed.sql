@@ -15,12 +15,12 @@ VALUES
 //webknox.com/recipeImages/1447373-556x370.jpg', 'The recipe Amazingly Fluffy Waffles can be made in approximately 45 minutes. This recipe serves 6 and costs 33 cents per serving. One portion of this dish contains about 8g of protein, 12g of fat, and a total of 259 calories. It is brought to you by spoonacular user activenetworkuser6126. If you have flour, milk, sugar, and a few other ingredients on hand, you can make it. It works well as a morn meal. It is a good option if youre following a lacto ovo vegetarian diet. Users who liked this recipe also liked Amazingly Fluffy Waffles, Fluffy Waffles, and Fluffy Waffles with Cinnamon Cream.', 'powder, milk, eggs', 'Grease and heat waffle iron as directed by manufacturer. In a large bowl, stir flour, baking powder, salt, and sugar. Individually add milk, beaten egg yolks, and butter. Beat egg whites until stiff. Gently fold into mixture. When waffle iron is heated, pour some mixture into center and spread to within 1 inch of edge. Bake as directed. . When cooked, loosen from waffle iron and serve immediately');
 
 INSERT INTO inventory_items
-  (user_id, name, daysleft, expiry_date)
+  (user_id, name, expiry_date, daysleft)
 VALUES
-  ('1', 'milk', '5', '2020-05-18'),
-  ('1', 'egg', '10', '2020-05-23'),
-  ('1', 'cheese', '60', '2020-08-13'),
-('1', 'sour cream', '7', '2020-05-20');
+  ('1', 'milk', '2020-05-23', '5'),
+  ('1', 'egg', '2020-05-28', '4');
+
+
 
 INSERT INTO saved_recipes
   (user_id, name, image, description, ingredients, instruction)

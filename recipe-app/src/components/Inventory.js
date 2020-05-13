@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import moment, { diff } from "moment";
+import Axios from "axios";
 
 const useStyles = makeStyles({
   table: {
@@ -15,33 +16,59 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, expiry, daysleft) {
+  return { name, expiry, daysleft };
 }
 
-const save = e => {
-  e.preventDefault();
-  const today = moment().format("YYYYMMDD");
-  const name = e.target.elements.name.value;
-  let date = moment(e.target.elements.date.value).format("YYYYMMDD");
-
-  console.log("date: ", date);
-  console.log("today: ", today);
-
-  console.log(date.diff(today, "days") + "d");
-  // console.log(diff);
-};
-
 const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9)
+  createData("Milk", "2020-08-20", 6.0),
+  createData("Carrot", "2020-06-10", 5.0),
+  createData("Soy", "2020-07-04", 9.0)
 ];
 
 export default function Inventory() {
   const classes = useStyles();
+
+  const [item, setItem] = useState([]);
+
+  //-----------------------save to do a post request--------------------
+  const save = e => {
+    e.preventDefault();
+    const id = 123;
+    const today = moment();
+    const item = e.target.elements.name.value;
+    const expiry = moment(e.target.elements.date.value);
+    const daysleft = 5;
+    // const today = moment().format("YYYYMMDD");
+    console.log(expiry.diff(today, "days") + "days");
+    // console.log("date: ", date);
+    // console.log("today: ", today);
+
+    // console.log(date.diff(today, "days") + "d");
+    // console.log(diff);
+    console.log("hello");
+
+    Axios.post("http://localhost:5000/api/inventory", {
+      item,
+      expiry,
+      daysleft
+    }).then(res => {
+      setItem(prev => {
+        return [...prev, res.data];
+      });
+
+      console.log("inventory response: ", res);
+    });
+  };
+  //-----------------------UseEffect to render items--------------------
+  // useEffect(()=> {
+  //   Axios.get("/api/inventory").then((res) => {
+  //   console.log("res == ", res)
+  //   setItem(prev => {
+  //     return [...prev, ...res.data]})
+
+  //   })
+  //   },[])
 
   return (
     <div>
@@ -60,8 +87,12 @@ export default function Inventory() {
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

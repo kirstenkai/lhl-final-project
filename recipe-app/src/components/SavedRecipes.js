@@ -39,9 +39,9 @@ export default function SavedRecipes() {
 
   console.log("recipes current state: ", recipes);
   useEffect(() => {
-    axios.get("/api/saved").then((res) => {
-      console.log(res.data)
-      setRecipes((prev) => {
+    axios.get("/api/saved").then(res => {
+      console.log(res.data);
+      setRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
@@ -58,7 +58,7 @@ export default function SavedRecipes() {
 
   console.log("recipes: ", recipes);
   return (
-    <>
+    <div>
       {recipes.map((recipe, index) => {
         return (
           <Card className={classes.root}>
@@ -74,7 +74,7 @@ export default function SavedRecipes() {
               </CardContent>
             </CardActionArea>
             <Typography gutterBottom variant="h5" component="h2"></Typography>
-            {recipe.recipe_name}
+            {recipe.title}
             <CardActions>
               <Button size="small" color="primary">
                 <FavoriteBorderIcon />
@@ -89,7 +89,6 @@ export default function SavedRecipes() {
           <p>hello</p>
         </div>
       </Modal>
-      ); );
-    </>
+    </div>
   );
 }
