@@ -33,8 +33,6 @@ export default function RecipeCard({ image, title, id }) {
   const [state, setState] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const componentRef = useRef();
-
   Modal.setAppElement("#root");
 
   const renderInfo = e => {
