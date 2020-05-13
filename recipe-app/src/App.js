@@ -65,9 +65,7 @@ function App() {
           <Route path="/inventory" component={Inventory} />
           <Route path="/create" component={CreateRecipe} />
           <Route to="/search" component={Search} />
-
           <Route component={NotFound} />
-
         </Switch>
       </div>
     </Router>
