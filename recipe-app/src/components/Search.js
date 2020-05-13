@@ -60,7 +60,7 @@ export default function Search({ renderInfo }) {
   };
 
   const nestedRecipes = recipes.flat();
-
+  
   return (
     <div>
       <form onSubmit={getRecipe}>
@@ -68,6 +68,7 @@ export default function Search({ renderInfo }) {
         <button>Search!</button>
 
         {nestedRecipes.map((recipe, index) => {
+          // console.log(recipe)
           return (
             <div key={index}>
               <RecipeCard

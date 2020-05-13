@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-
-
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    let query = `SELECT * FROM recipes`;
+    //need to change to get recipe_id by user.id
+    let query = `SELECT * FROM recipes where user.id=${userid}`;
     console.log(query);
     db.query(query)
 

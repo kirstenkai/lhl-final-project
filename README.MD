@@ -18,6 +18,14 @@ B. you can run db using PostgreSQL on your local machine:
 * to stop local db server - use command:
         pg_ctl -D /usr/local/var/postgres stop.
 
+To create DB go to:
+$ psql
+$ CREATE DATABASE final_project;
+$ \c final_project;
+$ \i create.sql;
+$ \i seed.sql
+done!
+
 
 For connecting Express with Axios in both cases you need to add
 "proxy": "http://localhost:5000"
