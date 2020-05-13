@@ -20,32 +20,29 @@ function createData(name, expiry, daysleft) {
   return { name, expiry, daysleft };
 }
 
-const rows = [
-  createData("Milk", "2020-08-20", 6.0),
-  createData("Carrot", "2020-06-10", 5.0),
-  createData("Soy", "2020-07-04", 9.0)
-];
-
 export default function Inventory() {
   const classes = useStyles();
+
+  const rows = [
+    createData("Milk", "2020-08-20", 6.0),
+    createData("Carrot", "2020-06-10", 5.0),
+    createData("Soy", "2020-07-04", 9.0),
+    createData("Soy", "2020-07-04", 9.0)
+  ];
 
   const [item, setItem] = useState([]);
 
   //-----------------------save to do a post request--------------------
   const save = e => {
     e.preventDefault();
-    const id = 123;
+
     const today = moment();
     const item = e.target.elements.name.value;
     const expiry = moment(e.target.elements.date.value);
-    const daysleft = 5;
-    // const today = moment().format("YYYYMMDD");
-    console.log(expiry.diff(today, "days") + "days");
-    // console.log("date: ", date);
-    // console.log("today: ", today);
+    const daysleft = expiry.diff(today, "days");
 
-    // console.log(date.diff(today, "days") + "d");
-    // console.log(diff);
+    console.log(daysleft, "This is days left");
+
     console.log("hello");
 
     Axios.post("http://localhost:5000/api/inventory", {
@@ -56,8 +53,8 @@ export default function Inventory() {
       setItem(prev => {
         return [...prev, res.data];
       });
-
-      console.log("inventory response: ", res);
+      console.log(item, "item");
+      createData(item, expiry, daysleft);
     });
   };
   //-----------------------UseEffect to render items--------------------
@@ -88,10 +85,10 @@ export default function Inventory() {
                   {row.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.expiry}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.daysleft}
                 </TableCell>
               </TableRow>
             ))}
