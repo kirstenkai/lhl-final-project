@@ -11,6 +11,7 @@ import SavedRecipes from "./components/SavedRecipes";
 import RecipeCard from "./components/RecipeCard";
 import Inventory from "./components/Inventory";
 import Login from "./components/Login";
+import CreateRecipe from "./components/CreateRecipe";
 import NotFound from "./components/NotFound";
 
 import Recipe from "./components/Recipe";
@@ -62,7 +63,9 @@ function App() {
           <Route path="/recipecard" component={RecipeCard} />
           <Route path="/saved" component={SavedRecipes} />
           <Route path="/inventory" component={Inventory} />
+          <Route to="/create" component={CreateRecipe} />
           <Route to="/search" component={Search} />
+
           <Route component={NotFound} />
 
         </Switch>

@@ -44,6 +44,7 @@ export default function ButtonAppBar() {
               <Link to="/saved">Saved Recipes</Link>
               <Link to="/profile">Profile</Link>
               <Link to="/search">Search</Link>
+              <Link to="/create">Create Recipe</Link>
             </span>
           )}
           {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
