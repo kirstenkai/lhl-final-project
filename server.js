@@ -28,11 +28,13 @@ const userRoutes = require("./routes/users");
 app.use("/users", userRoutes(db));
 
 const savedRecipes = require("./routes/saved");
-app.use("/saved", savedRecipes(db));
+app.use("/api/saved", savedRecipes(db));
+
+
 
 app.listen(port, () => console.log("Backend server live on " + port));
 
 //testing routes in console!
-app.get("/", (req, res) => {
-  res.send({ message: "We did it!" });
-});
+// app.get("/", (req, res) => {
+//   res.send({ message: "We did it!" });
+// });

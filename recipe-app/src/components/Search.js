@@ -7,7 +7,7 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
-
+  console.log(recipes[0])
   const getRecipe = e => {
     const recipeName = e.target.elements.recipeName.value;
     e.preventDefault();
