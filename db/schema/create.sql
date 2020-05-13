@@ -37,4 +37,11 @@ CREATE TABLE saved_recipes (
   description TEXT,
   ingredients TEXT,
   instruction TEXT
-)
+);
+
+CREATE TABLE test (
+  id SERIAL PRIMARY KEY NOT NULL,
+  spoonacular_id INTEGER,
+  title VARCHAR(255),
+  image VARCHAR(255)
+);

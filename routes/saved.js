@@ -3,7 +3,8 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    let query = `SELECT * FROM recipes`;
+    //using TEST table here!! need to change to recipes after
+    let query = `SELECT * FROM test`;
     console.log(query);
     db.query(query)
       .then((data) => {
