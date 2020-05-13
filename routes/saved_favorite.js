@@ -7,7 +7,7 @@ module.exports = (db) => {
     const { id, title, image } = req.body;
 
     //query pushing data to the TEST table!!!
-    let query = `INSERT INTO test (spoonacular_id, title, image) VALUES ($1::integer, $2::text, $3::text) `;
+    let query = `INSERT INTO recipes (spoonacular_id, title, image) VALUES ($1::integer, $2::text, $3::text) `;
 
     db.query(query, [id, title, image])
       .then((data) => {
