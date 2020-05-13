@@ -1,6 +1,4 @@
 // A set of custom React Hooks that let us work with the Auth0 SDK in a more idiomatic way, providing functions that will allow users to log in, log out, and to check if the user is logged in 
-
-
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 

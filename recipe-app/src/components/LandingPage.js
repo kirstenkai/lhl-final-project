@@ -26,7 +26,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import { useAuth0 } from "../react-auth0-spa";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingPage() {
   const classes = useStyles();
-
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -74,9 +76,11 @@ export default function LandingPage() {
           <Typography component="p">
             RecipeApp helps you waste less food by giving you recipes based on the items you currently have in your pantry and when those products expire.  
           </Typography>
+          {/* {!isAuthenticated && (
+            // <button >Log in</button>
+          )} */}
           <Button 
-            component={Link} to="/registration"
-            type="submit"
+            onClick={() => loginWithRedirect({})}
             fullWidth
             variant="contained"
             color="primary"

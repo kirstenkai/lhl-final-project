@@ -1,6 +1,29 @@
 import React, { useState } from "react";
 import RecipeCard from "./RecipeCard";
+<<<<<<< HEAD
 import axios from "axios";
+=======
+import Axios from "axios";
+import { useAuth0 } from "../react-auth0-spa";
+
+
+// NEW - IMPLEMENT SEARCH BAR
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import SearchIcon from "@material-ui/icons/Search";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  margin: {
+    margin: theme.spacing(1)
+  }
+}));
+
+>>>>>>> feature/implement-auth0-pages
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -60,6 +83,7 @@ export default function Search({ renderInfo }) {
 
   const nestedRecipes = recipes.flat();
 
+<<<<<<< HEAD
   const handleClick = (recipe) => {
     console.log(recipe)
     //e.preventDefault();
@@ -70,11 +94,42 @@ export default function Search({ renderInfo }) {
   
 
   }
+=======
+  // const { loading, user } = useAuth0();
+
+  // Show the loading state if the page is loading or if there is no user currently authenticated
+  // if (loading || !user) {
+  //   return <div>Loading...</div>;
+  // }
+  const classes = useStyles();
+>>>>>>> feature/implement-auth0-pages
   return (
-    <div>
-      <form onSubmit={getRecipe}>
-        <input type="text" name="recipeName"></input>
-        <button>Search!</button>
+   
+
+    <div className={classes.root}>    
+     <form onSubmit={getRecipe}>
+      <Grid container spacing={1} alignItems="flex-end">
+          <Grid item>
+            <SearchIcon />
+          </Grid>
+          <Grid xs={10}>
+            <TextField
+              name="recipeName"
+              id="standard-full-width"
+              label="Search ingredients"
+              style={{ margin: 8 }}
+              placeholder="chicken, carrots, bananas"
+              fullWidth
+              margin="normal"
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+          </Grid>
+        </Grid>
+        {/* <input type="text" name="recipeName"></input> */}
+        <button>Search!</button> 
+  
 
         {nestedRecipes.map((recipe, index) => {
           console.log("recipe name: ", recipe.title);
@@ -96,33 +151,4 @@ export default function Search({ renderInfo }) {
   );
 }
 
-// <Route path="/" component={Search} />} />
 
-// import React from "react";
-// import RecipeCard from "./RecipeCard"
-
-// export default function Search({ getRecipe, recipes, renderInfo }) {
-//   const nestedRecipes = recipes.flat();
-//   console.log(recipes);
-//   return (
-//     <div>
-//       <form onSubmit={getRecipe}>
-//         <input type="text" name="recipeName"></input>
-//         <button>Search!</button>
-
-//         {nestedRecipes.map((recipe, index) => {
-//           return (
-//             <div key={index}>
-//               {recipe.title}
-//               <img
-//                 className="button"
-//                 onClick={renderInfo}
-//                 src={recipe.image}
-//               ></img>
-//             </div>
-//           );
-//         })}
-//       </form>
-//     </div>
-//   );
-// }
