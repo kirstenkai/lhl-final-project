@@ -19,7 +19,7 @@ import { useAuth0 } from "../react-auth0-spa";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: 'calc(100vh - 64px)',
   },
   image: {
     backgroundImage: 'url(img/flame-uploading.png)',
@@ -29,11 +29,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: '450px',
     backgroundPosition: 'center',
   },
+  introduction: {
+    backgroundColor: '#232946',
+    display: 'flex',
+    alignItems: 'center',
+    color: "#fffffe",
+  },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: '#232946',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -42,22 +49,28 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    backgroundColor: '#232946',
   },
   submit: {
+    backgroundColor: "#fa9ec1",
+    "&:hover": {
+      backgroundColor: "#d482a2"
+    },
+    color: "#232946",
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
+console.log(makeStyles)
 export default function LandingPage() {
   const classes = useStyles();
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square className={classes.introduction}>
         <div className={classes.paper}>
          
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h3">
             Keep track of your pantry.
           </Typography>
           <Typography component="p">
@@ -70,7 +83,6 @@ export default function LandingPage() {
             onClick={() => loginWithRedirect({})}
             fullWidth
             variant="contained"
-            color="primary"
             className={classes.submit}
           >
             Get Started!
