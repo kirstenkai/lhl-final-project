@@ -132,7 +132,7 @@ export default function SavedRecipes({ image, title, id }) {
     Axios.get(`http://localhost:5000/api/customrecipes/${id}`, { id })
       .then(response => {
         setCustomState(prev => {
-          return [...prev, response];
+          return [...prev, ...response.data];
         });
       })
       .catch(error => {
@@ -187,7 +187,18 @@ export default function SavedRecipes({ image, title, id }) {
         <div>
           {customState.map((recipe, index) => {
             console.log("recipe data", recipe);
-            return <div>{recipe.name}</div>;
+            return (
+              <div>
+                <h1>{recipe.name}</h1>
+                <img src={recipe.image}></img>
+                <h2>Description</h2>
+                {recipe.description}
+                <h2>Ingredients</h2>
+                {recipe.ingredient}
+                <h2>Instructions</h2>
+                {recipe.instruction}
+              </div>
+            );
           })}
 
           <FacebookShareButton
