@@ -24,26 +24,29 @@ const useStyles = makeStyles({
 
 export default function Inventory() {
   const classes = useStyles();
-
+  const user_id = "mock";
   const [item, setItem] = useState([]);
 
-  //-----------------------save to do a post request--------------------
+  //-----------------------save to do a REMOVE request--------------------
+  const remove = (e, id) => {
+    e.preventDefault();
+
+    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(res => {
+      setItem(prev => {
+        return prev.filter(item => item.id !== id);
+      });
+    });
+  };
+
   const save = e => {
     e.preventDefault();
-    const user_id = "mock";
+
     const today = moment();
     const item = e.target.elements.name.value;
 
     const expiry = moment(e.target.elements.date.value);
     const expiryDate = moment(expiry).format("MMMM Do YYYY");
     const daysleft = expiry.diff(today, "days");
-
-    console.log("days left:", daysleft);
-    console.log("days left MOMENT:", moment(expiry).format("MMMM Do YYYY"));
-
-    console.log(daysleft, "This is days left");
-
-    console.log("hello");
 
     Axios.post("http://localhost:5000/api/inventory", {
       user_id,
@@ -87,6 +90,15 @@ export default function Inventory() {
             {item.map((row, index) => (
               <TableRow key={index}>
                 <TableCell component="th" scope="row">
+                  <button
+                    onClick={e => {
+                      // remove from state
+                      remove(e, row.id);
+                    }}
+                  >
+                    {" "}
+                    x{" "}
+                  </button>
                   {row.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
