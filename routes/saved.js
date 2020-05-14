@@ -18,10 +18,8 @@ module.exports = (db) => {
   });
   router.get("/:userId", (req, res) => {
     //table is called recipes
-    console.log(req.params)
-    db.query(`SELECT * FROM recipes WHERE user_id = ($1)`, [
-      req.params.userId,
-    ])
+    console.log(req.params);
+    db.query(`SELECT * FROM recipes WHERE user_id = ($1)`, [req.params.userId])
       .then((data) => {
         const recipes = data.rows;
         res.json(recipes);
@@ -33,7 +31,7 @@ module.exports = (db) => {
   router.delete("/:id", (req, res) => {
     db.query(
       `DELETE FROM recipes
-          WHERE id = ($1) `,
+          WHERE id = ($1)`,
       [req.params.id]
     ).then((response) => {
       return res.json(response.rows[0] || null);
