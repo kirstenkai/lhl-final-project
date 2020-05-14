@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 import Axios from "axios";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -58,12 +59,12 @@ function App() {
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
-          <Route path="/inventory" component={Inventory} />
+          <PrivateRoute path="/inventory" component={Inventory} />
           <Route path="/recipecard" component={RecipeCard} />
           <Route path="/saved" component={SavedRecipes} />
-          <Route path="/inventory" component={Inventory} />
+          <PrivateRoute path="/inventory" component={Inventory} />
           <Route path="/create" component={CreateRecipe} />
-          <Route to="/search" component={Search} />
+          <PrivateRoute to="/search" component={Search} />
           <Route component={NotFound} />
         </Switch>
       </div>

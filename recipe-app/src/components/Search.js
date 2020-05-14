@@ -12,6 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles(theme => ({
   root: {
+    margin: 0,
     display: "flex",
     flexWrap: "wrap"
   },
@@ -77,14 +78,14 @@ export default function Search({ renderInfo }) {
   };
 
   const nestedRecipes = recipes.flat();
+  const classes = useStyles();
 
-  // const { loading, user } = useAuth0();
+  const { loading, user } = useAuth0();
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
-  // if (loading || !user) {
-  //   return <div>Loading...</div>;
-  // }
-  const classes = useStyles();
+  if (loading || !user) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className={classes.root}>
       <form onSubmit={getRecipe}>
