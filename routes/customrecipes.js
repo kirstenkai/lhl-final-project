@@ -33,8 +33,23 @@ WHERE id = ($1) `,
   });
 
   router.get("/", (req, res) => {
-    //table is called recipes
-    db.query(`SELECT * FROM custom_recipes;`)
+    //table is calleconst {idd recipes
+
+    db.query(`SELECT * FROM custom_recipes`)
+      .then(data => {
+        const recipes = data.rows;
+        res.json(recipes);
+      })
+      .catch(err => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.get("/:id", (req, res) => {
+    //table is calleconst {idd recipes
+
+    const { id } = req.params;
+    db.query(`SELECT * FROM custom_recipes WHERE id = ${id};`)
       .then(data => {
         const recipes = data.rows;
         res.json(recipes);
