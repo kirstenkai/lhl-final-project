@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 import Axios from "axios";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -14,6 +13,7 @@ import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import CreateRecipe from "./components/CreateRecipe";
 import NotFound from "./components/NotFound";
+import logo from "./components/nezuko.gif";
 
 import Recipe from "./components/Recipe";
 
@@ -29,7 +29,6 @@ require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 function App() {
-
   Axios({
     method: "GET",
     url: "http://localhost:5000/",
@@ -43,7 +42,7 @@ function App() {
   const { loading, isAuthenticated } = useAuth0();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <img src={logo} alt="loading..."></img>;
   }
 
   return (
@@ -54,8 +53,8 @@ function App() {
         </header>
         <Switch>
           <Route exact path="/">
-            { isAuthenticated ?  <Redirect to="/search" /> : <LandingPage /> }
-          </Route> 
+            {isAuthenticated ? <Redirect to="/search" /> : <LandingPage />}
+          </Route>
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/inventory" component={Inventory} />
           <PrivateRoute path="/saved" component={SavedRecipes} />

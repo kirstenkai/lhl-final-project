@@ -39,10 +39,23 @@ export default function SavedRecipes({ image, title, id }) {
   const [state, setState] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [customRecipes, setCustomRecipes] = useState([]); // this is from saved recipe
+  const [customIsOpen, setCustomIsOpen] = useState(false);
+  const [customState, setCustomState] = useState([]);
+
   useEffect(() => {
     axios.get("/api/saved").then(res => {
       console.log(res.data);
       setRecipes(prev => {
+        return [...prev, ...res.data];
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("/api/customrecipes").then(res => {
+      console.log(res.data);
+      setCustomRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
@@ -91,16 +104,97 @@ export default function SavedRecipes({ image, title, id }) {
     console.log("hello");
   };
 
-  console.log("recipes: ", recipes);
-
   const { loading, user } = useAuth0();
-  
+
   if (loading || !user) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
-  
+  //------------------------------Custom Recipe Functions------------------
+
+  const removeCustomRecipe = (e, id) => {
+    e.preventDefault();
+    console.log("removed!");
+    Axios.delete(`http://localhost:5000/api/customrecipes/${id}`, {}).then(
+      res => {
+        setCustomRecipes(prev => {
+          return prev.filter(item => item.id !== id);
+        });
+      }
+    );
+  };
+
+  const renderCustomInfo = (e, id) => {
+    e.preventDefault();
+    setCustomIsOpen(true);
+
+    Axios.get(`http://localhost:5000/api/customrecipes/${id}`, { id })
+      .then(response => {
+        setCustomState(prev => {
+          return [...prev, response];
+        });
+      })
+      .catch(error => {
+        console.log("there is an error");
+      });
+  };
+
+  function closeCustomModal() {
+    setCustomIsOpen(false);
+  }
+
   return (
     <div>
+      {customRecipes.map((recipe, index) => {
+        return (
+          <Card className={classes.root}>
+            <CardActionArea>
+              <CardContent>
+                <CardMedia
+                  key={index}
+                  component="img"
+                  className={classes.media}
+                  image={recipe.image}
+                  title={recipe.name}
+                />
+              </CardContent>
+            </CardActionArea>
+            <Typography gutterBottom variant="h5" component="h2"></Typography>
+            {recipe.name}
+            <CardActions>
+              <button
+                onClick={e => {
+                  renderCustomInfo(e, recipe.id);
+                }}
+              >
+                View Recipe!
+              </button>
+              <Button
+                onClick={e => {
+                  removeCustomRecipe(e, recipe.id);
+                }}
+                size="small"
+                color="primary"
+              >
+                <DeleteTwoToneIcon />
+              </Button>
+            </CardActions>
+          </Card>
+        );
+      })}
+      <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
+        <div>
+          {customState.map((recipe, index) => {
+            console.log("recipe data", recipe);
+          })}
+
+          <FacebookShareButton
+            url={"www.yahoo.com"}
+            children={<FacebookIcon size={32} round={true}></FacebookIcon>}
+          />
+          <button onClick={closeModal}>close</button>
+        </div>
+      </Modal>
+
       {recipes.map((recipe, index) => {
         return (
           <Card className={classes.root}>
