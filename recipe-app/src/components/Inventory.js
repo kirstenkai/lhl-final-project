@@ -16,9 +16,9 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(name, expiry, daysleft) {
-  return { name, expiry, daysleft };
-}
+// function createData(name, expiry, daysleft) {
+//   return { name, expiry, daysleft };
+// }
 
 export default function Inventory() {
   const classes = useStyles();
@@ -28,7 +28,7 @@ export default function Inventory() {
   //-----------------------save to do a post request--------------------
   const save = e => {
     e.preventDefault();
-
+    const user_id = "mock";
     const today = moment();
     const item = e.target.elements.name.value;
 
@@ -44,6 +44,7 @@ export default function Inventory() {
     console.log("hello");
 
     Axios.post("http://localhost:5000/api/inventory", {
+      user_id,
       item,
       expiryDate,
       daysleft
