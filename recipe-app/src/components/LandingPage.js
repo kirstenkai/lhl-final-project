@@ -16,7 +16,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import { useAuth0 } from "../react-auth0-spa";
 
-
+// TO DO
+// Add responsive layout for grid components (img displayed above text on mobile view)
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 'calc(100vh - 64px)',
@@ -57,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#d482a2"
     },
     color: "#232946",
+    fontWeight: "bold",
     margin: theme.spacing(3, 0, 2),
   },
 }));

@@ -24,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     color: "#fffffe",
+    textDecoration: "none",
+    fontSize: "30px",
+    fontWeight: "bold"
   },
 }));
 
+// TO DO: 
+// Look into conditional style rendering 
+// Apply Roboto font to everything
 export default function ButtonAppBar() {
   const classes = useStyles();
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
@@ -39,7 +45,7 @@ export default function ButtonAppBar() {
             RecipeApp
           </NavLink>
           {!isAuthenticated && (
-            <Button style={{color: "#fffffe"}} onClick={() => loginWithRedirect({})}>Log in</Button>
+            <Button style={{color: "#fffffe", fontWeight: "bold"}} onClick={() => loginWithRedirect({})}>Log in</Button>
           )}
 
           {/* NEW - add a link to the home and profile pages */}
