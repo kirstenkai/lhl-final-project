@@ -14,11 +14,16 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  header: {
+    backgroundColor: '#232946',
+    boxShadow: "none"
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+    color: "#fffffe",
   },
 }));
 
@@ -28,13 +33,13 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.header}>
         <Toolbar>
           <NavLink to="/" className={classes.title}>
             RecipeApp
           </NavLink>
           {!isAuthenticated && (
-            <button onClick={() => loginWithRedirect({})}>Log in</button>
+            <Button style={{color: "#fffffe"}} onClick={() => loginWithRedirect({})}>Log in</Button>
           )}
 
           {/* NEW - add a link to the home and profile pages */}
@@ -47,7 +52,7 @@ export default function ButtonAppBar() {
               <Link to="/search">Search</Link>
             </span>
           )}
-          {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
+          {isAuthenticated && <Button onClick={() => logout()}>Log out</Button>}
           {/* <NavLink to="/login" color="inherit">Login</NavLink> */}
           {/* <NavLink to="/registration" color="inherit">Sign Up</NavLink> */}
 
