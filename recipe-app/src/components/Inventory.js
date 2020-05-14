@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useAuth0 } from "../react-auth0-spa";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -56,13 +58,19 @@ export default function Inventory() {
     });
   };
   //-----------------------UseEffect to render items--------------------
-  useEffect(() => {
-    Axios.get("http://localhost:5000/api/inventory").then(res => {
-      setItem(prev => {
-        return [...prev, ...res.data];
-      });
-    });
-  }, []);
+  // useEffect(()=> {
+  //   Axios.get("/api/inventory").then((res) => {
+  //   console.log("res == ", res)
+  //   setItem(prev => {
+  //     return [...prev, ...res.data]})
+
+  //   })
+  //   },[])
+  const { loading, user } = useAuth0();
+  // Show the loading state if the page is loading or if there is no user currently authenticated
+  if (loading || !user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
