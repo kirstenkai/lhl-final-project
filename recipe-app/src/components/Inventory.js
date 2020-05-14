@@ -23,13 +23,6 @@ function createData(name, expiry, daysleft) {
 export default function Inventory() {
   const classes = useStyles();
 
-  const rows = [
-    createData("Milk", "2020-08-20", 6.0),
-    createData("Carrot", "2020-06-10", 5.0),
-    createData("Soy", "2020-07-04", 9.0),
-    createData("Soy", "2020-07-04", 9.0)
-  ];
-
   const [item, setItem] = useState([]);
 
   //-----------------------save to do a post request--------------------
@@ -38,8 +31,13 @@ export default function Inventory() {
 
     const today = moment();
     const item = e.target.elements.name.value;
+
     const expiry = moment(e.target.elements.date.value);
+    const expiryDate = moment(expiry).format("MMMM Do YYYY");
     const daysleft = expiry.diff(today, "days");
+
+    console.log("days left:", daysleft);
+    console.log("days left MOMENT:", moment(expiry).format("MMMM Do YYYY"));
 
     console.log(daysleft, "This is days left");
 
@@ -47,25 +45,23 @@ export default function Inventory() {
 
     Axios.post("http://localhost:5000/api/inventory", {
       item,
-      expiry,
+      expiryDate,
       daysleft
     }).then(res => {
       setItem(prev => {
         return [...prev, res.data];
       });
       console.log(item, "item");
-      createData(item, expiry, daysleft);
     });
   };
   //-----------------------UseEffect to render items--------------------
-  // useEffect(()=> {
-  //   Axios.get("/api/inventory").then((res) => {
-  //   console.log("res == ", res)
-  //   setItem(prev => {
-  //     return [...prev, ...res.data]})
-
-  //   })
-  //   },[])
+  useEffect(() => {
+    Axios.get("http://localhost:5000/api/inventory").then(res => {
+      setItem(prev => {
+        return [...prev, ...res.data];
+      });
+    });
+  }, []);
 
   return (
     <div>
@@ -79,16 +75,22 @@ export default function Inventory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.name}>
+            {item.map((row, index) => (
+              <TableRow key={index}>
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {row.expiry}
+                  {row.expiry_date}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {row.daysleft}
+                  {row.daysleft === 0 && (
+                    <h3> 1 day left. Note: Expiring soon!</h3>
+                  )}
+                  {row.daysleft > 3 && <h3> {row.daysleft} days</h3>}
+                  {row.daysleft <= 2 && row.daysleft > 0 && (
+                    <h3> {row.daysleft} days left. Note: Expiring soon!</h3>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
