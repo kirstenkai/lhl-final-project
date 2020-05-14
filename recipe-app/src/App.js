@@ -57,13 +57,10 @@ function App() {
             { isAuthenticated ?  <Redirect to="/search" /> : <LandingPage /> }
           </Route> 
           <PrivateRoute path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
-          <Route path="/registration" component={Registration} />
           <PrivateRoute path="/inventory" component={Inventory} />
-          <Route path="/recipecard" component={RecipeCard} />
-          <Route path="/saved" component={SavedRecipes} />
+          <PrivateRoute path="/saved" component={SavedRecipes} />
           <PrivateRoute path="/inventory" component={Inventory} />
-          <Route path="/create" component={CreateRecipe} />
+          <PrivateRoute path="/create" component={CreateRecipe} />
           <PrivateRoute to="/search" component={Search} />
           <Route component={NotFound} />
         </Switch>

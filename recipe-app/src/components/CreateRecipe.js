@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from '@material-ui/core/styles';
 import {TextField, Button} from '@material-ui/core';
 
@@ -15,7 +16,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateRecipe() {
   const classes = useStyles();
- 
+  const { loading, user } = useAuth0();
+
+  if (loading || !user) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Fragment>

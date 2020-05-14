@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -66,6 +67,13 @@ export default function SavedRecipes() {
   };
 
   console.log("recipes: ", recipes);
+
+  const { loading, user } = useAuth0();
+  
+  if (loading || !user) {
+    return <div>Loading...</div>
+  }
+  
   return (
     <div>
       {recipes.map((recipe, index) => {
