@@ -16,9 +16,12 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
-  router.get("/", (req, res) => {
+  router.get("/:userId", (req, res) => {
     //table is called recipes
-    db.query(`SELECT * FROM recipes;`)
+    console.log(req.params)
+    db.query(`SELECT * FROM recipes WHERE user_id = ($1)`, [
+      req.params.userId,
+    ])
       .then((data) => {
         const recipes = data.rows;
         res.json(recipes);
@@ -26,14 +29,14 @@ module.exports = (db) => {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-    router.delete("/:id", (req, res) => {
-      db.query(
-        `DELETE FROM recipes
+  });
+  router.delete("/:id", (req, res) => {
+    db.query(
+      `DELETE FROM recipes
           WHERE id = ($1) `,
-        [req.params.id]
-      ).then((response) => {
-        return res.json(response.rows[0] || null);
-      });
+      [req.params.id]
+    ).then((response) => {
+      return res.json(response.rows[0] || null);
     });
   });
 

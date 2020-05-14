@@ -43,14 +43,22 @@ export default function SavedRecipes({ image, title, id }) {
   const [customIsOpen, setCustomIsOpen] = useState(false);
   const [customState, setCustomState] = useState([]);
 
+  
+  
+
+  const { loading, user } = useAuth0();
+  console.log(user.sub)
   useEffect(() => {
-    axios.get("/api/saved").then(res => {
+    const userId = user.email;
+
+    axios.get(`/api/saved/${userId}`)
+    .then(res => {
       console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
-  }, []);
+  }, [user.email]);
 
   useEffect(() => {
     axios.get("/api/customrecipes").then(res => {
@@ -96,7 +104,8 @@ export default function SavedRecipes({ image, title, id }) {
   const remove = (e, id) => {
     e.preventDefault();
 
-    Axios.delete(`http://localhost:5000/api/saved/${id}`, {}).then(res => {
+    Axios.delete(`http://localhost:5000/api/saved/${id}`, {})
+    .then(res => {
       setRecipes(prev => {
         return prev.filter(item => item.id !== id);
       });
@@ -104,7 +113,7 @@ export default function SavedRecipes({ image, title, id }) {
     console.log("hello");
   };
 
-  const { loading, user } = useAuth0();
+  
 
   if (loading || !user) {
     return <div>Loading...</div>;
