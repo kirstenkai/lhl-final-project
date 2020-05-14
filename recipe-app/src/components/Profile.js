@@ -10,7 +10,6 @@ const Profile = () => {
   if (loading || !user) {
     return <div>Loading...</div>;
   }
-  console.log(user.identity)
   // This will return the user's picture/avatar, name, and email
   return (
     <Fragment>

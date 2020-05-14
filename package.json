@@ -24,5 +24,8 @@
     "express": "^4.17.1",
     "pg": "^8.1.0",
     "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }

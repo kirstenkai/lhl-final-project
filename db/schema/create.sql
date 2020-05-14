@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS users
-CASCADE;
+
 DROP TABLE IF EXISTS recipes
 CASCADE;
 DROP TABLE IF EXISTS inventory_items
@@ -7,11 +6,7 @@ CASCADE;
 DROP TABLE IF EXISTS custom_recipes
 CASCADE;
 
-CREATE TABLE users
-(
-  id SERIAL PRIMARY KEY NOT NULL,
-  auth_user_id VARCHAR(255) NOT NULL
-);
+
 
 -- need to add user_id column!!!!
 CREATE TABLE recipes
@@ -21,6 +16,7 @@ CREATE TABLE recipes
 (id) ON
 DELETE CASCADE,
   id SERIAL PRIMARY KEY NOT NULL,
+  user_id VARCHAR(255) NOT NULL,
   spoonacular_id INTEGER,
   title VARCHAR(255),
   image VARCHAR(255)
@@ -28,16 +24,16 @@ DELETE CASCADE,
 CREATE TABLE inventory_items
 (
   id SERIAL PRIMARY KEY NOT NULL,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  expiry_date DATE,
+  expiry_date VARCHAR(255) NOT NULL,
   daysleft INTEGER
 );
 
 CREATE TABLE custom_recipes
 (
   id SERIAL PRIMARY KEY NOT NULL,
-  user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
+  user_id VARCHAR(255) NOT NULL,
   name VARCHAR (255) NOT NULL,
   image VARCHAR (255),
   description TEXT,
