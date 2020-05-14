@@ -35,8 +35,8 @@ app.use("/api/saved", savedRecipes(db));
 const inventory = require("./routes/inventory");
 app.use("/api/inventory", inventory(db));
 
-const savedFavorite = require("./routes/saved_favorite");
-app.use("/api/savedfavorite", savedFavorite(db));
+const customRecipes = require("./routes/customrecipes");
+app.use("/api/customrecipes", customRecipes(db));
 
 app.listen(port, () => console.log("Backend server live on " + port));
 

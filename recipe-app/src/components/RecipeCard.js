@@ -64,16 +64,9 @@ export default function RecipeCard({ image, title, id }) {
     setIsOpen(false);
   }
 
-  // console.log("stateee", state);
-
   const save = () => {
     console.log("save");
   };
-  //   const save = () => {
-  // Axios.post(("http://localhost:5000/api/savedfavorite"), {
-
-  // } )
-  //   };
 
   return (
     <Card className={classes.root}>

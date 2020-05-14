@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useAuth0 } from "../react-auth0-spa";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,34 +18,42 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(name, expiry, daysleft) {
-  return { name, expiry, daysleft };
-}
+// function createData(name, expiry, daysleft) {
+//   return { name, expiry, daysleft };
+// }
 
 export default function Inventory() {
   const classes = useStyles();
-
+  const user_id = "mock";
   const [item, setItem] = useState([]);
+  const [currentItem, setCurrentItem] = useState("");
+  const [currentDate, setCurrentDate] = useState([]);
 
-  //-----------------------save to do a post request--------------------
+  //-----------------------save to do a REMOVE request--------------------
+  const remove = (e, id) => {
+    e.preventDefault();
+
+    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(res => {
+      setItem(prev => {
+        return prev.filter(item => item.id !== id);
+      });
+    });
+  };
+
   const save = e => {
     e.preventDefault();
 
     const today = moment();
     const item = e.target.elements.name.value;
+    setCurrentItem(item);
 
     const expiry = moment(e.target.elements.date.value);
+    setCurrentDate(expiry);
     const expiryDate = moment(expiry).format("MMMM Do YYYY");
     const daysleft = expiry.diff(today, "days");
 
-    console.log("days left:", daysleft);
-    console.log("days left MOMENT:", moment(expiry).format("MMMM Do YYYY"));
-
-    console.log(daysleft, "This is days left");
-
-    console.log("hello");
-
     Axios.post("http://localhost:5000/api/inventory", {
+      user_id,
       item,
       expiryDate,
       daysleft
@@ -51,17 +61,23 @@ export default function Inventory() {
       setItem(prev => {
         return [...prev, res.data];
       });
-      console.log(item, "item");
+      setCurrentItem("");
     });
   };
   //-----------------------UseEffect to render items--------------------
   useEffect(() => {
-    Axios.get("http://localhost:5000/api/inventory").then(res => {
+    Axios.get("/api/inventory").then(res => {
+      console.log("res == ", res);
       setItem(prev => {
         return [...prev, ...res.data];
       });
     });
   }, []);
+  const { loading, user } = useAuth0();
+  // Show the loading state if the page is loading or if there is no user currently authenticated
+  if (loading || !user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -78,6 +94,15 @@ export default function Inventory() {
             {item.map((row, index) => (
               <TableRow key={index}>
                 <TableCell component="th" scope="row">
+                  <button
+                    onClick={e => {
+                      // remove from state
+                      remove(e, row.id);
+                    }}
+                  >
+                    {" "}
+                    x{" "}
+                  </button>
                   {row.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -103,7 +128,7 @@ export default function Inventory() {
           Name
           <input
             name="name"
-            type="text"
+            type="text "
             placeholder="Item"
             autoFocus
             className="text-input"
