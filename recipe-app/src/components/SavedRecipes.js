@@ -47,22 +47,23 @@ export default function SavedRecipes({ image, title, id }) {
   
 
   const { loading, user } = useAuth0();
-  console.log(user.sub)
+  //console.log(user.sub)
   useEffect(() => {
     const userId = user.email;
 
     axios.get(`/api/saved/${userId}`)
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
-  }, [user.email]);
+  }, []);
 
   useEffect(() => {
-    axios.get("/api/customrecipes").then(res => {
-      console.log(res.data);
+    axios.get(`/api/customrecipes`)
+    .then(res => {
+      // console.log(res.data);
       setCustomRecipes(prev => {
         return [...prev, ...res.data];
       });
