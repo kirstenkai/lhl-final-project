@@ -3,9 +3,10 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.post("/", (req, res) => {
- 
     const { id, title, image } = req.body;
-    let query = `INSERT INTO recipes (spoonacular_id, title, image) VALUES ($1::integer, $2::text, $3::text); INSERT INTO users(auth_user_id) `;
+    let query = `INSERT INTO recipes (spoonacular_id, title, image) 
+    VALUES ($1::integer, $2::text, $3::text);`;
+
     db.query(query, [id, title, image])
       .then((data) => {
         res.json(data.rows);

@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
 
+
 const useStyles = makeStyles(theme => ({
   root: {
     margin: 0,
@@ -70,7 +71,7 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
-        console.log(recipes);
+        //console.log(recipes);
       })
       .catch(error => {
         console.log(error);
@@ -81,6 +82,8 @@ export default function Search({ renderInfo }) {
   const classes = useStyles();
 
   const { loading, user } = useAuth0();
+
+ 
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
@@ -111,7 +114,7 @@ export default function Search({ renderInfo }) {
         </Grid>
 
         {nestedRecipes.map((recipe, index) => {
-          console.log("recipe name: ", recipe.title);
+          //console.log("recipe name: ", recipe.title);
           return (
             <div key={index}>
               <RecipeCard

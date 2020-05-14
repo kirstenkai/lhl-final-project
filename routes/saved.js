@@ -1,23 +1,37 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = db => {
+module.exports = (db) => {
+  router.post("/", (req, res) => {
+    // console.log(res);
+    const { id, title, image, user_id } = req.body;
+    let query = `INSERT INTO recipes (spoonacular_id, title, image, user_id) 
+    VALUES ($1::integer, $2::text, $3::text, $4::text);`;
+
+    db.query(query, [id, title, image, user_id])
+      .then((data) => {
+        res.json(data.rows);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
   router.get("/", (req, res) => {
     //table is called recipes
     db.query(`SELECT * FROM recipes;`)
-      .then(data => {
+      .then((data) => {
         const recipes = data.rows;
         res.json(recipes);
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({ error: err.message });
       });
     router.delete("/:id", (req, res) => {
       db.query(
         `DELETE FROM recipes
-  WHERE id = ($1) `,
+          WHERE id = ($1) `,
         [req.params.id]
-      ).then(response => {
+      ).then((response) => {
         return res.json(response.rows[0] || null);
       });
     });

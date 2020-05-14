@@ -13,6 +13,8 @@ import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
 import ReactToPrint from "react-to-print";
 
+import { useAuth0 } from "../react-auth0-spa";
+
 import Modal from "react-modal";
 
 require("dotenv").config();
@@ -20,11 +22,11 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
   },
   media: {
-    height: 140
-  }
+    height: 140,
+  },
 });
 
 export default function RecipeCard({ image, title, id }) {
@@ -35,7 +37,7 @@ export default function RecipeCard({ image, title, id }) {
 
   Modal.setAppElement("#root");
 
-  const renderInfo = e => {
+  const renderInfo = (e) => {
     e.preventDefault();
     setIsOpen(true);
     setCurrentId(id);
@@ -47,15 +49,15 @@ export default function RecipeCard({ image, title, id }) {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         "x-rapidapi-key": `${SPOONACULAR_API}`,
-        useQueryString: true
-      }
+        useQueryString: true,
+      },
     })
-      .then(response => {
-        setState(prev => {
+      .then((response) => {
+        setState((prev) => {
           return [...prev, response];
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -63,9 +65,24 @@ export default function RecipeCard({ image, title, id }) {
   function closeModal() {
     setIsOpen(false);
   }
+  const { user } = useAuth0();
+  const save = (e) => {
+    e.preventDefault();
+    
+    const user_id = user.email;
+    //console.log(title, user_id);
 
-  const save = () => {
-    console.log("save");
+    Axios.post("http://localhost:5000/api/saved", {
+      user_id,
+      id,
+      title,
+      image,
+    }).then((res) => {
+      console.log(res);
+    })
+    .catch(error => {
+      console.log(error);
+     });
   };
 
   return (

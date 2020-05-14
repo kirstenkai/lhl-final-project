@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-console.log("What is this", useAuth0);
+// console.log("What is this", useAuth0);
 
 export default function CreateRecipe() {
   const classes = useStyles();

@@ -8,19 +8,15 @@ CASCADE;
 
 
 
--- need to add user_id column!!!!
 CREATE TABLE recipes
 (
-  user_id INTEGER
-    REFERENCES users
-(id) ON
-DELETE CASCADE,
   id SERIAL PRIMARY KEY NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   spoonacular_id INTEGER,
   title VARCHAR(255),
   image VARCHAR(255)
 );
+
 CREATE TABLE inventory_items
 (
   id SERIAL PRIMARY KEY NOT NULL,
