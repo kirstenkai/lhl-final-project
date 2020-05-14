@@ -1,20 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = (db) => {
+module.exports = db => {
   router.get("/", (req, res) => {
-    //using TEST table here!! need to change to recipes after
-    let query = `SELECT * FROM recipes`;
-    console.log(query);
-    db.query(query)
-      .then((data) => {
-        res.json(data.rows);
+    //table is called recipes
+    db.query(`SELECT * FROM recipes;`)
+      .then(data => {
+        const recipes = data.rows;
+        res.json(recipes);
       })
-      .catch((err) => {
+      .catch(err => {
         res.status(500).json({ error: err.message });
       });
+    router.delete("/:id", (req, res) => {
+      db.query(
+        `DELETE FROM recipes
+  WHERE id = ($1) `,
+        [req.params.id]
+      ).then(response => {
+        return res.json(response.rows[0] || null);
+      });
+    });
   });
-  
 
   return router;
 };

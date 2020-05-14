@@ -15,6 +15,7 @@ import ReactToPrint from "react-to-print";
 import Modal from "react-modal";
 import axios from "axios";
 import RecipeCard from "./RecipeCard";
+import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -28,16 +29,15 @@ const useStyles = makeStyles({
   }
 });
 
-export default function SavedRecipes() {
-  const [recipes, setRecipes] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+export default function SavedRecipes({ image, title, id }) {
+  const [recipes, setRecipes] = useState([]); // this is from saved recipe
 
   const classes = useStyles();
+
   const [currentId, setCurrentId] = useState(null);
+  const [state, setState] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  Modal.setAppElement("#root");
-
-  console.log("recipes current state: ", recipes);
   useEffect(() => {
     axios.get("/api/saved").then(res => {
       console.log(res.data);
@@ -47,25 +47,49 @@ export default function SavedRecipes() {
     });
   }, []);
 
+  Modal.setAppElement("#root");
+
+  const renderInfo = (e, id) => {
+    e.preventDefault();
+    setIsOpen(true);
+    setCurrentId(id);
+    console.log("id=", id);
+    Axios({
+      method: "GET",
+      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
+      headers: {
+        "content-type": "application/octet-stream",
+        "x-rapidapi-host":
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+        "x-rapidapi-key": `${SPOONACULAR_API}`,
+        useQueryString: true
+      }
+    })
+      .then(response => {
+        setState(prev => {
+          return [...prev, response];
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   function closeModal() {
     setIsOpen(false);
   }
 
-  const renderInfo = e => {
+  const remove = (e, id) => {
     e.preventDefault();
-    console.log("CLIIICKED");
+
+    Axios.delete(`http://localhost:5000/api/saved/${id}`, {}).then(res => {
+      setRecipes(prev => {
+        return prev.filter(item => item.id !== id);
+      });
+    });
+    console.log("hello");
   };
 
-  const save = () => {
-    console.log("ABLE TO SAVEEE!");
-    //e.preventDefault();
-    // console.log(recipes)
-    // return axios
-    // .post("/api/savedfavorite", {...recipe})
-    // .then((res) => console.log(res));
-  };
-
-  console.log("recipes: ", recipes);
   return (
     <div>
       {recipes.map((recipe, index) => {
@@ -85,17 +109,84 @@ export default function SavedRecipes() {
             <Typography gutterBottom variant="h5" component="h2"></Typography>
             {recipe.title}
             <CardActions>
-              <Button onClick={save} size="small" color="primary">
-                <FavoriteBorderIcon />
+              <button
+                onClick={e => {
+                  renderInfo(e, recipe.spoonacular_id);
+                }}
+              >
+                View Recipe!
+              </button>
+              <Button
+                onClick={e => {
+                  remove(e, recipe.id);
+                }}
+                size="small"
+                color="primary"
+              >
+                <DeleteTwoToneIcon />
               </Button>
-              <button onClick={renderInfo}>View Recipe!</button>
             </CardActions>
           </Card>
         );
       })}
       <Modal isOpen={isOpen} onRequestClose={closeModal}>
         <div>
-          <p>hello</p>
+          {state.map((recipes, index) => {
+            console.log("recipes =", recipes);
+            const recipe = recipes.data;
+            {
+              console.log("REECIPE: ", recipe);
+            }
+            return (
+              <div key={index}>
+                <h3>Title: {recipe.title}</h3>
+                <img src={recipe.image}></img>
+                <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+                <p>{recipe.id}</p>
+                <h2> Preparation time:</h2>
+                <div>{<h3>{recipe.readyInMinutes} minutes</h3>} </div>
+                <h2>Serving: </h2>
+
+                {recipe.servings === 1 ? (
+                  <h3>{recipe.servings} person</h3>
+                ) : (
+                  <h3> {recipe.servings} people</h3>
+                )}
+                <span>
+                  <h2>Source URL:</h2>
+                  <a href={recipe.sourceUrl}> {<p>{recipe.sourceUrl}</p>}</a>
+                </span>
+                <h2>Required Ingredients</h2>
+                {recipe.extendedIngredients &&
+                  recipe.extendedIngredients.map((ingredient, index) => {
+                    return (
+                      <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
+                    );
+                  })}
+                <h2>Instructions</h2>
+                {recipe.analyzedInstructions &&
+                  recipe.analyzedInstructions.map((instruction, index) => {
+                    return instruction.steps.map((key2, index) => {
+                      return (
+                        <div key={index}>
+                          <ol>
+                            {" "}
+                            {index + 1}. {key2.step}
+                          </ol>
+                        </div>
+                      );
+                    });
+                  })}
+                <FacebookShareButton
+                  url={recipe.sourceUrl}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button onClick={closeModal}>close</button>
+              </div>
+            );
+          })}
         </div>
       </Modal>
     </div>
