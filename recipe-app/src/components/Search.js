@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
-// import Axios from "axios";
+
 import { useAuth0 } from "../react-auth0-spa";
 
 // NEW - IMPLEMENT SEARCH BAR
@@ -78,7 +78,9 @@ export default function Search({ renderInfo }) {
 
   const nestedRecipes = recipes.flat();
 
-  // const { loading, user } = useAuth0();
+  // const { user } = useAuth0();
+  // console.log(user.email)
+
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
   // if (loading || !user) {

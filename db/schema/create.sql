@@ -16,6 +16,10 @@ CREATE TABLE users
 -- need to add user_id column!!!!
 CREATE TABLE recipes
 (
+  user_id INTEGER
+    REFERENCES users
+(id) ON
+DELETE CASCADE,
   id SERIAL PRIMARY KEY NOT NULL,
   spoonacular_id INTEGER,
   title VARCHAR(255),
