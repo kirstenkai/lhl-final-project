@@ -25,6 +25,17 @@ module.exports = db => {
       .catch(err => {
         res.status(500).json({ error: err.message });
       });
+
+    router.delete("/:id", (req, res) => {
+      db.query(
+        `DELETE FROM inventory_items 
+WHERE id = ($1) `,
+        [req.params.id]
+      ).then(response => {
+        return res.json(response.rows[0] || null);
+      });
+    });
   });
+
   return router;
 };
