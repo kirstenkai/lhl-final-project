@@ -28,10 +28,12 @@ export default function Inventory() {
   // const user_id = "mock";
   const [item, setItem] = useState([]);
   const [currentItem, setCurrentItem] = useState("");
-  const [currentDate, setCurrentDate] = useState([]);
+  
   const { loading, user } = useAuth0();
       const userId = user.email;
       console.log(userId)
+  const [currentDate, setCurrentDate] = useState("");
+
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
    
@@ -46,7 +48,11 @@ export default function Inventory() {
     );
   };
 
-  const save = (e) => {
+  const handleCurrentItem = e => setCurrentItem(e.target.value);
+
+  const handleCurrentDate = e => setCurrentDate(e.target.value);
+
+  const save = e => {
     e.preventDefault();
 
     const today = moment();
@@ -62,12 +68,13 @@ export default function Inventory() {
       userId,
       item,
       expiryDate,
-      daysleft,
-    }).then((res) => {
-      setItem((prev) => {
+      daysleft
+    }).then(res => {
+      setCurrentItem("");
+      setCurrentDate("");
+      setItem(prev => {
         return [...prev, res.data];
       });
-      setCurrentItem("");
     });
   };
   //-----------------------UseEffect to render items--------------------
@@ -84,7 +91,8 @@ export default function Inventory() {
       });
     });
   }, []);
-  // const { loading, user } = useAuth0();
+
+  const { loading, user } = useAuth0();
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;
@@ -143,6 +151,8 @@ export default function Inventory() {
             placeholder="Item"
             autoFocus
             className="text-input"
+            onChange={handleCurrentItem}
+            value={currentItem}
             required
           />
           Expiry Date
@@ -151,6 +161,8 @@ export default function Inventory() {
             type="date"
             placeholder="YYYY-MM-DD"
             autoFocus
+            onChange={handleCurrentDate}
+            value={currentDate}
             className="date-input"
             required
           />
