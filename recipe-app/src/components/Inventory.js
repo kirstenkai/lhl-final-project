@@ -14,8 +14,8 @@ import Axios from "axios";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
-  },
+    minWidth: 650
+  }
 });
 
 // function createData(name, expiry, daysleft) {
@@ -28,24 +28,21 @@ export default function Inventory() {
   // const user_id = "mock";
   const [item, setItem] = useState([]);
   const [currentItem, setCurrentItem] = useState("");
-  
+
   const { loading, user } = useAuth0();
-      const userId = user.email;
-      console.log(userId)
+  const userId = user.email;
+  console.log(userId);
   const [currentDate, setCurrentDate] = useState("");
 
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
-   
     e.preventDefault();
 
-    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(
-      (res) => {
-        setItem((prev) => {
-          return prev.filter((item) => item.id !== id);
-        });
-      }
-    );
+    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(res => {
+      setItem(prev => {
+        return prev.filter(item => item.id !== id);
+      });
+    });
   };
 
   const handleCurrentItem = e => setCurrentItem(e.target.value);
@@ -83,16 +80,14 @@ export default function Inventory() {
   useEffect(() => {
     // const userId = user.email;
 
-    Axios.get(`/api/inventory/${userId}`)
-    .then((res) => {
+    Axios.get(`/api/inventory/${userId}`).then(res => {
       console.log("res == ", res);
-      setItem((prev) => {
+      setItem(prev => {
         return [...prev, ...res.data];
       });
     });
   }, []);
 
-  const { loading, user } = useAuth0();
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;
@@ -114,7 +109,7 @@ export default function Inventory() {
               <TableRow key={index}>
                 <TableCell component="th" scope="row">
                   <button
-                    onClick={(e) => {
+                    onClick={e => {
                       // remove from state
                       remove(e, row.id);
                     }}
