@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = db => {
+module.exports = (db) => {
   router.post("/", (req, res) => {
     console.log("req.body = ", req.body);
 
@@ -10,20 +10,22 @@ module.exports = db => {
       `INSERT INTO inventory_items (user_id, name, expiry_date, daysleft) 
       VALUES ($1, $2, $3, $4) RETURNING *; `,
       [userId, item, expiryDate, daysleft]
-    ).then(response => {
+    ).then((response) => {
       return res.json(response.rows[0] || null);
     });
 
     // res.redirect("http://localhost:3000/inventory");
   });
 
-  router.get("/:userID", (req, res) => {
-    db.query(`SELECT * FROM inventory_items WHERE user_id=($1)`, [req.params.userId])
-      .then(data => {
+  router.get("/:userId", (req, res) => {
+    db.query(`SELECT * FROM inventory_items WHERE user_id=($1)`, [
+      req.params.userId,
+    ])
+      .then((data) => {
         const inventory = data.rows;
         res.json(inventory);
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   });
@@ -31,9 +33,9 @@ module.exports = db => {
   router.delete("/:id", (req, res) => {
     db.query(
       `DELETE FROM inventory_items 
-WHERE id = ($1) `,
+        WHERE id = ($1) `,
       [req.params.id]
-    ).then(response => {
+    ).then((response) => {
       return res.json(response.rows[0] || null);
     });
   });

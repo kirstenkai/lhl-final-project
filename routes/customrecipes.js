@@ -32,14 +32,16 @@ WHERE id = ($1) `,
     });
   });
 
-  router.get("/", (req, res) => {
+  router.get("/:userId", (req, res) => {
     //table is called recipes
-    db.query(`SELECT * FROM custom_recipes;`)
-      .then(data => {
+    db.query(
+      `SELECT * FROM custom_recipes WHERE user_id = ($1);`, [req.params.userId]
+    )
+      .then((data) => {
         const recipes = data.rows;
         res.json(recipes);
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   });
