@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
 export default function CreateRecipe() {
   const classes = useStyles();
   const { loading, user } = useAuth0();
-  const user_id = "mock";
+  const user_id = user.email;
+  // const user_id = "mock";
   if (loading || !user) {
     return <div>Loading...</div>;
   }

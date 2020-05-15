@@ -14,8 +14,8 @@ import Axios from "axios";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650
-  }
+    minWidth: 650,
+  },
 });
 
 // function createData(name, expiry, daysleft) {
@@ -24,20 +24,28 @@ const useStyles = makeStyles({
 
 export default function Inventory() {
   const classes = useStyles();
-  const user_id = "mock";
+
+  // const user_id = "mock";
   const [item, setItem] = useState([]);
   const [currentItem, setCurrentItem] = useState("");
+  
+  const { loading, user } = useAuth0();
+      const userId = user.email;
+      console.log(userId)
   const [currentDate, setCurrentDate] = useState("");
 
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
+   
     e.preventDefault();
 
-    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(res => {
-      setItem(prev => {
-        return prev.filter(item => item.id !== id);
-      });
-    });
+    Axios.delete(`http://localhost:5000/api/inventory/${id}`, {}).then(
+      (res) => {
+        setItem((prev) => {
+          return prev.filter((item) => item.id !== id);
+        });
+      }
+    );
   };
 
   const handleCurrentItem = e => setCurrentItem(e.target.value);
@@ -57,7 +65,7 @@ export default function Inventory() {
     const daysleft = expiry.diff(today, "days");
 
     Axios.post("http://localhost:5000/api/inventory", {
-      user_id,
+      userId,
       item,
       expiryDate,
       daysleft
@@ -70,10 +78,15 @@ export default function Inventory() {
     });
   };
   //-----------------------UseEffect to render items--------------------
+  //  const { loading, user } = useAuth0();
+  // console.log(user.sub);
   useEffect(() => {
-    Axios.get("/api/inventory").then(res => {
+    // const userId = user.email;
+
+    Axios.get(`/api/inventory/${userId}`)
+    .then((res) => {
       console.log("res == ", res);
-      setItem(prev => {
+      setItem((prev) => {
         return [...prev, ...res.data];
       });
     });
@@ -101,7 +114,7 @@ export default function Inventory() {
               <TableRow key={index}>
                 <TableCell component="th" scope="row">
                   <button
-                    onClick={e => {
+                    onClick={(e) => {
                       // remove from state
                       remove(e, row.id);
                     }}

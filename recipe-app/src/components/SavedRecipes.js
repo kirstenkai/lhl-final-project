@@ -45,7 +45,10 @@ export default function SavedRecipes({ image, title, id }) {
   const [customState, setCustomState] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/saved").then(res => {
+    const userId = user.email;
+
+    axios.get(`/api/saved/${userId}`)
+    .then(res => {
       console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
@@ -54,9 +57,11 @@ export default function SavedRecipes({ image, title, id }) {
   }, []);
 
   useEffect(() => {
-    axios.get("/api/customrecipes").then(res => {
-      console.log(res.data);
-      setCustomRecipes(prev => {
+     const userId = user.email;
+    axios.get(`/api/customrecipes/${userId}`)
+    .then((res) => {
+      // console.log(res.data);
+      setCustomRecipes((prev) => {
         return [...prev, ...res.data];
       });
     });
