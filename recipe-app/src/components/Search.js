@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
 
@@ -7,15 +7,15 @@ import { useAuth0 } from "../react-auth0-spa";
 // NEW - IMPLEMENT SEARCH BAR
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: 0,
-    display: "flex",
-    flexWrap: "wrap"
+    
   },
   margin: {
     margin: theme.spacing(1)
@@ -91,6 +91,10 @@ export default function Search({ renderInfo }) {
   }
   return (
     <div className={classes.root}>
+      <CssBaseline />
+      <Typography>
+        <h1>Search</h1>
+      </Typography>
       <form onSubmit={getRecipe}>
         <Grid container spacing={1} alignItems="flex-end">
           <Grid item>
