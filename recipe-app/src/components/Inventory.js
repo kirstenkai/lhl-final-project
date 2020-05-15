@@ -8,7 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import {Paper, Typography, Container }from "@material-ui/core";
 import moment, { diff } from "moment";
 import Axios from "axios";
 
@@ -94,7 +94,11 @@ export default function Inventory() {
   }
 
   return (
+    <Container maxWidth="lg">
     <div>
+      <Typography>
+        <h1>Inventory</h1>
+      </Typography>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -166,5 +170,6 @@ export default function Inventory() {
         <button>Add a New item!</button>
       </form>
     </div>
+      </Container>
   );
 }

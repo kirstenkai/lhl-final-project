@@ -2,6 +2,7 @@
 
 import React, { Fragment } from "react";
 import { useAuth0 } from "../react-auth0-spa";
+import {Typography, Container} from "@material-ui/core"
 
 const Profile = () => {
   const { loading, user } = useAuth0();
@@ -12,13 +13,18 @@ const Profile = () => {
   }
   // This will return the user's picture/avatar, name, and email
   return (
-    <Fragment>
-      <img src={user.picture} alt="Profile" />
+    <Container maxWidth="lg">
+      <Fragment>
+      <Typography>
+          <h1>Profile</h1>
+        </Typography>
+        <img src={user.picture} alt="Profile" />
 
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-      <code>{JSON.stringify(user, null, 2)}</code>
-    </Fragment>
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        <code>{JSON.stringify(user, null, 2)}</code>
+      </Fragment>
+    </Container>
   );
 };
 

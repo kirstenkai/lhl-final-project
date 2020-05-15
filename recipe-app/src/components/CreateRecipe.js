@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Container } from "@material-ui/core";
 import { useAuth0 } from "../react-auth0-spa";
 
 import UploadButton from "./UploadButton";
@@ -55,6 +55,8 @@ export default function CreateRecipe() {
   };
 
   return (
+    <Container maxWidth="lg">
+
     <Fragment>
       <h1>Create Recipe</h1>
 
@@ -112,5 +114,7 @@ export default function CreateRecipe() {
         <UploadButton onClick={imagefunc} />
       </form>
     </Fragment>
+    </Container>
+
   );
 }

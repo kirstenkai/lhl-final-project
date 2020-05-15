@@ -7,7 +7,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import {Typography, Container} from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
@@ -143,7 +143,11 @@ export default function SavedRecipes({ image, title, id }) {
   }
 
   return (
+    <Container maxWidth="lg">
     <div>
+      <Typography>
+        <h1>Saved Recipes</h1>
+      </Typography>
       {customRecipes.map((recipe, index) => {
         return (
           <Card className={classes.root}>
@@ -289,5 +293,7 @@ export default function SavedRecipes({ image, title, id }) {
         </div>
       </Modal>
     </div>
+    </Container>
+
   );
 }
