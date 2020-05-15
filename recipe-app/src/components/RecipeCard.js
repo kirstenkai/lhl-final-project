@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    height: 140,
+    height: 200,
   },
 });
 
@@ -90,8 +90,8 @@ export default function RecipeCard({ image, title, id }) {
       <CardActionArea>
         <CardContent>
           <CardMedia
-            component="img"
             className={classes.media}
+            component="img"
             image={image}
             title={title}
           />
