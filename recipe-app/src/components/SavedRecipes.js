@@ -50,7 +50,7 @@ export default function SavedRecipes({ image, title, id }) {
 
     axios.get(`/api/saved/${userId}`)
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });

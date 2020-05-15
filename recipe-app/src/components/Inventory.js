@@ -92,7 +92,7 @@ export default function Inventory() {
     });
   }, []);
 
-  const { loading, user } = useAuth0();
+  // const { loading, user } = useAuth0();
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;

@@ -19,7 +19,7 @@ module.exports = (db) => {
   router.get("/:userId", (req, res) => {
     //table is called recipes
     //console.log(req.params);
-    db.query(`SELECT * FROM recipes WHERE user_id = ($1)`, [req.params.userId])
+    db.query(`SELECT * FROM recipes WHERE user_id = ($1) ORDER BY id DESC`, [req.params.userId])
       .then((data) => {
         const recipes = data.rows;
         res.json(recipes);
