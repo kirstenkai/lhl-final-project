@@ -10,7 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 const useStyles = makeStyles(theme => ({
@@ -91,7 +90,6 @@ export default function Search({ renderInfo }) {
   }
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <Typography>
         <h1>Search</h1>
       </Typography>

@@ -14,6 +14,8 @@ import Login from "./components/Login";
 import CreateRecipe from "./components/CreateRecipe";
 import NotFound from "./components/NotFound";
 import logo from "./components/nezuko.gif";
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 import Recipe from "./components/Recipe";
 
@@ -48,6 +50,7 @@ function App() {
   return (
     <Router history={history}>
       <div className="App">
+        <CssBaseline />
         <header>
           <Header />
         </header>

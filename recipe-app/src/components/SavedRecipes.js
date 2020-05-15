@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -148,7 +147,6 @@ export default function SavedRecipes({ image, title, id }) {
       {customRecipes.map((recipe, index) => {
         return (
           <Card className={classes.root}>
-            <CssBaseline />
             <CardActionArea>
               <CardContent>
                 <CardMedia
