@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from "@material-ui/core/styles";
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -43,18 +44,14 @@ export default function SavedRecipes({ image, title, id }) {
   const [customIsOpen, setCustomIsOpen] = useState(false);
   const [customState, setCustomState] = useState([]);
 
-  const { loading, user } = useAuth0();
-  console.log(user.sub);
   useEffect(() => {
-    const userId = user.email;
-
-    axios.get(`/api/saved/${userId}`).then(res => {
+    axios.get("/api/saved").then(res => {
       console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
-  }, [user.email]);
+  }, []);
 
   useEffect(() => {
     axios.get("/api/customrecipes").then(res => {
@@ -108,6 +105,8 @@ export default function SavedRecipes({ image, title, id }) {
     console.log("hello");
   };
 
+  const { loading, user } = useAuth0();
+
   if (loading || !user) {
     return <div>Loading...</div>;
   }
@@ -132,7 +131,7 @@ export default function SavedRecipes({ image, title, id }) {
     Axios.get(`http://localhost:5000/api/customrecipes/${id}`, { id })
       .then(response => {
         setCustomState(prev => {
-          return [...prev, ...response.data];
+          return [...prev, response];
         });
       })
       .catch(error => {
@@ -149,6 +148,7 @@ export default function SavedRecipes({ image, title, id }) {
       {customRecipes.map((recipe, index) => {
         return (
           <Card className={classes.root}>
+            <CssBaseline />
             <CardActionArea>
               <CardContent>
                 <CardMedia
@@ -187,18 +187,6 @@ export default function SavedRecipes({ image, title, id }) {
         <div>
           {customState.map((recipe, index) => {
             console.log("recipe data", recipe);
-            return (
-              <div>
-                <h1>{recipe.name}</h1>
-                <img src={recipe.image}></img>
-                <h2>Description</h2>
-                {recipe.description}
-                <h2>Ingredients</h2>
-                {recipe.ingredient}
-                <h2>Instructions</h2>
-                {recipe.instruction}
-              </div>
-            );
           })}
 
           <FacebookShareButton
