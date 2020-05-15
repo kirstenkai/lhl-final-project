@@ -118,7 +118,7 @@ export default function Inventory() {
                   {row.daysleft === 0 && (
                     <h3> 1 day left. Note: Expiring soon!</h3>
                   )}
-                  {row.daysleft > 2 && <h3> {row.daysleft} days</h3>}
+                  {row.daysleft > 2 && <h3> {row.daysleft} days left</h3>}
                   {row.daysleft <= 2 && row.daysleft > 0 && (
                     <h3> {row.daysleft} day left. Note: Expiring soon!</h3>
                   )}
