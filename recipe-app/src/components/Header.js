@@ -28,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "30px",
     fontWeight: "bold"
   },
+  navLink: {
+    color: "#fffffe", 
+    textDecoration: "none",
+    textTransform: "uppercase",
+    padding: theme.spacing(0, 1)
+  },
 }));
 
 // TO DO: 
@@ -51,14 +57,14 @@ export default function ButtonAppBar() {
           {/* NEW - add a link to the home and profile pages */}
           {isAuthenticated && (
             <span>
-              <Link to="/inventory">Inventory</Link>&nbsp;
-              <Link to="/saved">Saved Recipes</Link>
-              <Link to="/profile">Profile</Link>
-              <Link to="/create">Create Recipe</Link>
-              <Link to="/search">Search</Link>
+              <Link to="/inventory" className={classes.navLink}>Inventory</Link>&nbsp;
+              <Link to="/saved" className={classes.navLink}>Saved Recipes</Link>
+              <Link to="/profile" className={classes.navLink}>Profile</Link>
+              <Link to="/create" className={classes.navLink}>Create Recipe</Link>
+              <Link to="/search" className={classes.navLink}>Search</Link>
             </span>
           )}
-          {isAuthenticated && <Button onClick={() => logout()}>Log out</Button>}
+          {isAuthenticated && <Button className={classes.navLink} onClick={() => logout()}>Log out</Button>}
           {/* <NavLink to="/login" color="inherit">Login</NavLink> */}
           {/* <NavLink to="/registration" color="inherit">Sign Up</NavLink> */}
 
