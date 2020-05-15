@@ -45,7 +45,7 @@ export default function CreateRecipe() {
       instruction,
       image
     }).then(res => {
-      window.location.href = "http://localhost:3000/search";
+      window.location.href = "http://localhost:3000/saved";
       console.log("res= ", res);
     });
   };

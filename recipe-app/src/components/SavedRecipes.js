@@ -37,18 +37,17 @@ export default function SavedRecipes({ image, title, id }) {
   const classes = useStyles();
 
   const [currentId, setCurrentId] = useState(null);
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   const [customRecipes, setCustomRecipes] = useState([]); // this is from saved recipe
   const [customIsOpen, setCustomIsOpen] = useState(false);
-  const [customState, setCustomState] = useState([]);
+  const [customState, setCustomState] = useState({});
 
   useEffect(() => {
     const userId = user.email;
 
-    axios.get(`/api/saved/${userId}`)
-    .then(res => {
+    axios.get(`/api/saved/${userId}`).then(res => {
       console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
@@ -57,11 +56,10 @@ export default function SavedRecipes({ image, title, id }) {
   }, []);
 
   useEffect(() => {
-     const userId = user.email;
-    axios.get(`/api/customrecipes/${userId}`)
-    .then((res) => {
+    const userId = user.email;
+    axios.get(`/api/customrecipes/${userId}`).then(res => {
       // console.log(res.data);
-      setCustomRecipes((prev) => {
+      setCustomRecipes(prev => {
         return [...prev, ...res.data];
       });
     });
@@ -86,9 +84,7 @@ export default function SavedRecipes({ image, title, id }) {
       }
     })
       .then(response => {
-        setState(prev => {
-          return [...prev, response];
-        });
+        setState(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -133,11 +129,10 @@ export default function SavedRecipes({ image, title, id }) {
     e.preventDefault();
     setCustomIsOpen(true);
 
-    Axios.get(`http://localhost:5000/api/customrecipes/${id}`, { id })
+    Axios.get(`http://localhost:5000/api/customrecipes/recipes/${id}`, { id })
       .then(response => {
-        setCustomState(prev => {
-          return [...prev, response];
-        });
+        setCustomState(response.data);
+        console.log("CUSTOM RESPONSE DATA: ", response.data);
       })
       .catch(error => {
         console.log("there is an error");
@@ -190,15 +185,22 @@ export default function SavedRecipes({ image, title, id }) {
       })}
       <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
         <div>
-          {customState.map((recipe, index) => {
-            console.log("recipe data", recipe);
-          })}
+          <div>
+            <h1>{customState.name}</h1>
+            <img src={customState.image}></img>
+            <h2>Description</h2>
+            {customState.description}
+            <h2>Ingredients</h2>
+            {customState.ingredient}
+            <h2>Instructions</h2>
+            {customState.instruction}
+          </div>
 
           <FacebookShareButton
             url={"www.yahoo.com"}
             children={<FacebookIcon size={32} round={true}></FacebookIcon>}
           />
-          <button onClick={closeModal}>close</button>
+          <button onClick={closeCustomModal}>close</button>
         </div>
       </Modal>
 
@@ -241,62 +243,51 @@ export default function SavedRecipes({ image, title, id }) {
       })}
       <Modal isOpen={isOpen} onRequestClose={closeModal}>
         <div>
-          {state.map((recipes, index) => {
-            console.log("recipes =", recipes);
-            const recipe = recipes.data;
-            {
-              console.log("REECIPE: ", recipe);
-            }
-            return (
-              <div key={index}>
-                <h3>Title: {recipe.title}</h3>
-                <img src={recipe.image}></img>
-                <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
-                <p>{recipe.id}</p>
-                <h2> Preparation time:</h2>
-                <div>{<h3>{recipe.readyInMinutes} minutes</h3>} </div>
-                <h2>Serving: </h2>
+          <div>
+            <h3>Title: {state.title}</h3>
+            <img src={state.image}></img>
+            <div dangerouslySetInnerHTML={{ __html: state.summary }} />
+            <p>{state.id}</p>
+            <h2> Preparation time:</h2>
+            <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
+            <h2>Serving: </h2>
 
-                {recipe.servings === 1 ? (
-                  <h3>{recipe.servings} person</h3>
-                ) : (
-                  <h3> {recipe.servings} people</h3>
-                )}
-                <span>
-                  <h2>Source URL:</h2>
-                  <a href={recipe.sourceUrl}> {<p>{recipe.sourceUrl}</p>}</a>
-                </span>
-                <h2>Required Ingredients</h2>
-                {recipe.extendedIngredients &&
-                  recipe.extendedIngredients.map((ingredient, index) => {
-                    return (
-                      <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
-                    );
-                  })}
-                <h2>Instructions</h2>
-                {recipe.analyzedInstructions &&
-                  recipe.analyzedInstructions.map((instruction, index) => {
-                    return instruction.steps.map((key2, index) => {
-                      return (
-                        <div key={index}>
-                          <ol>
-                            {" "}
-                            {index + 1}. {key2.step}
-                          </ol>
-                        </div>
-                      );
-                    });
-                  })}
-                <FacebookShareButton
-                  url={recipe.sourceUrl}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeModal}>close</button>
-              </div>
-            );
-          })}
+            {state.servings === 1 ? (
+              <h3>{state.servings} person</h3>
+            ) : (
+              <h3> {state.servings} people</h3>
+            )}
+            <span>
+              <h2>Source URL:</h2>
+              <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+            </span>
+            <h2>Required Ingredients</h2>
+            {state.extendedIngredients &&
+              state.extendedIngredients.map((ingredient, index) => {
+                return (
+                  <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
+                );
+              })}
+            <h2>Instructions</h2>
+            {state.analyzedInstructions &&
+              state.analyzedInstructions.map((instruction, index) => {
+                return instruction.steps.map((key2, index) => {
+                  return (
+                    <div key={index}>
+                      <ol>
+                        {" "}
+                        {index + 1}. {key2.step}
+                      </ol>
+                    </div>
+                  );
+                });
+              })}
+            <FacebookShareButton
+              url={state.sourceUrl}
+              children={<FacebookIcon size={32} round={true}></FacebookIcon>}
+            />
+            <button onClick={closeModal}>close</button>
+          </div>
         </div>
       </Modal>
     </div>
