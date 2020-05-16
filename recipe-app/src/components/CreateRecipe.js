@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Container } from "@material-ui/core";
+import { TextField, Button, Container, Paper } from "@material-ui/core";
 import { useAuth0 } from "../react-auth0-spa";
 
 import UploadButton from "./UploadButton";
@@ -10,8 +10,9 @@ import Axios from "axios";
 const useStyles = makeStyles(theme => ({
   root: {
     "& .MuiTextField-root": {
-      margin: theme.spacing(2, 0),
-      width: "75%"
+      margin: theme.spacing(2, 4),
+      width: '80%',
+     
     }
   }
 }));
@@ -57,22 +58,24 @@ export default function CreateRecipe() {
   return (
     <Container maxWidth="lg">
 
-    <Fragment>
+    <div className={classes.root}>
+
+      <Paper elevation={3}>
+
       <h1>Create Recipe</h1>
 
       <form
         onSubmit={save}
-        className={classes.root}
         noValidate
         autoComplete="off"
-      >
+        >
         <div>
           <TextField
             name="title"
             id="standard-textarea"
             label="Title"
             multiline
-          />
+            />
         </div>
         <div>
           <TextField
@@ -82,7 +85,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
-          />
+            />
           <TextField
             name="ingredients"
             id="outlined-multiline-static"
@@ -90,7 +93,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
-          />
+            />
           <TextField
             name="instructions"
             id="outlined-multiline-static"
@@ -98,7 +101,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
-          />
+            />
           <TextField
             name="image"
             id="outlined-multiline-static"
@@ -106,14 +109,15 @@ export default function CreateRecipe() {
             multiline
             rows={1}
             variant="outlined"
-          />
+            />
         </div>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
         <UploadButton onClick={imagefunc} />
       </form>
-    </Fragment>
+    </Paper>
+  </div>
     </Container>
 
   );
