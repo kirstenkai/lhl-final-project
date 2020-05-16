@@ -22,11 +22,11 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 345
   },
   media: {
-    height: 200,
-  },
+    height: 200
+  }
 });
 
 export default function RecipeCard({ image, title, id }) {
@@ -35,9 +35,12 @@ export default function RecipeCard({ image, title, id }) {
   const [state, setState] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isEnglish, setIsEnglish] = useState(true);
+  const [isSpanish, setIsSpanish] = useState(false);
+
   Modal.setAppElement("#root");
 
-  const renderInfo = (e) => {
+  const renderInfo = e => {
     e.preventDefault();
     setIsOpen(true);
     setCurrentId(id);
@@ -49,15 +52,15 @@ export default function RecipeCard({ image, title, id }) {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         "x-rapidapi-key": `${SPOONACULAR_API}`,
-        useQueryString: true,
-      },
+        useQueryString: true
+      }
     })
-      .then((response) => {
-        setState((prev) => {
+      .then(response => {
+        setState(prev => {
           return [...prev, response];
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -66,9 +69,10 @@ export default function RecipeCard({ image, title, id }) {
     setIsOpen(false);
   }
   const { user } = useAuth0();
-  const save = (e) => {
+  const save = e => {
     e.preventDefault();
-    
+    alert("saved!");
+
     const user_id = user.email;
     //console.log(title, user_id);
 
@@ -76,13 +80,14 @@ export default function RecipeCard({ image, title, id }) {
       user_id,
       id,
       title,
-      image,
-    }).then((res) => {
-      console.log(res);
+      image
     })
-    .catch(error => {
-      console.log(error);
-     });
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
@@ -160,6 +165,7 @@ export default function RecipeCard({ image, title, id }) {
               })}
             </div>
           </Modal>
+
           <Typography gutterBottom variant="h5" component="h2"></Typography>
           {(title = title)}
         </CardContent>
