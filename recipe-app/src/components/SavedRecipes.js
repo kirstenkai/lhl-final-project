@@ -20,7 +20,7 @@ import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
-const GOOGLE_API = process.env.GOOGLE_API;
+const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
 
 const useStyles = makeStyles({
   root: {
@@ -181,7 +181,7 @@ export default function SavedRecipes({ image, title, id }) {
     console.log("description = ", description);
     axios({
       method: "POST",
-      url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
+      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
     })
       .then(response => {
         console.log(
@@ -207,7 +207,7 @@ export default function SavedRecipes({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${description}`
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${description}`
         })
           .then(response => {
             const descriptionText =
@@ -220,7 +220,7 @@ export default function SavedRecipes({ image, title, id }) {
           .then(() => {
             axios({
               method: "POST",
-              url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${ingredients}`
+              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${ingredients}`
             })
               .then(response => {
                 const ingredientsText =
@@ -234,7 +234,7 @@ export default function SavedRecipes({ image, title, id }) {
               .then(() => {
                 axios({
                   method: "POST",
-                  url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${instruction}`
+                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${instruction}`
                 }).then(response => {
                   const instructionsText =
                     response.data.data.translations[0].translatedText;
@@ -261,12 +261,19 @@ export default function SavedRecipes({ image, title, id }) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
+      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
     })
       .then(response => {
-        const translatedSpoonacularText = response.data.data.translations[0].translatedText.split(
+        const translatedSpoonacularText1 = response.data.data.translations[0].translatedText.split(
           ", "
         );
+
+        const translatedSpoonacularText = translatedSpoonacularText1.map(
+          (word, index) => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          }
+        );
+
         setcustomSpoonacularSpanishState({
           name: translatedSpoonacularText[0],
           preparationTime: translatedSpoonacularText[1],
@@ -284,7 +291,7 @@ export default function SavedRecipes({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${summary}`
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${summary}`
         })
           .then(response => {
             const translatedSummaryText =
@@ -297,7 +304,7 @@ export default function SavedRecipes({ image, title, id }) {
           .then(() => {
             axios({
               method: "POST",
-              url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${extendedIngredients}`
+              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${extendedIngredients}`
             })
               .then(response => {
                 const translatedIngredientsText =
@@ -311,7 +318,7 @@ export default function SavedRecipes({ image, title, id }) {
               .then(() => {
                 axios({
                   method: "POST",
-                  url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${analyzedInstructions}`
+                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${analyzedInstructions}`
                 }).then(response => {
                   const translatedInstructionsText =
                     response.data.data.translations[0].translatedText;
@@ -399,7 +406,7 @@ export default function SavedRecipes({ image, title, id }) {
                     );
                   }}
                 >
-                  Spanish
+                  Finnish
                 </button>
                 <FacebookShareButton
                   url={"www.yahoo.com"}
@@ -418,7 +425,13 @@ export default function SavedRecipes({ image, title, id }) {
                 <p>{customSpanishState.description} </p>
                 <h3>{customSpanishState.ingredientsTitle} </h3>
                 <p>{customSpanishState.ingredients} </p>
-                <h3>{customSpanishState.instructionsTitle} </h3>
+
+                {customSpanishState.instructions !== null ? (
+                  <h3>{customSpanishState.instructionsTitle} </h3>
+                ) : (
+                  ""
+                )}
+
                 <p>{customSpanishState.instructions} </p>
                 <button onClick={backToEnglish}>English</button>
                 <FacebookShareButton
@@ -498,7 +511,10 @@ export default function SavedRecipes({ image, title, id }) {
                       <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
                     );
                   })}
-                <h2>Instructions</h2>
+                {state.analyzedInstructions &&
+                state.analyzedInstructions.length ? (
+                  <h2>Instructions</h2>
+                ) : null}
                 {state.analyzedInstructions &&
                   state.analyzedInstructions.map((instruction, index) => {
                     return instruction.steps.map((key2, index) => {
@@ -525,11 +541,15 @@ export default function SavedRecipes({ image, title, id }) {
                       state.title,
                       state.summary,
                       state.extendedIngredients.map(key => key.original),
-                      state.analyzedInstructions[0].steps.map(key => key.step)
+                      state.analyzedInstructions.length
+                        ? state.analyzedInstructions[0].steps.map(
+                            key => key.step
+                          )
+                        : null
                     );
                   }}
                 >
-                  Spanish
+                  Finnish
                 </button>
                 <button onClick={closeModal}>close</button>
               </div>

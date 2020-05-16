@@ -12,6 +12,7 @@ import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
 import ReactToPrint from "react-to-print";
+import axios from "axios";
 
 import { useAuth0 } from "../react-auth0-spa";
 
@@ -19,6 +20,7 @@ import Modal from "react-modal";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
+const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
 
 const useStyles = makeStyles({
   root: {
@@ -32,11 +34,38 @@ const useStyles = makeStyles({
 export default function RecipeCard({ image, title, id }) {
   const classes = useStyles();
   const [currentId, setCurrentId] = useState(null);
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   const [isEnglish, setIsEnglish] = useState(true);
   const [isSpanish, setIsSpanish] = useState(false);
+  const [customSpanishState, setcustomSpanishState] = useState({
+    name: "",
+    descriptionTitle: "",
+    description: "",
+    ingredientsTitle: "",
+    ingredients: "",
+    instructionsTitle: "",
+    instructions: ""
+  });
+  const [
+    customSpoonacularSpanishState,
+    setcustomSpoonacularSpanishState
+  ] = useState({
+    title: "",
+    preparationTime: "",
+    serving: "",
+    sourceURL: "",
+    name: "",
+    summary: "",
+    requiredIngredientsTitle: "",
+    ingredients: "",
+    instructionsTitle: "",
+    instructions: "",
+    person: "",
+    people: "",
+    minute: ""
+  });
 
   Modal.setAppElement("#root");
 
@@ -56,9 +85,7 @@ export default function RecipeCard({ image, title, id }) {
       }
     })
       .then(response => {
-        setState(prev => {
-          return [...prev, response];
-        });
+        setState(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -90,6 +117,110 @@ export default function RecipeCard({ image, title, id }) {
       });
   };
 
+  const translateSpoonacular = (
+    e,
+    title,
+    summary,
+    extendedIngredients,
+    analyzedInstructions
+  ) => {
+    e.preventDefault();
+    axios({
+      method: "POST",
+      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, persons, minute`
+    })
+      .then(response => {
+        const translatedSpoonacularText1 = response.data.data.translations[0].translatedText.split(
+          ", "
+        );
+
+        const translatedSpoonacularText = translatedSpoonacularText1.map(
+          (word, index) => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          }
+        );
+
+        console.log(translatedSpoonacularText);
+        console.log(translatedSpoonacularText[2]);
+
+        setcustomSpoonacularSpanishState({
+          preparationTime: translatedSpoonacularText[0],
+          serving: translatedSpoonacularText[1],
+          sourceURL: translatedSpoonacularText[2],
+          summary: translatedSpoonacularText[3],
+          requiredIngredientsTitle: translatedSpoonacularText[4],
+          instructionsTitle: translatedSpoonacularText[5],
+          person: translatedSpoonacularText[6],
+          people: translatedSpoonacularText[7],
+          minute: translatedSpoonacularText[8]
+        });
+        setIsEnglish(false);
+        setIsSpanish(true);
+      })
+      .then(() => {
+        axios({
+          method: "POST",
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${title}`
+        }).then(response => {
+          const translatedName =
+            response.data.data.translations[0].translatedText;
+          setcustomSpoonacularSpanishState(prev => ({
+            ...prev,
+            title: translatedName
+          }));
+        });
+      })
+
+      .then(() => {
+        axios({
+          method: "POST",
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${summary}`
+        })
+          .then(response => {
+            const translatedSummaryText =
+              response.data.data.translations[0].translatedText;
+            setcustomSpoonacularSpanishState(prev => ({
+              ...prev,
+              summary: translatedSummaryText
+            }));
+          })
+          .then(() => {
+            axios({
+              method: "POST",
+              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${extendedIngredients}`
+            })
+              .then(response => {
+                const translatedIngredientsText =
+                  response.data.data.translations[0].translatedText;
+                console.log("LOS INGREDIENTES: ", translatedIngredientsText);
+                setcustomSpoonacularSpanishState(prev => ({
+                  ...prev,
+                  ingredients: translatedIngredientsText
+                }));
+              })
+              .then(() => {
+                axios({
+                  method: "POST",
+                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${analyzedInstructions}`
+                }).then(response => {
+                  const translatedInstructionsText =
+                    response.data.data.translations[0].translatedText;
+                  console.log("Instructions??", translatedInstructionsText);
+                  setcustomSpoonacularSpanishState(prev => ({
+                    ...prev,
+                    instructions: translatedInstructionsText
+                  }));
+                });
+              });
+          });
+      });
+  };
+
+  const backToEnglish = e => {
+    e.preventDefault();
+    setIsSpanish(false);
+    setIsEnglish(true);
+  };
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -103,66 +234,140 @@ export default function RecipeCard({ image, title, id }) {
 
           <Modal isOpen={isOpen} onRequestClose={closeModal}>
             <div>
-              {state.map((recipes, index) => {
-                const recipe = recipes.data;
-                {
-                  console.log("REECIPE: ", recipe);
-                }
-                return (
-                  <div key={index}>
-                    <h3>Title: {recipe.title}</h3>
-                    <img src={recipe.image}></img>
-                    <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
-                    <p>{recipe.id}</p>
-                    <h2> Preparation time:</h2>
-                    <div>{<h3>{recipe.readyInMinutes} minutes</h3>} </div>
-                    <h2>Serving: </h2>
+              {isEnglish && (
+                <div>
+                  <h3>{state.title}</h3>
+                  <img src={state.image}></img>
+                  <div dangerouslySetInnerHTML={{ __html: state.summary }} />
+                  <p>{state.id}</p>
+                  <h2> Preparation time:</h2>
+                  <div>
+                    {
+                      <h3>
+                        {state.readyInMinutes} {state.minute}
+                      </h3>
+                    }{" "}
+                  </div>
+                  <h2>Serving: </h2>
 
-                    {recipe.servings === 1 ? (
-                      <h3>{recipe.servings} person</h3>
-                    ) : (
-                      <h3> {recipe.servings} people</h3>
-                    )}
-                    <span>
-                      <h2>Source URL:</h2>
-                      <a href={recipe.sourceUrl}>
-                        {" "}
-                        {<p>{recipe.sourceUrl}</p>}
-                      </a>
-                    </span>
-                    <h2>Required Ingredients</h2>
-                    {recipe.extendedIngredients &&
-                      recipe.extendedIngredients.map((ingredient, index) => {
+                  {state.servings === 1 ? (
+                    <h3>{state.servings} person</h3>
+                  ) : (
+                    <h3> {state.servings} people</h3>
+                  )}
+                  <span>
+                    <h2>Source URL:</h2>
+                    <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+                  </span>
+                  <h2>Required Ingredients</h2>
+                  {state.extendedIngredients &&
+                    state.extendedIngredients.map((ingredient, index) => {
+                      return (
+                        <div key={index}>
+                          {<h3>☞ {ingredient.original}</h3>}
+                        </div>
+                      );
+                    })}
+                  {state.analyzedInstructions &&
+                  state.analyzedInstructions.length ? (
+                    <h2>Instructions</h2>
+                  ) : null}
+                  {state.analyzedInstructions &&
+                    state.analyzedInstructions.map((instruction, index) => {
+                      return instruction.steps.map((key2, index) => {
                         return (
                           <div key={index}>
-                            {<h3>☞ {ingredient.original}</h3>}
+                            <ol>
+                              {" "}
+                              {index + 1}. {key2.step}
+                            </ol>
                           </div>
                         );
-                      })}
-                    <h2>Instructions</h2>
-                    {recipe.analyzedInstructions &&
-                      recipe.analyzedInstructions.map((instruction, index) => {
-                        return instruction.steps.map((key2, index) => {
-                          return (
-                            <div key={index}>
-                              <ol>
-                                {" "}
-                                {index + 1}. {key2.step}
-                              </ol>
-                            </div>
-                          );
-                        });
-                      })}
-                    <FacebookShareButton
-                      url={recipe.sourceUrl}
-                      children={
-                        <FacebookIcon size={32} round={true}></FacebookIcon>
-                      }
-                    />
-                    <button onClick={closeModal}>close</button>
-                  </div>
-                );
-              })}
+                      });
+                    })}
+                  <FacebookShareButton
+                    url={state.sourceUrl}
+                    children={
+                      <FacebookIcon size={32} round={true}></FacebookIcon>
+                    }
+                  />
+                  <button
+                    onClick={e => {
+                      translateSpoonacular(
+                        e,
+                        state.title,
+                        state.summary,
+                        state.extendedIngredients.map(key => key.original),
+                        state.analyzedInstructions.length
+                          ? state.analyzedInstructions[0].steps.map(
+                              key => key.step
+                            )
+                          : null
+                      );
+                    }}
+                  >
+                    Finnish
+                  </button>
+                  <button onClick={closeModal}>close</button>
+                </div>
+              )}
+              {isSpanish && (
+                <div>
+                  <h3>{customSpoonacularSpanishState.title}</h3>
+                  <img src={state.image}></img>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: customSpoonacularSpanishState.summary
+                    }}
+                  />
+                  <p>{state.id}</p>
+                  <h2> {customSpoonacularSpanishState.preparationTime}</h2>
+                  <div>{<h3>{state.readyInMinutes} min</h3>} </div>
+                  <h2>{customSpoonacularSpanishState.serving} </h2>
+
+                  {state.servings === 1 ? (
+                    <h3>
+                      {state.servings} {customSpoonacularSpanishState.person}
+                    </h3>
+                  ) : (
+                    <h3>
+                      {" "}
+                      {state.servings} {customSpoonacularSpanishState.people}
+                    </h3>
+                  )}
+                  <span>
+                    <h2>{customSpoonacularSpanishState.sourceUrl}</h2>
+                    <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+                  </span>
+                  <h2>
+                    {customSpoonacularSpanishState.requiredIngredientsTitle}
+                  </h2>
+                  {customSpoonacularSpanishState.ingredients
+                    ? customSpoonacularSpanishState.ingredients
+                    : null}
+
+                  {customSpoonacularSpanishState.instructions !== "tyhjä" ? (
+                    <div>
+                      <h3>
+                        {" "}
+                        {customSpoonacularSpanishState.instructionsTitle}
+                      </h3>
+                      {customSpoonacularSpanishState.instructions}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  <button onClick={backToEnglish}>English</button>
+                  <FacebookShareButton
+                    url={state.sourceUrl}
+                    children={
+                      <FacebookIcon size={32} round={true}></FacebookIcon>
+                    }
+                  />
+                  <button onClick={closeModal}>close</button>
+                </div>
+              )}
             </div>
           </Modal>
 

@@ -11,21 +11,21 @@ import Typography from "@material-ui/core/Typography";
 import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flexGrow: 1,
-    justify: "center",
+    justify: "center"
   },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   card: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
+    color: theme.palette.text.secondary
+  }
 }));
 
 require("dotenv").config();
@@ -34,7 +34,7 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
   // console.log(recipes[0])
-  const getRecipe = (e) => {
+  const getRecipe = e => {
     const recipeName = e.target.elements.recipeName.value;
     e.preventDefault();
     setRecipes([]);
@@ -47,7 +47,7 @@ export default function Search({ renderInfo }) {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": `${SPOONACULAR_API}`,
+        "x-rapidapi-key": `${SPOONACULAR_API}`
       },
       params: {
         number: "20",
@@ -61,11 +61,11 @@ export default function Search({ renderInfo }) {
         //3. below input the value within that variable
 
         //string escaping- regex
-        ingredients: `${recipeName}`,
+        ingredients: `${recipeName}`
         // ingredients: "apples,flour,sugar"
-      },
+      }
     })
-      .then((response) => {
+      .then(response => {
         //1. look at the response, and push the results into an object
         //2. in the Component, render the parts you want from that object and
         //   put in in the list of the pictures
@@ -75,12 +75,12 @@ export default function Search({ renderInfo }) {
         //   full deets of the recipe itself to render on the component / modal
         // console.log(response.data[0]);
 
-        setRecipes((prev) => {
+        setRecipes(prev => {
           return [...prev, response.data];
         });
         //console.log(recipes);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -89,6 +89,11 @@ export default function Search({ renderInfo }) {
   const classes = useStyles();
 
   const { loading, user } = useAuth0();
+
+  const translateCard = e => {
+    e.preventDefault();
+    console.log("hey");
+  };
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
@@ -100,9 +105,9 @@ export default function Search({ renderInfo }) {
     e.preventDefault();
     axios
       .post("http://localhost:5000/api/imagerecognition", {
-        imageURL,
+        imageURL
       })
-      .then((res) => {
+      .then(res => {
         console.log("===>" + res.data.output);
       });
   }
@@ -114,6 +119,13 @@ export default function Search({ renderInfo }) {
       </a>
       <Typography>
         <h1>Search</h1>
+        <button
+          onClick={e => {
+            console.log("neested", nestedRecipes[0]);
+          }}
+        >
+          Spanish
+        </button>
       </Typography>
       <form onSubmit={getRecipe}>
         <Grid container spacing={1} alignItems="flex-end">
@@ -130,7 +142,7 @@ export default function Search({ renderInfo }) {
               fullWidth
               margin="normal"
               InputLabelProps={{
-                shrink: true,
+                shrink: true
               }}
             />
             <Button variant="contained" color="primary">
