@@ -8,24 +8,23 @@ import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import {Grid, Container} from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
+    display: "flex",
     flexGrow: 1,
-    justify: "center",
+    justify: "center"
   },
   margin: {
     margin: theme.spacing(1)
   },
   card: {
     padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  }
 }));
 
 require("dotenv").config();
@@ -89,7 +88,10 @@ export default function Search({ renderInfo }) {
 
   const { loading, user } = useAuth0();
 
- 
+  const translateCard = e => {
+    e.preventDefault();
+    console.log("hey");
+  };
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
@@ -97,9 +99,15 @@ export default function Search({ renderInfo }) {
   }
   return (
     <Container maxWidth="lg">
-
       <Typography>
         <h1>Search</h1>
+        <button
+          onClick={e => {
+            console.log("neested", nestedRecipes[0]);
+          }}
+        >
+          Spanish
+        </button>
       </Typography>
       <form onSubmit={getRecipe}>
         <Grid container spacing={1} alignItems="flex-end">
@@ -122,26 +130,26 @@ export default function Search({ renderInfo }) {
             <button>Search!</button>
           </Grid>
         </Grid>
-      <div className={classes.root}>
-        <Grid container spacing={2}>
-        {nestedRecipes.map((recipe, index) => {
-          //console.log("recipe name: ", recipe.title);
-          return (
-            <Grid item xs={12} sm={6} md={4}>
-            <div key={index}>
-                <RecipeCard
-                  title={recipe.title}
-                  image={recipe.image}
-                  id={recipe.id}
-                  className={classes.card}
-                />
-            </div>
-        </Grid>
-          );
-        })}
-        </Grid>
+        <div className={classes.root}>
+          <Grid container spacing={2}>
+            {nestedRecipes.map((recipe, index) => {
+              //console.log("recipe name: ", recipe.title);
+              return (
+                <Grid item xs={12} sm={6} md={4}>
+                  <div key={index}>
+                    <RecipeCard
+                      title={recipe.title}
+                      image={recipe.image}
+                      id={recipe.id}
+                      className={classes.card}
+                    />
+                  </div>
+                </Grid>
+              );
+            })}
+          </Grid>
         </div>
       </form>
-  </Container>
+    </Container>
   );
 }
