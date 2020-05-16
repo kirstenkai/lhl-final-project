@@ -79,8 +79,9 @@ export default function ButtonAppBar() {
           <Hidden smDown implementation="css">
               <Link to="/inventory" className={classes.navLink}>Inventory</Link>&nbsp;
               <Link to="/saved" className={classes.navLink}>Saved Recipes</Link>
-              <Link to="/profile" className={classes.navLink}>Profile</Link>
               <Link to="/create" className={classes.navLink}>Create Recipe</Link>
+              <Link to="/profile" className={classes.navLink}>Profile</Link>
+              <Link to="/search" className={classes.navLink}>Search</Link>
           </Hidden>
             </span>
           )}

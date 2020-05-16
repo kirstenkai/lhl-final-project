@@ -8,7 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Paper, Typography, Container }from "@material-ui/core";
+import {Paper, Container, TextField, Button, Input, OutlinedInput }from "@material-ui/core";
 import moment, { diff } from "moment";
 import Axios from "axios";
 
@@ -33,6 +33,9 @@ export default function Inventory() {
   const userId = user.email;
   console.log(userId);
   const [currentDate, setCurrentDate] = useState("");
+  const inputProps = {
+    step: 300,
+  };
 
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
@@ -48,6 +51,7 @@ export default function Inventory() {
   const handleCurrentItem = e => setCurrentItem(e.target.value);
 
   const handleCurrentDate = e => setCurrentDate(e.target.value);
+  
 
   const save = e => {
     e.preventDefault();
@@ -94,11 +98,9 @@ export default function Inventory() {
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
     <div>
-      <Typography>
-        <h1>Inventory</h1>
-      </Typography>
+      <h1>Inventory</h1>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -141,6 +143,7 @@ export default function Inventory() {
         </Table>
       </TableContainer>
 
+      <Paper>
       <form onSubmit={save}>
         <div>
           Name
@@ -159,16 +162,37 @@ export default function Inventory() {
             name="date"
             type="date"
             placeholder="YYYY-MM-DD"
-            autoFocus
-            onChange={handleCurrentDate}
-            value={currentDate}
             className="date-input"
-            required
+            />
+            <Input placeholder="Product" label="Products" inputProps={{ 'aria-label': 'description' }} />
+                
+            <TextField
+              id="date"
+              name="date"
+              value={currentDate}
+              label="Expiry Date"
+              type="date"
+              autoFocus
+              onChange={handleCurrentDate}
+              className={classes.textField}
+              required
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          <TextField
+          id="outlined-helperText"
+          label="Helper text"
+          defaultValue="Default Value"
+          helperText="Some important text"
+          variant="outlined"
+          inputProps={inputProps}
           />
         </div>
 
-        <button>Add a New item!</button>
+        <Button>Add Item</Button>
       </form>
+      </Paper>
     </div>
       </Container>
   );
