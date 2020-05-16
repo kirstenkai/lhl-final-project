@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAuth0 } from "../react-auth0-spa";
 
 // NEW - IMPLEMENT SEARCH BAR
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Container } from "@material-ui/core";
@@ -13,7 +13,8 @@ import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 1,
     justify: "center",
   },
@@ -119,7 +120,7 @@ export default function Search({ renderInfo }) {
           <Grid item>
             <SearchIcon />
           </Grid>
-          <Grid xs={10}>
+          <Grid xs={8}>
             <TextField
               name="recipeName"
               id="standard-full-width"
@@ -132,7 +133,9 @@ export default function Search({ renderInfo }) {
                 shrink: true,
               }}
             />
-            <button>Search!</button>
+            <Button variant="contained" color="primary">
+              Search
+            </Button>
           </Grid>
         </Grid>
         <div className={classes.root}>
