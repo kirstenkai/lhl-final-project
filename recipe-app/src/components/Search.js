@@ -8,22 +8,21 @@ import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import {Grid, Container} from "@material-ui/core";
+import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
     flexGrow: 1,
     justify: "center",
   },
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   card: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
   },
 }));
@@ -34,10 +33,11 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
   // console.log(recipes[0])
-  const getRecipe = e => {
+  const getRecipe = (e) => {
     const recipeName = e.target.elements.recipeName.value;
     e.preventDefault();
     setRecipes([]);
+
     axios({
       method: "GET",
       url:
@@ -46,7 +46,7 @@ export default function Search({ renderInfo }) {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": `${SPOONACULAR_API}`
+        "x-rapidapi-key": `${SPOONACULAR_API}`,
       },
       params: {
         number: "20",
@@ -60,11 +60,11 @@ export default function Search({ renderInfo }) {
         //3. below input the value within that variable
 
         //string escaping- regex
-        ingredients: `${recipeName}`
+        ingredients: `${recipeName}`,
         // ingredients: "apples,flour,sugar"
-      }
+      },
     })
-      .then(response => {
+      .then((response) => {
         //1. look at the response, and push the results into an object
         //2. in the Component, render the parts you want from that object and
         //   put in in the list of the pictures
@@ -74,12 +74,12 @@ export default function Search({ renderInfo }) {
         //   full deets of the recipe itself to render on the component / modal
         // console.log(response.data[0]);
 
-        setRecipes(prev => {
+        setRecipes((prev) => {
           return [...prev, response.data];
         });
         //console.log(recipes);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -89,15 +89,28 @@ export default function Search({ renderInfo }) {
 
   const { loading, user } = useAuth0();
 
- 
-
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;
   }
+  const imageURL =
+    "https://www.highriveronline.com/images/stories/news_photos_2018/ag/general/milk_june_1.JPG";
+  function uploadPicture(e) {
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/api/imagerecognition", {
+        imageURL,
+      })
+      .then((res) => {
+        console.log("===>" + res.data.output);
+      });
+  }
+
   return (
     <Container maxWidth="lg">
-
+      <a href="#" onClick={uploadPicture}>
+        Click me
+      </a>
       <Typography>
         <h1>Search</h1>
       </Typography>
@@ -116,32 +129,32 @@ export default function Search({ renderInfo }) {
               fullWidth
               margin="normal"
               InputLabelProps={{
-                shrink: true
+                shrink: true,
               }}
             />
             <button>Search!</button>
           </Grid>
         </Grid>
-      <div className={classes.root}>
-        <Grid container spacing={2}>
-        {nestedRecipes.map((recipe, index) => {
-          //console.log("recipe name: ", recipe.title);
-          return (
-            <Grid item xs={12} sm={6} md={4}>
-            <div key={index}>
-                <RecipeCard
-                  title={recipe.title}
-                  image={recipe.image}
-                  id={recipe.id}
-                  className={classes.card}
-                />
-            </div>
-        </Grid>
-          );
-        })}
-        </Grid>
+        <div className={classes.root}>
+          <Grid container spacing={2}>
+            {nestedRecipes.map((recipe, index) => {
+              //console.log("recipe name: ", recipe.title);
+              return (
+                <Grid item xs={12} sm={6} md={4}>
+                  <div key={index}>
+                    <RecipeCard
+                      title={recipe.title}
+                      image={recipe.image}
+                      id={recipe.id}
+                      className={classes.card}
+                    />
+                  </div>
+                </Grid>
+              );
+            })}
+          </Grid>
         </div>
       </form>
-  </Container>
+    </Container>
   );
 }

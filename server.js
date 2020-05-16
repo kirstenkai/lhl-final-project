@@ -7,6 +7,7 @@ const express = require("express"),
   port = process.env.PORT || 5000,
   cors = require("cors");
 bodyParser = require("body-parser");
+
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const db = new Pool({
@@ -18,10 +19,6 @@ const db = new Pool({
 });
 db.connect();
 
-//query to test db function.
-// db.query('SELECT * FROM users').then(data => {
-//   console.log(data.rows)
-// })
 
 app.use(cors());
 
@@ -38,9 +35,12 @@ app.use("/api/inventory", inventory(db));
 const customRecipes = require("./routes/customrecipes");
 app.use("/api/customrecipes", customRecipes(db));
 
+const imageRecognition = require("./routes/imagerecognition");
+app.use("/api/imagerecognition", imageRecognition())
+
 app.listen(port, () => console.log("Backend server live on " + port));
 
 //testing routes in console!
-app.get("/", (req, res) => {
-  res.send({ message: "We did it!" });
-});
+// app.get("/", (req, res) => {
+//   res.send({ message: "We did it!" });
+// });

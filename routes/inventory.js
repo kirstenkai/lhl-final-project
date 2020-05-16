@@ -6,6 +6,7 @@ module.exports = (db) => {
     console.log("req.body = ", req.body);
 
     const { userId, item, expiryDate, daysleft } = req.body;
+
     db.query(
       `INSERT INTO inventory_items (user_id, name, expiry_date, daysleft) 
       VALUES ($1, $2, $3, $4) RETURNING *; `,
@@ -13,8 +14,7 @@ module.exports = (db) => {
     ).then((response) => {
       return res.json(response.rows[0] || null);
     });
-
-    // res.redirect("http://localhost:3000/inventory");
+   
   });
 
   router.get("/:userId", (req, res) => {

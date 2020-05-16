@@ -18,21 +18,17 @@ const useStyles = makeStyles({
   }
 });
 
-// function createData(name, expiry, daysleft) {
-//   return { name, expiry, daysleft };
-// }
-
 export default function Inventory() {
   const classes = useStyles();
-
-  // const user_id = "mock";
+  
   const [item, setItem] = useState([]);
   const [currentItem, setCurrentItem] = useState("");
-
   const { loading, user } = useAuth0();
   const userId = user.email;
-  console.log(userId);
   const [currentDate, setCurrentDate] = useState("");
+
+  
+
 
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
@@ -46,7 +42,6 @@ export default function Inventory() {
   };
 
   const handleCurrentItem = e => setCurrentItem(e.target.value);
-
   const handleCurrentDate = e => setCurrentDate(e.target.value);
 
   const save = e => {
@@ -65,7 +60,8 @@ export default function Inventory() {
       userId,
       item,
       expiryDate,
-      daysleft
+      daysleft,
+      
     }).then(res => {
       setCurrentItem("");
       setCurrentDate("");
@@ -81,7 +77,7 @@ export default function Inventory() {
     // const userId = user.email;
 
     Axios.get(`/api/inventory/${userId}`).then(res => {
-      console.log("res == ", res);
+     // console.log("res == ", res);
       setItem(prev => {
         return [...prev, ...res.data];
       });
