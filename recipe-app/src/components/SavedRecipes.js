@@ -7,7 +7,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import {Typography, Container} from "@material-ui/core";
+import { Typography, Container } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
@@ -20,6 +20,7 @@ import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
+const GOOGLE_API = process.env.GOOGLE_API;
 
 const useStyles = makeStyles({
   root: {
@@ -38,10 +39,40 @@ export default function SavedRecipes({ image, title, id }) {
   const [currentId, setCurrentId] = useState(null);
   const [state, setState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [isEnglish, setIsEnglish] = useState(true);
+  const [isSpanish, setIsSpanish] = useState(false);
 
   const [customRecipes, setCustomRecipes] = useState([]); // this is from saved recipe
   const [customIsOpen, setCustomIsOpen] = useState(false);
   const [customState, setCustomState] = useState({});
+  const [customSpanishState, setcustomSpanishState] = useState({
+    name: "",
+    descriptionTitle: "",
+    description: "",
+    ingredientsTitle: "",
+    ingredients: "",
+    instructionsTitle: "",
+    instructions: ""
+  });
+  const [
+    customSpoonacularSpanishState,
+    setcustomSpoonacularSpanishState
+  ] = useState({
+    title: "",
+    preparationTime: "",
+    serving: "",
+    sourceURL: "",
+    name: "",
+    summary: "",
+    requiredIngredientsTitle: "",
+    ingredients: "",
+    instructionsTitle: "",
+    instructions: "",
+    person: "",
+    people: ""
+  });
+
+  //----------------------------------useEffects--------------------------------
 
   useEffect(() => {
     const userId = user.email;
@@ -66,6 +97,7 @@ export default function SavedRecipes({ image, title, id }) {
 
   Modal.setAppElement("#root");
 
+  //-------------------------------Spoonacular Recipe Functions--------------------
   const renderInfo = (e, id) => {
     e.preventDefault();
     setIsOpen(true);
@@ -142,158 +174,417 @@ export default function SavedRecipes({ image, title, id }) {
     setCustomIsOpen(false);
   }
 
+  //-------------------------------Translate Hook------------------------------
+
+  const translate = (e, name, description, ingredients, instruction) => {
+    e.preventDefault();
+    console.log("description = ", description);
+    axios({
+      method: "POST",
+      url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
+    })
+      .then(response => {
+        console.log(
+          "custom response.data=",
+          response.data.data.translations[0]
+        );
+
+        const translatedText = response.data.data.translations[0].translatedText.split(
+          ", "
+        );
+
+        // console.log("arr: ", translatedText);
+        // console.log("arr index 0: ", translatedText[0]);
+        setcustomSpanishState({
+          name: translatedText[0],
+          descriptionTitle: translatedText[1],
+          ingredientsTitle: translatedText[2],
+          instructionsTitle: translatedText[3]
+        });
+        setIsEnglish(false);
+        setIsSpanish(true);
+      })
+      .then(() => {
+        axios({
+          method: "POST",
+          url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${description}`
+        })
+          .then(response => {
+            const descriptionText =
+              response.data.data.translations[0].translatedText;
+            setcustomSpanishState(prev => ({
+              ...prev,
+              description: descriptionText
+            }));
+          })
+          .then(() => {
+            axios({
+              method: "POST",
+              url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${ingredients}`
+            })
+              .then(response => {
+                const ingredientsText =
+                  response.data.data.translations[0].translatedText;
+
+                setcustomSpanishState(prev => ({
+                  ...prev,
+                  ingredients: ingredientsText
+                }));
+              })
+              .then(() => {
+                axios({
+                  method: "POST",
+                  url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${instruction}`
+                }).then(response => {
+                  const instructionsText =
+                    response.data.data.translations[0].translatedText;
+                  setcustomSpanishState(prev => ({
+                    ...prev,
+                    instructions: instructionsText
+                  }));
+                });
+              });
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const translateSpoonacular = (
+    e,
+    title,
+    summary,
+    extendedIngredients,
+    analyzedInstructions
+  ) => {
+    e.preventDefault();
+    axios({
+      method: "POST",
+      url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
+    })
+      .then(response => {
+        const translatedSpoonacularText = response.data.data.translations[0].translatedText.split(
+          ", "
+        );
+        setcustomSpoonacularSpanishState({
+          name: translatedSpoonacularText[0],
+          preparationTime: translatedSpoonacularText[1],
+          serving: translatedSpoonacularText[2],
+          sourceURL: translatedSpoonacularText[3],
+          summary: translatedSpoonacularText[4],
+          requiredIngredientsTitle: translatedSpoonacularText[5],
+          instructionsTitle: translatedSpoonacularText[6],
+          person: translatedSpoonacularText[7],
+          people: translatedSpoonacularText[8]
+        });
+        setIsEnglish(false);
+        setIsSpanish(true);
+      })
+      .then(() => {
+        axios({
+          method: "POST",
+          url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${summary}`
+        })
+          .then(response => {
+            const translatedSummaryText =
+              response.data.data.translations[0].translatedText;
+            setcustomSpoonacularSpanishState(prev => ({
+              ...prev,
+              summary: translatedSummaryText
+            }));
+          })
+          .then(() => {
+            axios({
+              method: "POST",
+              url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${extendedIngredients}`
+            })
+              .then(response => {
+                const translatedIngredientsText =
+                  response.data.data.translations[0].translatedText;
+                console.log("LOS INGREDIENTES: ", translatedIngredientsText);
+                setcustomSpoonacularSpanishState(prev => ({
+                  ...prev,
+                  ingredients: translatedIngredientsText
+                }));
+              })
+              .then(() => {
+                axios({
+                  method: "POST",
+                  url: `https://translation.googleapis.com/language/translate/v2?target=es&key=${GOOGLE_API}&q=${analyzedInstructions}`
+                }).then(response => {
+                  const translatedInstructionsText =
+                    response.data.data.translations[0].translatedText;
+                  setcustomSpoonacularSpanishState(prev => ({
+                    ...prev,
+                    instructions: translatedInstructionsText
+                  }));
+                });
+              });
+          });
+      });
+  };
+
+  const backToEnglish = e => {
+    e.preventDefault();
+    setIsSpanish(false);
+    setIsEnglish(true);
+  };
+
   return (
     <Container maxWidth="lg">
-    <div>
-      <Typography>
-        <h1>Saved Recipes</h1>
-      </Typography>
-      {customRecipes.map((recipe, index) => {
-        return (
-          <Card className={classes.root}>
-            <CardActionArea>
-              <CardContent>
-                <CardMedia
-                  key={index}
-                  component="img"
-                  className={classes.media}
-                  image={recipe.image}
-                  title={recipe.name}
-                />
-              </CardContent>
-            </CardActionArea>
-            <Typography gutterBottom variant="h5" component="h2"></Typography>
-            {recipe.name}
-            <CardActions>
-              <button
-                onClick={e => {
-                  renderCustomInfo(e, recipe.id);
-                }}
-              >
-                View Recipe!
-              </button>
-              <Button
-                onClick={e => {
-                  removeCustomRecipe(e, recipe.id);
-                }}
-                size="small"
-                color="primary"
-              >
-                <DeleteTwoToneIcon />
-              </Button>
-            </CardActions>
-          </Card>
-        );
-      })}
-      <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
-        <div>
+      <div>
+        <Typography>
+          <h1>Saved Recipes</h1>
+        </Typography>
+        {customRecipes.map((recipe, index) => {
+          return (
+            <Card className={classes.root}>
+              <CardActionArea>
+                <CardContent>
+                  <CardMedia
+                    key={index}
+                    component="img"
+                    className={classes.media}
+                    image={recipe.image}
+                    title={recipe.name}
+                  />
+                </CardContent>
+              </CardActionArea>
+              <Typography gutterBottom variant="h5" component="h2"></Typography>
+              {recipe.name}
+              <CardActions>
+                <button
+                  onClick={e => {
+                    renderCustomInfo(e, recipe.id);
+                  }}
+                >
+                  View Recipe!
+                </button>
+                <Button
+                  onClick={e => {
+                    removeCustomRecipe(e, recipe.id);
+                  }}
+                  size="small"
+                  color="primary"
+                >
+                  <DeleteTwoToneIcon />
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        })}
+        <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
           <div>
-            <h1>{customState.name}</h1>
-            <img src={customState.image}></img>
-            <h2>Description</h2>
-            {customState.description}
-            <h2>Ingredients</h2>
-            {customState.ingredient}
-            <h2>Instructions</h2>
-            {customState.instruction}
-          </div>
+            {isEnglish && (
+              <div>
+                <h1>{customState.name}</h1>
+                <img src={customState.image}></img>
+                <h2>Description</h2>
+                {customState.description}
+                <h2>Ingredients</h2>
+                {customState.ingredients}
+                <h2>Instructions</h2>
+                {customState.instruction}
 
-          <FacebookShareButton
-            url={"www.yahoo.com"}
-            children={<FacebookIcon size={32} round={true}></FacebookIcon>}
-          />
-          <button onClick={closeCustomModal}>close</button>
-        </div>
-      </Modal>
-
-      {recipes.map((recipe, index) => {
-        return (
-          <Card className={classes.root}>
-            <CardActionArea>
-              <CardContent>
-                <CardMedia
-                  key={index}
-                  component="img"
-                  className={classes.media}
-                  image={recipe.image}
-                  title={recipe.title}
+                <button
+                  onClick={e => {
+                    console.log("consol ", customState.ingredients);
+                    translate(
+                      e,
+                      customState.name,
+                      customState.description,
+                      customState.ingredients,
+                      customState.instruction
+                    );
+                  }}
+                >
+                  Spanish
+                </button>
+                <FacebookShareButton
+                  url={"www.yahoo.com"}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
                 />
-              </CardContent>
-            </CardActionArea>
-            <Typography gutterBottom variant="h5" component="h2"></Typography>
-            {recipe.title}
-            <CardActions>
-              <button
-                onClick={e => {
-                  renderInfo(e, recipe.spoonacular_id);
-                }}
-              >
-                View Recipe!
-              </button>
-              <Button
-                onClick={e => {
-                  remove(e, recipe.id);
-                }}
-                size="small"
-                color="primary"
-              >
-                <DeleteTwoToneIcon />
-              </Button>
-            </CardActions>
-          </Card>
-        );
-      })}
-      <Modal isOpen={isOpen} onRequestClose={closeModal}>
-        <div>
-          <div>
-            <h3>Title: {state.title}</h3>
-            <img src={state.image}></img>
-            <div dangerouslySetInnerHTML={{ __html: state.summary }} />
-            <p>{state.id}</p>
-            <h2> Preparation time:</h2>
-            <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
-            <h2>Serving: </h2>
-
-            {state.servings === 1 ? (
-              <h3>{state.servings} person</h3>
-            ) : (
-              <h3> {state.servings} people</h3>
+                <button onClick={closeCustomModal}>close</button>
+              </div>
             )}
-            <span>
-              <h2>Source URL:</h2>
-              <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
-            </span>
-            <h2>Required Ingredients</h2>
-            {state.extendedIngredients &&
-              state.extendedIngredients.map((ingredient, index) => {
-                return (
-                  <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
-                );
-              })}
-            <h2>Instructions</h2>
-            {state.analyzedInstructions &&
-              state.analyzedInstructions.map((instruction, index) => {
-                return instruction.steps.map((key2, index) => {
-                  return (
-                    <div key={index}>
-                      <ol>
-                        {" "}
-                        {index + 1}. {key2.step}
-                      </ol>
-                    </div>
-                  );
-                });
-              })}
-            <FacebookShareButton
-              url={state.sourceUrl}
-              children={<FacebookIcon size={32} round={true}></FacebookIcon>}
-            />
-            <button onClick={closeModal}>close</button>
+            {isSpanish && (
+              <div>
+                <h3>{customSpanishState.name} </h3>
+                <img src={customState.image}></img>
+                <h3>{customSpanishState.descriptionTitle} </h3>
+                <p>{customSpanishState.description} </p>
+                <h3>{customSpanishState.ingredientsTitle} </h3>
+                <p>{customSpanishState.ingredients} </p>
+                <h3>{customSpanishState.instructionsTitle} </h3>
+                <p>{customSpanishState.instructions} </p>
+                <button onClick={backToEnglish}>English</button>
+                <FacebookShareButton
+                  url={"www.yahoo.com"}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button onClick={closeCustomModal}>close</button>
+              </div>
+            )}
           </div>
-        </div>
-      </Modal>
-    </div>
-    </Container>
+        </Modal>
 
+        {recipes.map((recipe, index) => {
+          return (
+            <Card className={classes.root}>
+              <CardActionArea>
+                <CardContent>
+                  <CardMedia
+                    key={index}
+                    component="img"
+                    className={classes.media}
+                    image={recipe.image}
+                    title={recipe.title}
+                  />
+                </CardContent>
+              </CardActionArea>
+              <Typography gutterBottom variant="h5" component="h2"></Typography>
+              {recipe.title}
+              <CardActions>
+                <button
+                  onClick={e => {
+                    renderInfo(e, recipe.spoonacular_id);
+                  }}
+                >
+                  View Recipe!
+                </button>
+                <Button
+                  onClick={e => {
+                    remove(e, recipe.id);
+                  }}
+                  size="small"
+                  color="primary"
+                >
+                  <DeleteTwoToneIcon />
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        })}
+        <Modal isOpen={isOpen} onRequestClose={closeModal}>
+          <div>
+            {isEnglish && (
+              <div>
+                <h3>{state.title}</h3>
+                <img src={state.image}></img>
+                <div dangerouslySetInnerHTML={{ __html: state.summary }} />
+                <p>{state.id}</p>
+                <h2> Preparation time:</h2>
+                <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
+                <h2>Serving: </h2>
+
+                {state.servings === 1 ? (
+                  <h3>{state.servings} person</h3>
+                ) : (
+                  <h3> {state.servings} people</h3>
+                )}
+                <span>
+                  <h2>Source URL:</h2>
+                  <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+                </span>
+                <h2>Required Ingredients</h2>
+                {state.extendedIngredients &&
+                  state.extendedIngredients.map((ingredient, index) => {
+                    return (
+                      <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
+                    );
+                  })}
+                <h2>Instructions</h2>
+                {state.analyzedInstructions &&
+                  state.analyzedInstructions.map((instruction, index) => {
+                    return instruction.steps.map((key2, index) => {
+                      return (
+                        <div key={index}>
+                          <ol>
+                            {" "}
+                            {index + 1}. {key2.step}
+                          </ol>
+                        </div>
+                      );
+                    });
+                  })}
+                <FacebookShareButton
+                  url={state.sourceUrl}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button
+                  onClick={e => {
+                    translateSpoonacular(
+                      e,
+                      state.title,
+                      state.summary,
+                      state.extendedIngredients.map(key => key.original),
+                      state.analyzedInstructions[0].steps.map(key => key.step)
+                    );
+                  }}
+                >
+                  Spanish
+                </button>
+                <button onClick={closeModal}>close</button>
+              </div>
+            )}
+            {isSpanish && (
+              <div>
+                <h3>{customSpoonacularSpanishState.title}</h3>
+                <img src={state.image}></img>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: customSpoonacularSpanishState.summary
+                  }}
+                />
+                <p>{state.id}</p>
+                <h2> {customSpoonacularSpanishState.preparationTime}</h2>
+                <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
+                <h2>{customSpoonacularSpanishState.serving} </h2>
+
+                {state.servings === 1 ? (
+                  <h3>
+                    {state.servings} {customSpoonacularSpanishState.person}
+                  </h3>
+                ) : (
+                  <h3>
+                    {" "}
+                    {state.servings} {customSpoonacularSpanishState.people}
+                  </h3>
+                )}
+                <span>
+                  <h2>{customSpoonacularSpanishState.sourceUrl}</h2>
+                  <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+                </span>
+                <h2>
+                  {customSpoonacularSpanishState.requiredIngredientsTitle}
+                </h2>
+                {customSpoonacularSpanishState.ingredients
+                  ? customSpoonacularSpanishState.ingredients
+                  : null}
+                <h2>{customSpoonacularSpanishState.instructionsTitle}</h2>
+                {customSpoonacularSpanishState.instructions
+                  ? customSpoonacularSpanishState.instructions
+                  : null}
+                <button onClick={backToEnglish}>English</button>
+                <FacebookShareButton
+                  url={state.sourceUrl}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button onClick={closeModal}>close</button>
+              </div>
+            )}
+          </div>
+        </Modal>
+      </div>
+    </Container>
   );
 }
