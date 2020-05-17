@@ -102,17 +102,10 @@ export default function Search({ renderInfo }) {
   if (loading || !user) {
     return <div>Loading...</div>;
   }
+
+
   // const imageURL =
   //   "https://www.highriveronline.com/images/stories/news_photos_2018/ag/general/milk_june_1.JPG";
-  function uploadPicture(e) {
-    e.preventDefault();
-  }
-
-  // const imagefunc = (e) => {
-  //   e.preventDefault();
-
-  //   console.log("test image func");
-  // };
 
   const onChangeHandler = (e) => {
     setFile(e.target.files);
@@ -140,7 +133,7 @@ export default function Search({ renderInfo }) {
           .then((res) => {
             console.log("===>" + res.data.output);
           });
-          
+
       });
   };
 
@@ -151,12 +144,7 @@ export default function Search({ renderInfo }) {
         Upload
       </button>
 
-      <a href="#" onClick={uploadPicture}>
-        Click me
-      </a>
-
-      {/* <UploadButton onClick={imagefunc} /> */}
-
+     
       <Typography>
         <h1>Search</h1>
         <button

@@ -36,7 +36,7 @@ const customRecipes = require("./routes/customrecipes");
 app.use("/api/customrecipes", customRecipes(db));
 
 const imageRecognition = require("./routes/imagerecognition");
-app.use("/api/imagerecognition", imageRecognition())
+app.use("/api/imagerecognition", imageRecognition());
 
 app.listen(port, () => console.log("Backend server live on " + port));
 
