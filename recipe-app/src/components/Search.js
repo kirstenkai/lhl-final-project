@@ -11,21 +11,22 @@ import Typography from "@material-ui/core/Typography";
 import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
     flexGrow: 1,
-    justify: "center",
+    justify: "center"
   },
+
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   card: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
+    color: theme.palette.text.secondary
+  }
 }));
 
 require("dotenv").config();
@@ -53,7 +54,7 @@ export default function Search({ renderInfo }) {
         "content-type": "application/octet-stream",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": `${SPOONACULAR_API}`,
+        "x-rapidapi-key": `${SPOONACULAR_API}`
       },
       params: {
         number: "20",
@@ -67,11 +68,11 @@ export default function Search({ renderInfo }) {
         //3. below input the value within that variable
 
         //string escaping- regex
-        ingredients: `${recipeName}`,
+        ingredients: `${recipeName}`
         // ingredients: "apples,flour,sugar"
-      },
+      }
     })
-      .then((response) => {
+      .then(response => {
         //1. look at the response, and push the results into an object
         //2. in the Component, render the parts you want from that object and
         //   put in in the list of the pictures
@@ -81,12 +82,12 @@ export default function Search({ renderInfo }) {
         //   full deets of the recipe itself to render on the component / modal
         // console.log(response.data[0]);
 
-        setRecipes((prev) => {
+        setRecipes(prev => {
           return [...prev, response.data];
         });
         //console.log(recipes);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -94,7 +95,7 @@ export default function Search({ renderInfo }) {
   const nestedRecipes = recipes.flat();
   const classes = useStyles();
 
-  const translateCard = (e) => {
+  const translateCard = e => {
     e.preventDefault();
     console.log("hey");
   };
@@ -104,7 +105,7 @@ export default function Search({ renderInfo }) {
     return <div>Loading...</div>;
   }
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     setFile(e.target.files);
   };
 
@@ -117,24 +118,26 @@ export default function Search({ renderInfo }) {
 
     return axios
       .post("https://api.cloudinary.com/v1_1/dva8dqtxn/image/upload", data, {
-        headers: { "X-Requested-With": "XMLHttpRequest" }, // receive two    parameter endpoint url ,form data
+        headers: { "X-Requested-With": "XMLHttpRequest" } // receive two    parameter endpoint url ,form data
       })
-      .then((res) => {
+      .then(res => {
         return res.data.secure_url;
       })
-      .then((res) => {
+      .then(res => {
         return axios
           .post("http://localhost:5000/api/imagerecognition", {
-            imageURL: res,
+            imageURL: res
           })
-          .then((res) => {
-            setInput(prev => prev? prev += `, ${res.data.output}` : res.data.output);
+          .then(res => {
+            setInput(prev =>
+              prev ? (prev += `, ${res.data.output}`) : res.data.output
+            );
           });
       });
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.container} maxWidth="lg">
       <div>
         <h2>if you don't know name of ingridient search by picture</h2>
         <input type="file" name="file" onChange={onChangeHandler} />
@@ -145,7 +148,7 @@ export default function Search({ renderInfo }) {
       <Typography>
         <h1>Search</h1>
         <button
-          onClick={(e) => {
+          onClick={e => {
             console.log("neested", nestedRecipes[0]);
           }}
         >
@@ -166,10 +169,10 @@ export default function Search({ renderInfo }) {
             placeholder="chicken, carrots, bananas"
             fullWidth
             margin="normal"
-            onChange={(e) => setInput(e.target.value)}
+            onChange={e => setInput(e.target.value)}
             value={input}
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
           />
           <Button variant="contained" color="primary" onClick={getRecipe}>
