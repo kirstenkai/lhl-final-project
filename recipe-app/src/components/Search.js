@@ -10,7 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-//import UploadButton from "./UploadButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,10 +35,14 @@ export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
   const [file, setFile] = useState();
   const [imageURL, setimageURL] = useState();
+  const { loading, user } = useAuth0();
+  const [input, setInput] = useState();
+
   // console.log(recipes[0])
-  const getRecipe = (e) => {
-    const recipeName = e.target.elements.recipeName.value;
-    e.preventDefault();
+
+  const getRecipe = () => {
+    const recipeName = input;
+
     setRecipes([]);
 
     axios({
@@ -91,8 +94,6 @@ export default function Search({ renderInfo }) {
   const nestedRecipes = recipes.flat();
   const classes = useStyles();
 
-  const { loading, user } = useAuth0();
-
   const translateCard = (e) => {
     e.preventDefault();
     console.log("hey");
@@ -102,10 +103,6 @@ export default function Search({ renderInfo }) {
   if (loading || !user) {
     return <div>Loading...</div>;
   }
-
-
-  // const imageURL =
-  //   "https://www.highriveronline.com/images/stories/news_photos_2018/ag/general/milk_june_1.JPG";
 
   const onChangeHandler = (e) => {
     setFile(e.target.files);
@@ -131,20 +128,20 @@ export default function Search({ renderInfo }) {
             imageURL: res,
           })
           .then((res) => {
-            console.log("===>" + res.data.output);
+            setInput(prev => prev? prev += `, ${res.data.output}` : res.data.output);
           });
-
       });
   };
 
   return (
     <Container maxWidth="lg">
-      <input type="file" name="file" onChange={onChangeHandler} />
-      <button type="button" onClick={onClickHandler}>
-        Upload
-      </button>
-
-     
+      <div>
+        <h2>if you don't know name of ingridient search by picture</h2>
+        <input type="file" name="file" onChange={onChangeHandler} />
+        <button type="button" onClick={onClickHandler}>
+          Add your unknow ingredient to the search
+        </button>
+      </div>
       <Typography>
         <h1>Search</h1>
         <button
@@ -155,49 +152,51 @@ export default function Search({ renderInfo }) {
           Spanish
         </button>
       </Typography>
-      <form onSubmit={getRecipe}>
-        <Grid container spacing={1} alignItems="flex-end">
-          <Grid item>
-            <SearchIcon />
-          </Grid>
-          <Grid xs={8}>
-            <TextField
-              name="recipeName"
-              id="standard-full-width"
-              label="Search ingredients"
-              style={{ margin: 8 }}
-              placeholder="chicken, carrots, bananas"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <Button variant="contained" color="primary">
-              Search
-            </Button>
-          </Grid>
+      {/* <form onSubmit={getRecipe}> */}
+      <Grid container spacing={1} alignItems="flex-end">
+        <Grid item>
+          <SearchIcon />
         </Grid>
-        <div className={classes.root}>
-          <Grid container spacing={2}>
-            {nestedRecipes.map((recipe, index) => {
-              //console.log("recipe name: ", recipe.title);
-              return (
-                <Grid item xs={12} sm={6} md={4}>
-                  <div key={index}>
-                    <RecipeCard
-                      title={recipe.title}
-                      image={recipe.image}
-                      id={recipe.id}
-                      className={classes.card}
-                    />
-                  </div>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-      </form>
+        <Grid xs={8}>
+          <TextField
+            name="recipeName"
+            id="standard-full-width"
+            label="Search ingredients"
+            style={{ margin: 8 }}
+            placeholder="chicken, carrots, bananas"
+            fullWidth
+            margin="normal"
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Button variant="contained" color="primary" onClick={getRecipe}>
+            Search
+          </Button>
+        </Grid>
+      </Grid>
+      <div className={classes.root}>
+        <Grid container spacing={2}>
+          {nestedRecipes.map((recipe, index) => {
+            //console.log("recipe name: ", recipe.title);
+            return (
+              <Grid item xs={12} sm={6} md={4}>
+                <div key={index}>
+                  <RecipeCard
+                    title={recipe.title}
+                    image={recipe.image}
+                    id={recipe.id}
+                    className={classes.card}
+                  />
+                </div>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </div>
+      {/* </form> */}
     </Container>
   );
 }
