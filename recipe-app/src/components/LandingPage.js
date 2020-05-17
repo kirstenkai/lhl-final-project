@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-console.log(makeStyles)
+//console.log(makeStyles)
 export default function LandingPage() {
   const classes = useStyles();
   const { isAuthenticated, loginWithRedirect } = useAuth0();

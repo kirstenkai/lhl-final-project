@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-// console.log("What is this", useAuth0);
+
 
 export default function CreateRecipe() {
   const classes = useStyles();
@@ -29,8 +29,6 @@ export default function CreateRecipe() {
 
   const save = e => {
     e.preventDefault();
-
-    // e.preventDefault();
 
     const name = e.target.elements.title.value;
     const description = e.target.elements.description.value;
@@ -52,7 +50,7 @@ export default function CreateRecipe() {
   };
 
   const imagefunc = () => {
-    console.log("hello");
+    console.log("test image func");
   };
 
   return (
@@ -119,6 +117,5 @@ export default function CreateRecipe() {
     </Paper>
   </div>
     </Container>
-
   );
 }
