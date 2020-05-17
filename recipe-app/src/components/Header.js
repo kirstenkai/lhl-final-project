@@ -21,18 +21,18 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   header: {
-    backgroundColor: '#232946',
-    boxShadow: "none"
+    backgroundColor: '#fffffe',
+    padding: theme.spacing(0, 2),
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
-    color: "#fffffe",
+    color: "#000",
     textDecoration: "none",
     fontSize: "30px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   navLink: {
     color: "#fffffe", 
@@ -67,10 +67,10 @@ export default function ButtonAppBar() {
       <AppBar position="static" className={classes.header}>
         <Toolbar>
           <NavLink to="/" className={classes.title}>
-            RecipeApp
+            kitchenhero
           </NavLink>
           {!isAuthenticated && (
-            <Button style={{color: "#fffffe", fontWeight: "bold"}} onClick={() => loginWithRedirect({})}>Log in</Button>
+            <Button style={{color: "#000", fontWeight: "bold"}} onClick={() => loginWithRedirect({})}>Log in</Button>
             )}
 
           {/* NEW - add a link to the home and profile pages */}

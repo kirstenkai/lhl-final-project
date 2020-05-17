@@ -1,10 +1,5 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-// import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -22,41 +17,30 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100vh - 64px)',
   },
   image: {
-    backgroundImage: 'url(img/flame-uploading.png)',
+    background: 'linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(img/landing.jpg)',
     backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      '#232946',
-    backgroundSize: '450px',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   introduction: {
-    backgroundColor: '#232946',
     display: 'flex',
     alignItems: 'center',
-    color: "#fffffe",
+    color: "#000",
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
+    justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#232946',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-    backgroundColor: '#232946',
   },
   submit: {
-    backgroundColor: "#fa9ec1",
+    backgroundColor: "#000",
     "&:hover": {
-      backgroundColor: "#d482a2"
+      backgroundColor: "#000"
     },
-    color: "#232946",
+    color: "#fff",
     fontWeight: "bold",
     margin: theme.spacing(3, 0, 2),
   },
@@ -66,15 +50,14 @@ export default function LandingPage() {
   const classes = useStyles();
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   return (
-    <Grid container component="main" className={classes.root}>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square className={classes.introduction}>
+    <Grid container component="main" justify="center" className={`${classes.root} $ ${classes.image}`}>
+      <Grid item xs={12} sm={8} md={5}  className={classes.introduction}>
         <div className={classes.paper}>
-         
           <Typography component="h1" variant="h3">
             Keep track of your pantry.
           </Typography>
-          <Typography component="p">
-            RecipeApp helps you waste less food by giving you recipes based on the items you currently have in your pantry and when those products expire.  
+          <Typography component="h3" variant="p">
+          I'm baby +1 XOXO aesthetic, jean shorts affogato copper mug keffiyeh selvage snackwave shoreditch gastropub cray small batch hexagon. Kinfolk shaman deep v heirloom 3 wolf moon tofu meggings etsy coloring book bespoke small batch. Yuccie hashtag green juice, af actually man braid edison bulb bushwick pop-up fashion axe waistcoat hammock truffaut. Etsy chia artisan marfa portland.
           </Typography>
           {/* {!isAuthenticated && (
             // <button >Log in</button>
@@ -84,12 +67,12 @@ export default function LandingPage() {
             fullWidth
             variant="contained"
             className={classes.submit}
-          >
+            >
             Get Started!
           </Button>
+      {/* <Grid item xs={false} sm={4} md={7} className={classes.image} /> */}
         </div>
       </Grid>
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
     </Grid>
   );
 }
