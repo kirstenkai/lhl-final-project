@@ -37,14 +37,9 @@ export default function Search({ renderInfo }) {
   const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
-
-  // console.log(recipes[0])
-
   const getRecipe = () => {
     const recipeName = input;
-
     setRecipes([]);
-
     axios({
       method: "GET",
       url:
@@ -84,7 +79,6 @@ export default function Search({ renderInfo }) {
         setRecipes((prev) => {
           return [...prev, response.data];
         });
-        //console.log(recipes);
       })
       .catch((error) => {
         console.log(error);
@@ -112,7 +106,7 @@ export default function Search({ renderInfo }) {
     const data = new FormData();
     data.append("file", file[0]);
     data.append("upload_preset", "djf7hmxw");
-    data.append("api_key", "543525514594876");
+    data.append("api_key", process.env.API_KEY);
     data.append("timestamp", Date.now / 1000);
 
     return axios
