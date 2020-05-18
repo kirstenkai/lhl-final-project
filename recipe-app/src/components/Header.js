@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Hidden from "@material-ui/core/Hidden";
-
+import logo from "../components/mainlogo.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "bold"
   },
   navLink: {
-    color: "#00C853",
+    color: "#1c1c1c",
+    fontFamily: "roboto",
     textDecoration: "none",
     textTransform: "uppercase",
     padding: theme.spacing(0, 1)
@@ -65,7 +66,7 @@ export default function ButtonAppBar() {
       <AppBar position="static" className={classes.header}>
         <Toolbar>
           <NavLink to="/" className={classes.title}>
-            KitchenHero
+            <img src={logo} />
           </NavLink>
           {!isAuthenticated && (
             <Button

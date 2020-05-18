@@ -20,6 +20,20 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexDirection: "column"
   },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background:
+      "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
+    height: "100vh",
+    maxWidth: "100%"
+  },
+  search: {
+    width: "60%",
+    display: "flex",
+    alignItems: "center"
+  },
 
   margin: {
     margin: theme.spacing(1)
@@ -40,14 +54,9 @@ export default function Search({ renderInfo }) {
   const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
-
-  // console.log(recipes[0])
-
   const getRecipe = () => {
     const recipeName = input;
-
     setRecipes([]);
-
     axios({
       method: "GET",
       url:
@@ -87,7 +96,6 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
-        //console.log(recipes);
       })
       .catch(error => {
         console.log(error);
@@ -115,7 +123,7 @@ export default function Search({ renderInfo }) {
     const data = new FormData();
     data.append("file", file[0]);
     data.append("upload_preset", "djf7hmxw");
-    data.append("api_key", "543525514594876");
+    data.append("api_key", process.env.API_KEY);
     data.append("timestamp", Date.now / 1000);
 
     return axios
@@ -139,7 +147,7 @@ export default function Search({ renderInfo }) {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.root}>
+    <Container className={classes.container}>
       <div>
         <h2>if you don't know name of ingridient search by picture</h2>
         <input type="file" name="file" onChange={onChangeHandler} />
@@ -147,11 +155,11 @@ export default function Search({ renderInfo }) {
           Add your unknow ingredient to the search
         </button>
       </div>
-      <Typography>
+      <Typography className="searchbar">
         <h1>Search</h1>
       </Typography>
       {/* <form onSubmit={getRecipe}> */}
-      <Grid container>
+      <Grid container className="search" spacing={1} alignItems="flex-end">
         <Grid item>
           <SearchIcon />
         </Grid>

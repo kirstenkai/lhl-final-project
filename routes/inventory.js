@@ -3,8 +3,6 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.post("/", (req, res) => {
-    console.log("req.body = ", req.body);
-
     const { userId, item, expiryDate, daysleft } = req.body;
 
     db.query(
@@ -14,13 +12,13 @@ module.exports = (db) => {
     ).then((response) => {
       return res.json(response.rows[0] || null);
     });
-   
   });
 
   router.get("/:userId", (req, res) => {
-    db.query(`SELECT * FROM inventory_items WHERE user_id=($1)`, [
-      req.params.userId,
-    ])
+    db.query(
+      `SELECT * FROM inventory_items WHERE user_id=($1) ORDER BY id DESC`,
+      [req.params.userId]
+    )
       .then((data) => {
         const inventory = data.rows;
         res.json(inventory);
