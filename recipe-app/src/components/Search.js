@@ -18,6 +18,20 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     justify: "center"
   },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background:
+      "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
+    height: "100vh",
+    maxWidth: "100%"
+  },
+  search: {
+    width: "60%",
+    display: "flex",
+    alignItems: "center"
+  },
 
   margin: {
     margin: theme.spacing(1)
@@ -137,7 +151,7 @@ export default function Search({ renderInfo }) {
   };
 
   return (
-    <Container className={classes.container} maxWidth="lg">
+    <Container className={classes.container}>
       <div>
         <h2>if you don't know name of ingridient search by picture</h2>
         <input type="file" name="file" onChange={onChangeHandler} />
@@ -145,18 +159,11 @@ export default function Search({ renderInfo }) {
           Add your unknow ingredient to the search
         </button>
       </div>
-      <Typography>
+      <Typography className="searchbar">
         <h1>Search</h1>
-        <button
-          onClick={e => {
-            console.log("neested", nestedRecipes[0]);
-          }}
-        >
-          Spanish
-        </button>
       </Typography>
       {/* <form onSubmit={getRecipe}> */}
-      <Grid container spacing={1} alignItems="flex-end">
+      <Grid container className="search" spacing={1} alignItems="flex-end">
         <Grid item>
           <SearchIcon />
         </Grid>
