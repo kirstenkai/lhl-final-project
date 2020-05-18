@@ -10,13 +10,15 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    flexWrap: "wrap",
-    flexGrow: 1,
-    justify: "center"
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column"
   },
 
   margin: {
@@ -137,7 +139,7 @@ export default function Search({ renderInfo }) {
   };
 
   return (
-    <Container className={classes.container} maxWidth="lg">
+    <Container maxWidth="lg" className={classes.root}>
       <div>
         <h2>if you don't know name of ingridient search by picture</h2>
         <input type="file" name="file" onChange={onChangeHandler} />
@@ -147,34 +149,23 @@ export default function Search({ renderInfo }) {
       </div>
       <Typography>
         <h1>Search</h1>
-        <button
-          onClick={e => {
-            console.log("neested", nestedRecipes[0]);
-          }}
-        >
-          Spanish
-        </button>
       </Typography>
       {/* <form onSubmit={getRecipe}> */}
-      <Grid container spacing={1} alignItems="flex-end">
+      <Grid container>
         <Grid item>
           <SearchIcon />
         </Grid>
         <Grid xs={8}>
-          <TextField
+         <TextField 
             name="recipeName"
-            id="standard-full-width"
+            id="outlined-search" 
             label="Search ingredients"
-            style={{ margin: 8 }}
-            placeholder="chicken, carrots, bananas"
-            fullWidth
-            margin="normal"
-            onChange={e => setInput(e.target.value)}
+            type="search" 
+            variant="outlined" 
+            onChange={(e) => setInput(e.target.value)}
             value={input}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
+        />
+
           <Button variant="contained" color="primary" onClick={getRecipe}>
             Search
           </Button>
