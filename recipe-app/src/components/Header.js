@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   navLink: {
-    color: "#fffffe", 
+    color: "#000", 
     textDecoration: "none",
     textTransform: "uppercase",
     padding: theme.spacing(0, 1)
@@ -82,14 +82,14 @@ export default function ButtonAppBar() {
               <Link to="/create" className={classes.navLink}>Create Recipe</Link>
               <Link to="/profile" className={classes.navLink}>Profile</Link>
               <Link to="/search" className={classes.navLink}>Search</Link>
+              <Button className={classes.navLink} onClick={() => logout()}>
+                Logout
+              </Button>
           </Hidden>
             </span>
           )}
           {isAuthenticated && (
             <Fragment>
-          <Button className={classes.navLink} onClick={() => logout()}>
-            Log out
-          </Button>
 
           <Hidden mdUp implementation="css">
           <IconButton 
@@ -130,6 +130,11 @@ export default function ButtonAppBar() {
               <a href="/profile" className={classes.mobileMenu}>
                 Profile
               </a>
+            </MenuItem>
+            <MenuItem>
+            <Button className={classes.mobileMenu} onClick={() => logout()}>
+              Logout
+            </Button>
             </MenuItem>
           </Menu>
           </Hidden>
