@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    marginBottom: "63px"
+    marginBottom: "63px",
+    width: "100%"
   },
   container: {
     display: "flex",
@@ -246,14 +247,14 @@ export default function Search({ renderInfo }) {
                 type="button"
                 onClick={processUploadedImage}
               >
-                Search
+                Add to Search Bar
               </Button>
             </label>
           </div>
         </Grid>
       </Grid>
       <div className={classes.root}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justify="center">
           {!nestedRecipes[0] && searched ? (
             <h1>Sorry, no recipes found</h1>
           ) : (

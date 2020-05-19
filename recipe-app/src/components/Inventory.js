@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "../react-auth0-spa";
-
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,8 +11,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import moment, { diff } from "moment";
+import TextField from "@material-ui/core/TextField";
 import Axios from "axios";
 import Alert from "@material-ui/lab/Alert";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
@@ -41,6 +47,22 @@ const useStyles = makeStyles(theme => ({
       padding: "12px 20px"
     }
   },
+  inventoryForm: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "60%",
+    background: "#fffffe",
+    margin: "20px 0"
+  },
+  btn: {
+    background: "lightskyblue",
+    padding: "7px 34px",
+    border: "none",
+    borderRadius: "4px",
+    boxShadow: "1px 1px 10px lightgrey"
+  },
 
   // table: {
   //   minWidth: 400,
@@ -54,7 +76,7 @@ const useStyles = makeStyles(theme => ({
   //     "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/inventory.jpg)"
   // },
   root: {
-    width: "10%",
+    width: "15%",
     "& > * + *": {
       marginTop: theme.spacing(2)
     }
@@ -91,6 +113,11 @@ export default function Inventory() {
   const handleCurrentItem = e => setCurrentItem(e.target.value);
 
   const handleCurrentDate = e => setCurrentDate(e.target.value);
+  const [selectedDate, setSelectedDate] = useState(Date.now());
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
 
   const save = e => {
     e.preventDefault();
@@ -138,35 +165,44 @@ export default function Inventory() {
 
   return (
     <div className={classes.container}>
-      <form onSubmit={save} className={classes.newcontainer}>
-        <div>
-          Name
-          <input
-            className="name"
-            name="name"
-            type="text "
-            placeholder="Item"
-            autoFocus
-            className="text-input"
-            onChange={handleCurrentItem}
-            value={currentItem}
-            required
-          />
-          Expiry Date
-          <input
-            className="calendar"
-            name="date"
-            type="date"
-            placeholder="YYYY-MM-DD"
-            autoFocus
-            onChange={handleCurrentDate}
-            value={currentDate}
-            className="date-input"
-            required
-          />
-        </div>
+      <form onSubmit={save} className={classes.inventoryForm}>
+        <TextField
+          className="name"
+          name="name"
+          type="text "
+          autoFocus
+          onChange={handleCurrentItem}
+          value={currentItem}
+          required
+          id="filled-secondary"
+          label="Item"
+          // variant="filled"
+          color="primary"
+        />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid container justify="space-around">
+            <KeyboardDatePicker
+              disableToolbar
+              className="calendar"
+              placeholder="Date"
+              name="date"
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Date picker inline"
+              value={selectedDate}
+              onChange={handleDateChange}
+              // value={currentDate}
+              // onChange={handleCurrentDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date"
+              }}
+            />
+          </Grid>
+        </MuiPickersUtilsProvider>
 
-        <button>Add a New item!</button>
+        <button className={classes.btn}>ADD</button>
       </form>
 
       <TableContainer className={classes.tableContainer} component={Paper}>
@@ -174,13 +210,13 @@ export default function Inventory() {
           <TableHead>
             <TableRow>
               <TableCell component="th" scope="col" align="left">
-                Food Item
+                <strong>Food Item</strong>
               </TableCell>
               <TableCell component="th" scope="col" align="center">
-                Expiry Date
+                <strong>Expiry Date</strong>
               </TableCell>
-              <TableCell component="th" scope="col" align="right">
-                Days Left
+              <TableCell component="th" scope="col" align="center">
+                <strong>Days Left</strong>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -213,7 +249,7 @@ export default function Inventory() {
                       Last Day
                     </Alert>
                   )}
-                  {row.daysleft > 2 && (
+                  {row.daysleft > 2 && row.daysleft > 0 && (
                     <Alert variant="filled" severity="success">
                       {row.daysleft} days
                     </Alert>

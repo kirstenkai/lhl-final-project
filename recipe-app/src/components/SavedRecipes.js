@@ -38,9 +38,9 @@ const useStyles = makeStyles({
     height: 140
   },
   card: {
-    padding: '8px',
-    textAlign: "center",
-  },
+    padding: "8px",
+    textAlign: "center"
+  }
 });
 
 export default function SavedRecipes({ image, title, id }) {
@@ -357,56 +357,52 @@ export default function SavedRecipes({ image, title, id }) {
           <h1>Saved Recipes</h1>
         </Typography>
         <div className={classes.rootGrid}>
-
-        <Grid 
-          container
-          spacing={2}
-          direction="row"
-          justify="space-between"
-
-        >
-          {customRecipes.map((recipe, index) => {
-            return (
-              <Grid item>
-
-            <Card className={classes.root}>
-              <CardActionArea>
-                <CardContent>
-                  <CardMedia
-                    key={index}
-                    component="img"
-                    className={`${classes.media} ${classes.card}`}
-                    image={recipe.image}
-                    title={recipe.name}
-                    />
-                </CardContent>
-              </CardActionArea>
-              <Typography gutterBottom variant="h5" component="h2"></Typography>
-              {recipe.name}
-              <CardActions>
-                <button
-                  onClick={e => {
-                    renderCustomInfo(e, recipe.id);
-                  }}
-                  >
-                  View Recipe!
-                </button>
-                <Button
-                  onClick={e => {
-                    removeCustomRecipe(e, recipe.id);
-                  }}
-                  size="small"
-                  color="primary"
-                  >
-                  <DeleteTwoToneIcon />
-                </Button>
-              </CardActions>
-            </Card>
+          <Grid container spacing={2} direction="row" justify="center">
+            {customRecipes.map((recipe, index) => {
+              return (
+                <Grid item>
+                  <Card className={classes.root}>
+                    <CardActionArea>
+                      <CardContent>
+                        <CardMedia
+                          key={index}
+                          component="img"
+                          className={`${classes.media} ${classes.card}`}
+                          image={recipe.image}
+                          title={recipe.name}
+                        />
+                      </CardContent>
+                    </CardActionArea>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                    ></Typography>
+                    {recipe.name}
+                    <CardActions>
+                      <button
+                        onClick={e => {
+                          renderCustomInfo(e, recipe.id);
+                        }}
+                      >
+                        View Recipe!
+                      </button>
+                      <Button
+                        onClick={e => {
+                          removeCustomRecipe(e, recipe.id);
+                        }}
+                        size="small"
+                        color="primary"
+                      >
+                        <DeleteTwoToneIcon />
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
-          );
-        })}
-        </Grid>
-      </div>
+        </div>
         <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
           <div>
             {isEnglish && (
@@ -472,50 +468,51 @@ export default function SavedRecipes({ image, title, id }) {
           </div>
         </Modal>
         <div className={classes.rootGrid}>
-
-        <Grid container spacing={2} justify="space-between">
-
-        {recipes.map((recipe, index) => {
-          return (
-            <Grid item>
-
-            <Card className={classes.root}>
-              <CardActionArea>
-                <CardContent>
-                  <CardMedia
-                    key={index}
-                    component="img"
-                    className={classes.media}
-                    image={recipe.image}
-                    title={recipe.title}
-                    />
-                </CardContent>
-              </CardActionArea>
-              <Typography gutterBottom variant="h5" component="h2"></Typography>
-              {recipe.title}
-              <CardActions>
-                <button
-                  onClick={e => {
-                    renderInfo(e, recipe.spoonacular_id);
-                  }}
-                  >
-                  View Recipe!
-                </button>
-                <Button
-                  onClick={e => {
-                    remove(e, recipe.id);
-                  }}
-                  size="small"
-                  color="primary"
-                  >
-                  <DeleteTwoToneIcon />
-                </Button>
-              </CardActions>
-            </Card>
+          <Grid container spacing={2} justify="center">
+            {recipes.map((recipe, index) => {
+              return (
+                <Grid item>
+                  <Card className={classes.root}>
+                    <CardActionArea>
+                      <CardContent>
+                        <CardMedia
+                          key={index}
+                          component="img"
+                          className={classes.media}
+                          image={recipe.image}
+                          title={recipe.title}
+                        />
+                      </CardContent>
+                    </CardActionArea>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                    ></Typography>
+                    {recipe.title}
+                    <CardActions>
+                      <button
+                        onClick={e => {
+                          renderInfo(e, recipe.spoonacular_id);
+                        }}
+                      >
+                        View Recipe!
+                      </button>
+                      <Button
+                        onClick={e => {
+                          remove(e, recipe.id);
+                        }}
+                        size="small"
+                        color="primary"
+                      >
+                        <DeleteTwoToneIcon />
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
-          );
-        })}
-        </Grid>
         </div>
         <Modal isOpen={isOpen} onRequestClose={closeModal}>
           <div>
