@@ -11,6 +11,7 @@ import Hidden from "@material-ui/core/Hidden";
 import logo from "../components/mainlogo.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Avatar from "@material-ui/core/Avatar";
 
 // New - importing useAuth0
 import { useAuth0 } from "../react-auth0-spa";
@@ -44,12 +45,18 @@ const useStyles = makeStyles(theme => ({
     color: "#00C853",
     textDecoration: "none",
     textTransform: "uppercase"
+  },
+  profileTray: {
+    padding: "0px",
+    "& ul": {
+      padding: "0px"
+    }
   }
 }));
 
 export default function ButtonAppBar() {
   const classes = useStyles();
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -84,15 +91,39 @@ export default function ButtonAppBar() {
               <Link to="/inventory" className={classes.navLink}>Inventory</Link>&nbsp;
               <Link to="/saved" className={classes.navLink}>Saved Recipes</Link>
               <Link to="/create" className={classes.navLink}>Create Recipe</Link>
-              <Link to="/profile" className={classes.navLink}>Profile</Link>
               <Link to="/search" className={classes.navLink}>Search</Link>
-              <Button className={classes.navLink} onClick={() => logout()}>
-                Logout
-              </Button>
+              <IconButton 
+              aria-controls="profile-tray"
+              aria-haspopup="true"
+              onClick={handleClick}
+              className={classes.navLink}>
+                <Avatar src={user.picture} />
+              </IconButton>
+              <Menu
+                id="profile-tray"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                flexDirection="column"
+                className={classes.profileTray}
+                >
+                <MenuItem onClick={handleClose} className={classes.profileTray}>
+                  <img src={user.picture} width="100%"/>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <li>{user.name}</li>
+                </MenuItem>
+                <MenuItem>
+                  <Button className={classes.mobileMenu} onClick={() => logout()}>
+                    Logout
+                  </Button>
+              </MenuItem>
+              </Menu>
           </Hidden>
             </span>
           )}
-          {isAuthenticated && (
+          {/* {isAuthenticated && (
             <Fragment>
 
           <Hidden mdUp implementation="css">
@@ -142,8 +173,8 @@ export default function ButtonAppBar() {
             </MenuItem>
           </Menu>
           </Hidden>
-          </Fragment>
-          )}
+          </Fragment> */}
+          {/* )} */}
         </Toolbar>
       </AppBar>
     </div>

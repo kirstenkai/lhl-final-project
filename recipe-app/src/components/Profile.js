@@ -16,7 +16,7 @@ const Profile = () => {
     <Container maxWidth="lg">
       <Fragment>
       <Typography>
-          <h1>Profile</h1>
+          <h1>My Profile</h1>
         </Typography>
         <img src={user.picture} alt="Profile" />
 
