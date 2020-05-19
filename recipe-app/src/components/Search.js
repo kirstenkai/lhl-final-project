@@ -37,15 +37,20 @@ const useStyles = makeStyles(theme => ({
     marginLeft: "40%"
   },
   upload: {
-    "& label": {
-      display: "none"
-    }
+    display: "flex",
+    justifyContent: "flex-end"
   },
   input: {
     display: "none"
   },
+  camera: {
+    height: "55px",
+    width: "55px",
+    marginTop: "-20px"
+  },
   searchbutton: {
-    marginLeft: "60%"
+    marginLeft: "60%",
+    marginTop: "55px"
   },
   margin: {
     margin: theme.spacing(1)
@@ -76,6 +81,7 @@ export default function Search({ renderInfo }) {
   const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const fileInput = useRef(null);
 
@@ -139,6 +145,7 @@ export default function Search({ renderInfo }) {
 
   const onChangeHandler = e => {
     setFile(e.target.files);
+    setUploadedFileName(e.target.files[0].name);
   };
 
   const photoButtonClicked = () => {
@@ -147,6 +154,11 @@ export default function Search({ renderInfo }) {
 
   const processUploadedImage = () => {
     const data = new FormData();
+
+    setTimeout(() => {
+      setUploadedFileName("");
+    }, 1500);
+
     data.append("file", file[0]);
     data.append("upload_preset", "djf7hmxw");
     data.append("api_key", process.env.API_KEY);
@@ -185,7 +197,9 @@ export default function Search({ renderInfo }) {
           <TextField
             className={classes.field}
             name="recipeName"
+            InputLabelProps={{ shrink: true }}
             id="outlined-search"
+            label="Search ingredients"
             type="search"
             variant="outlined"
             onChange={e => setInput(e.target.value)}
@@ -202,7 +216,7 @@ export default function Search({ renderInfo }) {
               )
             }}
           ></TextField>
-          <div className="upload">
+          <div className={classes.upload}>
             <input
               type="file"
               style={{ display: "none" }}
@@ -217,12 +231,21 @@ export default function Search({ renderInfo }) {
                 component="span"
                 onClick={photoButtonClicked}
               >
-                <PhotoCamera />
+                <PhotoCamera className={classes.camera} />
               </IconButton>
+              <div> {uploadedFileName}</div>
             </label>
-            <Button type="button" onClick={processUploadedImage}>
-              Add your unknown ingredient to the search
-            </Button>
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                type="button"
+                onClick={processUploadedImage}
+              >
+                Search
+              </Button>
+            </label>
           </div>
         </Grid>
       </Grid>
