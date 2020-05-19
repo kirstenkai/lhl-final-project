@@ -54,7 +54,10 @@ export default function Search({ renderInfo }) {
   const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
+  const [searched, setSearched] = useState(false);
+
   const getRecipe = () => {
+    setSearched(false)
     const recipeName = input;
     setRecipes([]);
     axios({
@@ -96,6 +99,7 @@ export default function Search({ renderInfo }) {
         setRecipes(prev => {
           return [...prev, response.data];
         });
+        setSearched(true);
       })
       .catch(error => {
         console.log(error);
@@ -181,7 +185,7 @@ export default function Search({ renderInfo }) {
       </Grid>
       <div className={classes.root}>
         <Grid container spacing={2}>
-          {nestedRecipes.map((recipe, index) => {
+          {!nestedRecipes[0] && searched? (<h1>Sorry, no recipes found</h1>) : nestedRecipes.map((recipe, index) => {
             //console.log("recipe name: ", recipe.title);
             return (
               <Grid item xs={12} sm={6} md={4}>
