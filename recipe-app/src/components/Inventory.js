@@ -244,12 +244,12 @@ export default function Inventory() {
                   component="td"
                   scope="row"
                 >
-                  {row.daysleft === 0 && (
+                  {row.daysleft >= 0 && row.daysleft < 3 && (
                     <Alert variant="filled" severity="warning">
-                      Last Day
+                      Expiring Soon
                     </Alert>
                   )}
-                  {row.daysleft > 2 && row.daysleft > 0 && (
+                  {row.daysleft >= 3 && (
                     <Alert variant="filled" severity="success">
                       {row.daysleft} days
                     </Alert>

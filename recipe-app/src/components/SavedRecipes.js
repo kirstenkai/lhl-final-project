@@ -193,7 +193,7 @@ export default function SavedRecipes({ image, title, id }) {
     console.log("description = ", description);
     axios({
       method: "POST",
-      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
+      url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
     })
       .then(response => {
         console.log(
@@ -219,7 +219,7 @@ export default function SavedRecipes({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${description}`
+          url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${description}`
         })
           .then(response => {
             const descriptionText =
@@ -232,7 +232,7 @@ export default function SavedRecipes({ image, title, id }) {
           .then(() => {
             axios({
               method: "POST",
-              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${ingredients}`
+              url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${ingredients}`
             })
               .then(response => {
                 const ingredientsText =
@@ -246,7 +246,7 @@ export default function SavedRecipes({ image, title, id }) {
               .then(() => {
                 axios({
                   method: "POST",
-                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${instruction}`
+                  url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${instruction}`
                 }).then(response => {
                   const instructionsText =
                     response.data.data.translations[0].translatedText;
@@ -273,7 +273,7 @@ export default function SavedRecipes({ image, title, id }) {
     e.preventDefault();
     axios({
       method: "POST",
-      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
+      url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
     })
       .then(response => {
         const translatedSpoonacularText1 = response.data.data.translations[0].translatedText.split(
@@ -303,7 +303,7 @@ export default function SavedRecipes({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${summary}`
+          url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${summary}`
         })
           .then(response => {
             const translatedSummaryText =
@@ -316,7 +316,7 @@ export default function SavedRecipes({ image, title, id }) {
           .then(() => {
             axios({
               method: "POST",
-              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${extendedIngredients}`
+              url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${extendedIngredients}`
             })
               .then(response => {
                 const translatedIngredientsText =
@@ -330,7 +330,7 @@ export default function SavedRecipes({ image, title, id }) {
               .then(() => {
                 axios({
                   method: "POST",
-                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${analyzedInstructions}`
+                  url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${analyzedInstructions}`
                 }).then(response => {
                   const translatedInstructionsText =
                     response.data.data.translations[0].translatedText;
@@ -356,117 +356,7 @@ export default function SavedRecipes({ image, title, id }) {
         <Typography>
           <h1>Saved Recipes</h1>
         </Typography>
-        <div className={classes.rootGrid}>
-          <Grid container spacing={2} direction="row" justify="center">
-            {customRecipes.map((recipe, index) => {
-              return (
-                <Grid item>
-                  <Card className={classes.root}>
-                    <CardActionArea>
-                      <CardContent>
-                        <CardMedia
-                          key={index}
-                          component="img"
-                          className={`${classes.media} ${classes.card}`}
-                          image={recipe.image}
-                          title={recipe.name}
-                        />
-                      </CardContent>
-                    </CardActionArea>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                    ></Typography>
-                    {recipe.name}
-                    <CardActions>
-                      <button
-                        onClick={e => {
-                          renderCustomInfo(e, recipe.id);
-                        }}
-                      >
-                        View Recipe!
-                      </button>
-                      <Button
-                        onClick={e => {
-                          removeCustomRecipe(e, recipe.id);
-                        }}
-                        size="small"
-                        color="primary"
-                      >
-                        <DeleteTwoToneIcon />
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-        <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
-          <div>
-            {isEnglish && (
-              <div>
-                <h1>{customState.name}</h1>
-                <img src={customState.image}></img>
-                <h2>Description</h2>
-                {customState.description}
-                <h2>Ingredients</h2>
-                {customState.ingredients}
-                <h2>Instructions</h2>
-                {customState.instruction}
 
-                <button
-                  onClick={e => {
-                    console.log("consol ", customState.ingredients);
-                    translate(
-                      e,
-                      customState.name,
-                      customState.description,
-                      customState.ingredients,
-                      customState.instruction
-                    );
-                  }}
-                >
-                  Finnish
-                </button>
-                <FacebookShareButton
-                  url={"www.yahoo.com"}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeCustomModal}>close</button>
-              </div>
-            )}
-            {isSpanish && (
-              <div>
-                <h3>{customSpanishState.name} </h3>
-                <img src={customState.image}></img>
-                <h3>{customSpanishState.descriptionTitle} </h3>
-                <p>{customSpanishState.description} </p>
-                <h3>{customSpanishState.ingredientsTitle} </h3>
-                <p>{customSpanishState.ingredients} </p>
-
-                {customSpanishState.instructions !== null ? (
-                  <h3>{customSpanishState.instructionsTitle} </h3>
-                ) : (
-                  ""
-                )}
-
-                <p>{customSpanishState.instructions} </p>
-                <button onClick={backToEnglish}>English</button>
-                <FacebookShareButton
-                  url={"www.yahoo.com"}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeCustomModal}>close</button>
-              </div>
-            )}
-          </div>
-        </Modal>
         <div className={classes.rootGrid}>
           <Grid container spacing={2} justify="center">
             {recipes.map((recipe, index) => {
@@ -580,7 +470,7 @@ export default function SavedRecipes({ image, title, id }) {
                     );
                   }}
                 >
-                  Finnish
+                  Japanese
                 </button>
                 <button onClick={closeModal}>close</button>
               </div>
@@ -631,6 +521,117 @@ export default function SavedRecipes({ image, title, id }) {
                   }
                 />
                 <button onClick={closeModal}>close</button>
+              </div>
+            )}
+          </div>
+        </Modal>
+        <div className={classes.rootGrid}>
+          <Grid container spacing={2} direction="row" justify="center">
+            {customRecipes.map((recipe, index) => {
+              return (
+                <Grid item>
+                  <Card className={classes.root}>
+                    <CardActionArea>
+                      <CardContent>
+                        <CardMedia
+                          key={index}
+                          component="img"
+                          className={`${classes.media} ${classes.card}`}
+                          image={recipe.image}
+                          title={recipe.name}
+                        />
+                      </CardContent>
+                    </CardActionArea>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                    ></Typography>
+                    {recipe.name}
+                    <CardActions>
+                      <button
+                        onClick={e => {
+                          renderCustomInfo(e, recipe.id);
+                        }}
+                      >
+                        View Recipe!
+                      </button>
+                      <Button
+                        onClick={e => {
+                          removeCustomRecipe(e, recipe.id);
+                        }}
+                        size="small"
+                        color="primary"
+                      >
+                        <DeleteTwoToneIcon />
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
+        <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
+          <div>
+            {isEnglish && (
+              <div>
+                <h1>{customState.name}</h1>
+                <img src={customState.image}></img>
+                <h2>Description</h2>
+                {customState.description}
+                <h2>Ingredients</h2>
+                {customState.ingredients}
+
+                <h2>Instructions</h2>
+                {customState.instruction}
+                <button
+                  onClick={e => {
+                    console.log("consol ", customState.ingredients);
+                    translate(
+                      e,
+                      customState.name,
+                      customState.description,
+                      customState.ingredients,
+                      customState.instruction
+                    );
+                  }}
+                >
+                  Japanese
+                </button>
+                <FacebookShareButton
+                  url={"www.yahoo.com"}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button onClick={closeCustomModal}>close</button>
+              </div>
+            )}
+            {isSpanish && (
+              <div>
+                <h3>{customSpanishState.name} </h3>
+                <img src={customState.image}></img>
+                <h3>{customSpanishState.descriptionTitle} </h3>
+                <p>{customSpanishState.description} </p>
+                <h3>{customSpanishState.ingredientsTitle} </h3>
+                <p>{customSpanishState.ingredients} </p>
+
+                {customSpanishState.instructions !== null ? (
+                  <h3>{customSpanishState.instructionsTitle} </h3>
+                ) : (
+                  ""
+                )}
+
+                <p>{customSpanishState.instructions} </p>
+                <button onClick={backToEnglish}>English</button>
+                <FacebookShareButton
+                  url={"www.yahoo.com"}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                <button onClick={closeCustomModal}>close</button>
               </div>
             )}
           </div>
