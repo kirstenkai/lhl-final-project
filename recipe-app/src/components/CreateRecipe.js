@@ -9,11 +9,36 @@ import Axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(2, 4),
-      width: '80%',
-     
-    }
+    margin: 0,
+    padding: 0,
+    maxWidth: "100%",
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background:
+      "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/inventory.jpg)",
+    height: "100vh",
+  },
+  paper: {
+    width: "70%",
+    padding: "0 50px",
+  }, 
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    "& *": {
+      margin: "5px 0",
+    },
+  }, 
+  actions: {
+    width: "65%",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 }));
 
@@ -54,11 +79,8 @@ export default function CreateRecipe() {
   };
 
   return (
-    <Container maxWidth="lg">
-
-    <div className={classes.root}>
-
-      <Paper elevation={3}>
+    <div className={classes.container}>
+      <Paper elevation={3} className={classes.paper} fullWidth>
 
       <h1>Create Recipe</h1>
 
@@ -66,16 +88,17 @@ export default function CreateRecipe() {
         onSubmit={save}
         noValidate
         autoComplete="off"
+        className={classes.form}
         >
-        <div>
+        
           <TextField
             name="title"
             id="standard-textarea"
             label="Title"
             multiline
+            variant="outlined"
+            fullWidth
             />
-        </div>
-        <div>
           <TextField
             name="description"
             id="outlined-multiline-static"
@@ -83,6 +106,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
+            fullWidth
             />
           <TextField
             name="ingredients"
@@ -91,6 +115,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
+            fullWidth
             />
           <TextField
             name="instructions"
@@ -99,6 +124,7 @@ export default function CreateRecipe() {
             multiline
             rows={4}
             variant="outlined"
+            fullWidth
             />
           <TextField
             name="image"
@@ -107,15 +133,16 @@ export default function CreateRecipe() {
             multiline
             rows={1}
             variant="outlined"
+            fullWidth
             />
-        </div>
+        <div className={classes.actions}>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>
         <UploadButton onClick={imagefunc} />
+        </div>
       </form>
     </Paper>
   </div>
-    </Container>
   );
 }

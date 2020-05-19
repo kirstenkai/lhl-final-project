@@ -58,7 +58,6 @@ function App() {
           <Route exact path="/">
             {isAuthenticated ? <Redirect to="/search" /> : <LandingPage />}
           </Route>
-          <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/inventory" component={Inventory} />
           <PrivateRoute path="/saved" component={SavedRecipes} />
           <PrivateRoute path="/inventory" component={Inventory} />
