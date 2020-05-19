@@ -34,13 +34,13 @@ const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
   const [file, setFile] = useState();
-  const [imageURL, setimageURL] = useState();
+  //const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
   const [searched, setSearched] = useState(false);
 
   const getRecipe = () => {
-    setSearched(false)
+    setSearched(false);
     const recipeName = input;
     setRecipes([]);
     axios({
@@ -126,7 +126,9 @@ export default function Search({ renderInfo }) {
             imageURL: res,
           })
           .then((res) => {
-            setInput(prev => prev? prev += `, ${res.data.output}` : res.data.output);
+            setInput((prev) =>
+              prev ? (prev += `, ${res.data.output}`) : res.data.output
+            );
           });
       });
   };
@@ -177,21 +179,25 @@ export default function Search({ renderInfo }) {
       </Grid>
       <div className={classes.root}>
         <Grid container spacing={2}>
-          {!nestedRecipes[0] && searched? (<h1>Sorry, no recipes found</h1>) : nestedRecipes.map((recipe, index) => {
-            //console.log("recipe name: ", recipe.title);
-            return (
-              <Grid item xs={12} sm={6} md={4}>
-                <div key={index}>
-                  <RecipeCard
-                    title={recipe.title}
-                    image={recipe.image}
-                    id={recipe.id}
-                    className={classes.card}
-                  />
-                </div>
-              </Grid>
-            );
-          })}
+          {!nestedRecipes[0] && searched ? (
+            <h1>Sorry, no recipes found</h1>
+          ) : (
+            nestedRecipes.map((recipe, index) => {
+              //console.log("recipe name: ", recipe.title);
+              return (
+                <Grid item xs={12} sm={6} md={4}>
+                  <div key={index}>
+                    <RecipeCard
+                      title={recipe.title}
+                      image={recipe.image}
+                      id={recipe.id}
+                      className={classes.card}
+                    />
+                  </div>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
       </div>
       {/* </form> */}
