@@ -26,7 +26,17 @@ const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
-    margin: "6px 0"
+    margin: "6px 0",
+    paddingBottom: "2px",
+    "&.title": {
+      color: "red"
+    }
+  },
+  container: {
+    background:
+      "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
+    maxWidth: "100%",
+    maxHeight: "100vh"
   },
   rootGrid: {
     display: "flex",
@@ -40,6 +50,32 @@ const useStyles = makeStyles({
   card: {
     padding: "8px",
     textAlign: "center"
+  },
+  title: {
+    display: "flex",
+    marginLeft: "40%"
+  },
+  actionbar: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    marginRight: "-17px",
+    paddingTop: "0px"
+  },
+  actionbarcustom: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    marginRight: "0px",
+    paddingTop: "0px"
+  },
+  recipetitle: {
+    display: "flex",
+    alignItems: "center"
+  },
+  viewbtn: {
+    fontSize: "0.7rem",
+    height: "30px",
+    textTransform: "0",
+    backgroundColor: "whitesmoke"
   }
 });
 
@@ -351,10 +387,10 @@ export default function SavedRecipes({ image, title, id }) {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container className={classes.container}>
       <div>
         <Typography>
-          <h1>Saved Recipes</h1>
+          <h1 className={classes.title}>Saved Recipes</h1>
         </Typography>
 
         <div className={classes.rootGrid}>
@@ -379,15 +415,9 @@ export default function SavedRecipes({ image, title, id }) {
                       variant="h5"
                       component="h2"
                     ></Typography>
-                    {recipe.title}
-                    <CardActions>
-                      <button
-                        onClick={e => {
-                          renderInfo(e, recipe.spoonacular_id);
-                        }}
-                      >
-                        View Recipe!
-                      </button>
+                    <div className={classes.recipetitle}> {recipe.title}</div>
+
+                    <CardActions className={classes.actionbar}>
                       <Button
                         onClick={e => {
                           remove(e, recipe.id);
@@ -396,6 +426,16 @@ export default function SavedRecipes({ image, title, id }) {
                         color="primary"
                       >
                         <DeleteTwoToneIcon />
+                      </Button>
+
+                      <Button
+                        className={classes.viewbtn}
+                        onClick={e => {
+                          renderInfo(e, recipe.spoonacular_id);
+                        }}
+                        variant="contained"
+                      >
+                        View Recipe
                       </Button>
                     </CardActions>
                   </Card>
@@ -548,14 +588,17 @@ export default function SavedRecipes({ image, title, id }) {
                       component="h2"
                     ></Typography>
                     {recipe.name}
-                    <CardActions>
-                      <button
+                    <CardActions className={classes.actionbarcustom}>
+                      <Button
+                        className={classes.viewbtn}
                         onClick={e => {
                           renderCustomInfo(e, recipe.id);
                         }}
+                        variant="contained"
                       >
-                        View Recipe!
-                      </button>
+                        View Recipe
+                      </Button>
+
                       <Button
                         onClick={e => {
                           removeCustomRecipe(e, recipe.id);

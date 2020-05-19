@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Axios from "axios";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
-
+import { makeStyles } from "@material-ui/core/styles";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
 import LandingPage from "./components/LandingPage";
@@ -13,9 +13,8 @@ import Inventory from "./components/Inventory";
 import Login from "./components/Login";
 import CreateRecipe from "./components/CreateRecipe";
 import NotFound from "./components/NotFound";
-import logo from "./components/nezuko.gif";
-import CssBaseline from '@material-ui/core/CssBaseline';
-
+import logo from "./components/foodloading2.gif";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Recipe from "./components/Recipe";
 
@@ -30,7 +29,20 @@ import PrivateRoute from "./components/PrivateRoute";
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
+const useStyles = makeStyles({
+  logo: {
+    height: "500px",
+    width: "600px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "30%",
+    marginTop: "12%"
+  }
+});
 function App() {
+  const classes = useStyles();
+
   Axios({
     method: "GET",
     url: "http://localhost:5000/",
@@ -44,7 +56,7 @@ function App() {
   const { loading, isAuthenticated } = useAuth0();
 
   if (loading) {
-    return <img src={logo} alt="loading..."></img>;
+    return <img className={classes.logo} src={logo} alt="loading..."></img>;
   }
 
   return (

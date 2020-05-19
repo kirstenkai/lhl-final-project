@@ -36,6 +36,12 @@ const useStyles = makeStyles({
   modalTop: {
     display: "flex",
     justifyContent: "space-between"
+  },
+  viewbtn: {
+    fontSize: "0.7rem",
+    height: "30px",
+    textTransform: "0",
+    backgroundColor: "whitesmoke"
   }
   // modal: {
   //   maxWidth: "100%"
@@ -398,7 +404,10 @@ export default function RecipeCard({ image, title, id }) {
         <Button onClick={save} size="small" color="primary">
           <FavoriteBorderIcon />
         </Button>
-        <button onClick={renderInfo}>View Recipe!</button>
+
+        <Button className={classes.viewbtn} onClick={renderInfo}>
+          View Recipe
+        </Button>
       </CardActions>
     </Card>
   );
