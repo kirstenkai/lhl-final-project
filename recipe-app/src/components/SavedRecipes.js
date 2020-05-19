@@ -33,10 +33,13 @@ const useStyles = makeStyles({
     }
   },
   container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
-    maxWidth: "100%",
-    maxHeight: "100vh"
+    height: "100vh",
+    maxWidth: "100%"
   },
   rootGrid: {
     display: "flex",
