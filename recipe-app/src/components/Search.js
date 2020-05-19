@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useRef } from "react";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
 
@@ -8,17 +8,19 @@ import { useAuth0 } from "../react-auth0-spa";
 import { makeStyles, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { Grid, Container } from "@material-ui/core";
+import { Grid, Container, InputAdornment, Divider } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    marginBottom: "63px"
   },
   container: {
     display: "flex",
@@ -32,11 +34,36 @@ const useStyles = makeStyles(theme => ({
   search: {
     width: "60%",
     display: "flex",
-    alignItems: "center"
+    marginLeft: "40%"
   },
-
+  upload: {
+    display: "flex",
+    justifyContent: "flex-end"
+  },
+  input: {
+    display: "none"
+  },
+  camera: {
+    height: "55px",
+    width: "55px",
+    marginTop: "-20px"
+  },
+  searchbutton: {
+    marginLeft: "60%",
+    marginTop: "55px"
+  },
   margin: {
     margin: theme.spacing(1)
+  },
+  searchicon: {
+    marginLeft: "12px",
+    "&:hover": {
+      cursor: "pointer"
+    }
+  },
+  field: {
+    width: "500px",
+    marginBottom: "45px"
   },
   card: {
     padding: theme.spacing(2),
@@ -55,10 +82,14 @@ export default function Search({ renderInfo }) {
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
   const [searched, setSearched] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+
+  const fileInput = useRef(null);
 
   const getRecipe = () => {
-    setSearched(false)
+    setSearched(false);
     const recipeName = input;
+    console.log("heloo clicked");
     setRecipes([]);
     axios({
       method: "GET",
@@ -66,6 +97,7 @@ export default function Search({ renderInfo }) {
         "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients",
       headers: {
         "content-type": "application/octet-stream",
+        "Access-Control-Allow-Origin": "*",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         "x-rapidapi-key": `${SPOONACULAR_API}`
@@ -109,11 +141,6 @@ export default function Search({ renderInfo }) {
   const nestedRecipes = recipes.flat();
   const classes = useStyles();
 
-  const translateCard = e => {
-    e.preventDefault();
-    console.log("hey");
-  };
-
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;
@@ -121,10 +148,20 @@ export default function Search({ renderInfo }) {
 
   const onChangeHandler = e => {
     setFile(e.target.files);
+    setUploadedFileName(e.target.files[0].name);
   };
 
-  const onClickHandler = () => {
+  const photoButtonClicked = () => {
+    fileInput.current.click();
+  };
+
+  const processUploadedImage = () => {
     const data = new FormData();
+
+    setTimeout(() => {
+      setUploadedFileName("");
+    }, 1500);
+
     data.append("file", file[0]);
     data.append("upload_preset", "djf7hmxw");
     data.append("api_key", process.env.API_KEY);
@@ -152,57 +189,107 @@ export default function Search({ renderInfo }) {
 
   return (
     <Container className={classes.container}>
-      <div>
-        <h2>if you don't know name of ingridient search by picture</h2>
-        <input type="file" name="file" onChange={onChangeHandler} />
-        <button type="button" onClick={onClickHandler}>
-          Add your unknow ingredient to the search
-        </button>
-      </div>
-      <Typography className="searchbar">
-        <h1>Search</h1>
-      </Typography>
-      {/* <form onSubmit={getRecipe}> */}
-      <Grid container className="search" spacing={1} alignItems="flex-end">
-        <Grid item>
-          <SearchIcon />
-        </Grid>
-        <Grid xs={8}>
-         <TextField 
+      <Grid
+        container
+        className={classes.searchbutton}
+        spacing={1}
+        alignItems="flex-end"
+      >
+        <Grid item></Grid>
+        <Grid>
+          <TextField
+            className={classes.field}
             name="recipeName"
-            id="outlined-search" 
+            InputLabelProps={{ shrink: true }}
+            id="outlined-search"
             label="Search ingredients"
-            type="search" 
-            variant="outlined" 
-            onChange={(e) => setInput(e.target.value)}
+            type="search"
+            variant="outlined"
+            onChange={e => setInput(e.target.value)}
             value={input}
-        />
-
-          <Button variant="contained" color="primary" onClick={getRecipe}>
-            Search
-          </Button>
+            InputProps={{
+              endAdornment: (
+                <InputAdornment>
+                  <Divider orientation="vertical" flexItem />
+                  <SearchIcon
+                    className={classes.searchicon}
+                    onClick={getRecipe}
+                  />
+                </InputAdornment>
+              )
+            }}
+          ></TextField>
+          <div className={classes.upload}>
+            <input
+              type="file"
+              style={{ display: "none" }}
+              name="file"
+              ref={fileInput}
+              onChange={onChangeHandler}
+            />
+            <label htmlFor="file">
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                onClick={photoButtonClicked}
+              >
+                <PhotoCamera className={classes.camera} />
+              </IconButton>
+              <div> {uploadedFileName}</div>
+            </label>
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                type="button"
+                onClick={processUploadedImage}
+              >
+                Search
+              </Button>
+            </label>
+          </div>
         </Grid>
       </Grid>
       <div className={classes.root}>
         <Grid container spacing={2}>
-          {!nestedRecipes[0] && searched? (<h1>Sorry, no recipes found</h1>) : nestedRecipes.map((recipe, index) => {
-            //console.log("recipe name: ", recipe.title);
-            return (
-              <Grid item xs={12} sm={6} md={4}>
-                <div key={index}>
-                  <RecipeCard
-                    title={recipe.title}
-                    image={recipe.image}
-                    id={recipe.id}
-                    className={classes.card}
-                  />
-                </div>
-              </Grid>
-            );
-          })}
+          {!nestedRecipes[0] && searched ? (
+            <h1>Sorry, no recipes found</h1>
+          ) : (
+            nestedRecipes.map((recipe, index) => {
+              //console.log("recipe name: ", recipe.title);
+              return (
+                <Grid item>
+                  <div key={index}>
+                    <RecipeCard
+                      title={recipe.title}
+                      image={recipe.image}
+                      id={recipe.id}
+                      className={classes.card}
+                    />
+                  </div>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
       </div>
       {/* </form> */}
     </Container>
   );
 }
+
+// <div>
+// <input type="file" name="file" onChange={onChangeHandler} />
+// <button type="button" onClick={onClickHandler}>
+//   Add your unknow ingredient to the search
+// </button>
+// </div>
+// <Typography>
+// <h1>Search</h1>
+// </Typography>
+// <input type="file" name="file" onChange={onChangeHandler} />
+// <button type="button" onClick={onClickHandler}>
+//   Search by Image
+// </button>
