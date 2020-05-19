@@ -7,6 +7,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import Container from "@material-ui/core/Container";
+
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
@@ -28,7 +32,14 @@ const useStyles = makeStyles({
   },
   media: {
     height: 200
+  },
+  modalTop: {
+    display: "flex",
+    justifyContent: "space-between"
   }
+  // modal: {
+  //   maxWidth: "100%"
+  // }
 });
 
 export default function RecipeCard({ image, title, id }) {
@@ -232,11 +243,20 @@ export default function RecipeCard({ image, title, id }) {
             title={title}
           />
 
-          <Modal isOpen={isOpen} onRequestClose={closeModal}>
+          <Modal
+            style={{ width: "50%" }}
+            isOpen={isOpen}
+            onRequestClose={closeModal}
+          >
             <div>
               {isEnglish && (
-                <div>
-                  <h3>{state.title}</h3>
+                <Container style={{ width: "50%" }}>
+                  <div className={classes.modalTop}>
+                    <h3>{state.title}</h3>
+                    <IconButton aria-label="delete" onClick={closeModal}>
+                      <CloseIcon />
+                    </IconButton>
+                  </div>
                   <img src={state.image}></img>
                   <div dangerouslySetInnerHTML={{ __html: state.summary }} />
                   <p>{state.id}</p>
@@ -308,8 +328,7 @@ export default function RecipeCard({ image, title, id }) {
                   >
                     Finnish
                   </button>
-                  <button onClick={closeModal}>close</button>
-                </div>
+                </Container>
               )}
               {isSpanish && (
                 <div>
