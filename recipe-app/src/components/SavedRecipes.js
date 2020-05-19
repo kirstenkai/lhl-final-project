@@ -7,6 +7,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import { Typography, Container } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
@@ -24,11 +25,22 @@ const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
+    margin: "6px 0"
+  },
+  rootGrid: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
   },
   media: {
     height: 140
-  }
+  },
+  card: {
+    padding: '8px',
+    textAlign: "center",
+  },
 });
 
 export default function SavedRecipes({ image, title, id }) {
@@ -344,18 +356,29 @@ export default function SavedRecipes({ image, title, id }) {
         <Typography>
           <h1>Saved Recipes</h1>
         </Typography>
-        {customRecipes.map((recipe, index) => {
-          return (
+        <div className={classes.rootGrid}>
+
+        <Grid 
+          container
+          spacing={2}
+          direction="row"
+          justify="space-between"
+
+        >
+          {customRecipes.map((recipe, index) => {
+            return (
+              <Grid item>
+
             <Card className={classes.root}>
               <CardActionArea>
                 <CardContent>
                   <CardMedia
                     key={index}
                     component="img"
-                    className={classes.media}
+                    className={`${classes.media} ${classes.card}`}
                     image={recipe.image}
                     title={recipe.name}
-                  />
+                    />
                 </CardContent>
               </CardActionArea>
               <Typography gutterBottom variant="h5" component="h2"></Typography>
@@ -365,7 +388,7 @@ export default function SavedRecipes({ image, title, id }) {
                   onClick={e => {
                     renderCustomInfo(e, recipe.id);
                   }}
-                >
+                  >
                   View Recipe!
                 </button>
                 <Button
@@ -374,13 +397,16 @@ export default function SavedRecipes({ image, title, id }) {
                   }}
                   size="small"
                   color="primary"
-                >
+                  >
                   <DeleteTwoToneIcon />
                 </Button>
               </CardActions>
             </Card>
+          </Grid>
           );
         })}
+        </Grid>
+      </div>
         <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
           <div>
             {isEnglish && (
@@ -445,9 +471,14 @@ export default function SavedRecipes({ image, title, id }) {
             )}
           </div>
         </Modal>
+        <div className={classes.rootGrid}>
+
+        <Grid container spacing={2} justify="space-between">
 
         {recipes.map((recipe, index) => {
           return (
+            <Grid item>
+
             <Card className={classes.root}>
               <CardActionArea>
                 <CardContent>
@@ -457,7 +488,7 @@ export default function SavedRecipes({ image, title, id }) {
                     className={classes.media}
                     image={recipe.image}
                     title={recipe.title}
-                  />
+                    />
                 </CardContent>
               </CardActionArea>
               <Typography gutterBottom variant="h5" component="h2"></Typography>
@@ -467,7 +498,7 @@ export default function SavedRecipes({ image, title, id }) {
                   onClick={e => {
                     renderInfo(e, recipe.spoonacular_id);
                   }}
-                >
+                  >
                   View Recipe!
                 </button>
                 <Button
@@ -476,13 +507,16 @@ export default function SavedRecipes({ image, title, id }) {
                   }}
                   size="small"
                   color="primary"
-                >
+                  >
                   <DeleteTwoToneIcon />
                 </Button>
               </CardActions>
             </Card>
+          </Grid>
           );
         })}
+        </Grid>
+        </div>
         <Modal isOpen={isOpen} onRequestClose={closeModal}>
           <div>
             {isEnglish && (
