@@ -163,7 +163,7 @@ export default function SavedRecipes({ image, title, id }) {
     e.preventDefault();
     setIsOpen(true);
     setCurrentId(id);
-    console.log("id=", id);
+    //console.log("id=", id);
     Axios({
       method: "GET",
       url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,

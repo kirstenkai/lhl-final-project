@@ -10,7 +10,10 @@ module.exports = db => {
 
     db.query(query, [id, title, image, user_id])
       .then(data => {
+        const id = data.rows
+        
         res.json(data.rows);
+        console.log(res)
       })
       .catch(err => {
         res.status(500).json({ error: err.message });
