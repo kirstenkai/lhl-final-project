@@ -281,16 +281,3 @@ export default function Search({ renderInfo }) {
   );
 }
 
-// <div>
-// <input type="file" name="file" onChange={onChangeHandler} />
-// <button type="button" onClick={onClickHandler}>
-//   Add your unknow ingredient to the search
-// </button>
-// </div>
-// <Typography>
-// <h1>Search</h1>
-// </Typography>
-// <input type="file" name="file" onChange={onChangeHandler} />
-// <button type="button" onClick={onClickHandler}>
-//   Search by Image
-// </button>
