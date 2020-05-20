@@ -284,7 +284,16 @@ export default function RecipeCard({ image, title, id }) {
                 });
               })
             }
-            onClick={() => translateSpoonacular(state.title, state.summary)}
+            translateSpoonacular={() =>
+              translateSpoonacular(
+                state.title,
+                state.summary,
+                state.extendedIngredients.map(key => key.original),
+                state.analyzedInstructions.length
+                  ? state.analyzedInstructions[0].steps.map(key => key.step)
+                  : null
+              )
+            }
             sourceUrl={state.sourceUrl}
             children={<FacebookIcon size={32} round={true}></FacebookIcon>}
           />

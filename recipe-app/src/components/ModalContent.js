@@ -65,7 +65,7 @@ export default function RecipeReviewCard({
   };
 
   const onClick = () => {
-    translateSpoonacular();
+    return translateSpoonacular();
   };
 
   return (
@@ -110,7 +110,7 @@ export default function RecipeReviewCard({
           >
             {instructions}
           </Typography>
-          <button type="button" onClick={() => onClick}>
+          <button type="button" onClick={onClick}>
             Japanese
           </button>
         </CardContent>
@@ -118,3 +118,4 @@ export default function RecipeReviewCard({
     </Card>
   );
 }
+// // //

@@ -24,7 +24,8 @@ export default function TransitionsModal({
   sourceUrl,
   searchIngredients,
   instructionsTitle,
-  children
+  children,
+  translateSpoonacular
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -66,6 +67,7 @@ export default function TransitionsModal({
             instructions={instructions}
             sourceUrl={sourceUrl}
             children={children}
+            translateSpoonacular={translateSpoonacular}
           />
         </Fade>
       </Modal>

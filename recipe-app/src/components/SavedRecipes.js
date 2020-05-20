@@ -130,7 +130,7 @@ export default function SavedRecipes({ image, title, id }) {
     const userId = user.email;
 
     axios.get(`/api/saved/${userId}`).then(res => {
-      console.log(res.data);
+      console.log("ZE DATAA", res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
@@ -392,6 +392,87 @@ export default function SavedRecipes({ image, title, id }) {
   };
 
   return (
+    <div>
+      {recipes.map((recipe, index) => {
+        return (
+          <Card className={classes.root}>
+            <CardActionArea>
+              <CardContent>
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={recipe.image}
+                  title={title}
+                  id={id}
+                />
+
+                <TransitionsModal
+                  title={title}
+                  image={image}
+                  searchIngredients={renderInfo}
+                  description={state.summary}
+                  ingredients={
+                    state.extendedIngredients &&
+                    state.extendedIngredients.map((ingredient, index) => {
+                      return (
+                        <div key={index}>
+                          {<h3>☞ {ingredient.original}</h3>}
+                        </div>
+                      );
+                    })
+                  }
+                  instructionsTitle={
+                    state.analyzedInstructions &&
+                    state.analyzedInstructions.length ? (
+                      <h2>Instructions</h2>
+                    ) : null
+                  }
+                  instructions={
+                    state.analyzedInstructions &&
+                    state.analyzedInstructions.map((instruction, index) => {
+                      return instruction.steps.map((key2, index) => {
+                        return (
+                          <div key={index}>
+                            <ol>
+                              {" "}
+                              {index + 1}. {key2.step}
+                            </ol>
+                          </div>
+                        );
+                      });
+                    })
+                  }
+                  // translateSpoonacular={() =>
+                  //   translateSpoonacular(state.title, state.summary)
+                  // }
+                  sourceUrl={state.sourceUrl}
+                  children={
+                    <FacebookIcon size={32} round={true}></FacebookIcon>
+                  }
+                />
+                {/* */}
+
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="h2"
+                ></Typography>
+                {(title = title)}
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button className={classes.viewbtn} onClick={renderInfo}>
+                View Recipe
+              </Button>
+            </CardActions>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+/*
+  (
     <Container className={classes.container}>
       <Typography>
         <h1 className={classes.title}>Saved Recipes</h1>
@@ -719,7 +800,9 @@ export default function SavedRecipes({ image, title, id }) {
         //     )}
         //   </div>
         // </Modal>
-          </div>*/}
-    </Container>
-  );
-}
+          // </div>*/
+// }
+//     </Container>
+//   );
+// }
+// */
