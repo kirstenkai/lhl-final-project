@@ -19,29 +19,29 @@ import CloseIcon from "@material-ui/icons/Close";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 500,
     maxHeight: "80vh",
-    overflow: "auto",
+    overflow: "auto"
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%" // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
+      duration: theme.transitions.duration.shortest
+    })
   },
   expandOpen: {
-    transform: "rotate(180deg)",
+    transform: "rotate(180deg)"
   },
   avatar: {
-    backgroundColor: red[500],
-  },
+    backgroundColor: red[500]
+  }
 }));
 
 export default function RecipeReviewCard({
@@ -56,7 +56,7 @@ export default function RecipeReviewCard({
   sourceUrl,
   instructionsTitle,
   translateSpoonacular,
-  children,
+  children
 }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -65,7 +65,7 @@ export default function RecipeReviewCard({
   };
 
   const onClick = () => {
-    translateSpoonacular(title, description, ingredients, instructions);
+    translateSpoonacular();
   };
 
   return (
@@ -87,7 +87,7 @@ export default function RecipeReviewCard({
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
+            [classes.expandOpen]: expanded
           })}
           onClick={handleExpandClick}
           aria-expanded={expanded}
@@ -110,7 +110,9 @@ export default function RecipeReviewCard({
           >
             {instructions}
           </Typography>
-          <button onClick={onClick}>Japanese</button>
+          <button type="button" onClick={() => onClick}>
+            Japanese
+          </button>
         </CardContent>
       </Collapse>
     </Card>

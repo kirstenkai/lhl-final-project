@@ -5,13 +5,13 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import ModalContent from "./ModalContent";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    overflow: "scroll",
-  },
+    overflow: "scroll"
+  }
 }));
 
 export default function TransitionsModal({
@@ -24,12 +24,12 @@ export default function TransitionsModal({
   sourceUrl,
   searchIngredients,
   instructionsTitle,
-  children,
+  children
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const onClick = (e) => {
+  const onClick = e => {
     searchIngredients(e);
     setOpen(true);
   };
@@ -52,7 +52,7 @@ export default function TransitionsModal({
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 500
         }}
       >
         <Fade in={open}>

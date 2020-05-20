@@ -18,6 +18,7 @@ import Modal from "react-modal";
 import axios from "axios";
 import RecipeCard from "./RecipeCard";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
+import TransitionsModal from "./TransitionsModal";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -167,6 +168,7 @@ export default function SavedRecipes({ image, title, id }) {
     })
       .then(response => {
         setState(response.data);
+        console.log("REPSS!", response.data);
       })
       .catch(error => {
         console.log(error);
@@ -391,298 +393,333 @@ export default function SavedRecipes({ image, title, id }) {
 
   return (
     <Container className={classes.container}>
-      <div>
-        <Typography>
-          <h1 className={classes.title}>Saved Recipes</h1>
-        </Typography>
+      <Typography>
+        <h1 className={classes.title}>Saved Recipes</h1>
+      </Typography>
 
-        <div className={classes.rootGrid}>
-          <Grid container spacing={2} justify="center">
-            {recipes.map((recipe, index) => {
-              return (
-                <Grid item>
-                  <Card className={classes.root}>
-                    <CardActionArea>
-                      <CardContent>
-                        <CardMedia
-                          key={index}
-                          component="img"
-                          className={classes.media}
-                          image={recipe.image}
-                          title={recipe.title}
-                        />
-                      </CardContent>
-                    </CardActionArea>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                    ></Typography>
-                    <div className={classes.recipetitle}> {recipe.title}</div>
+      <div className={classes.rootGrid}>
+        <Grid container spacing={2} justify="center">
+          {recipes.map((recipe, index) => {
+            return (
+              <Grid item>
+                <Card className={classes.root}>
+                  <CardActionArea>
+                    <CardContent>
+                      <CardMedia
+                        key={index}
+                        component="img"
+                        className={classes.media}
+                        image={recipe.image}
+                        title={recipe.title}
+                      />
+                    </CardContent>
+                  </CardActionArea>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="h2"
+                  ></Typography>
+                  <div className={classes.recipetitle}> {recipe.title}</div>
 
-                    <CardActions className={classes.actionbar}>
-                      <Button
-                        onClick={e => {
-                          remove(e, recipe.id);
-                        }}
-                        size="small"
-                        color="primary"
-                      >
-                        <DeleteTwoToneIcon />
-                      </Button>
+                  <CardActions className={classes.actionbar}>
+                    <Button
+                      onClick={e => {
+                        remove(e, recipe.id);
+                      }}
+                      size="small"
+                      color="primary"
+                    >
+                      <DeleteTwoToneIcon />
+                    </Button>
 
-                      <Button
-                        className={classes.viewbtn}
-                        onClick={e => {
-                          renderInfo(e, recipe.spoonacular_id);
-                        }}
-                        variant="contained"
-                      >
-                        View Recipe
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-        <Modal isOpen={isOpen} onRequestClose={closeModal}>
-          <div>
-            {isEnglish && (
-              <div>
-                <h3>{state.title}</h3>
-                <img src={state.image}></img>
-                <div dangerouslySetInnerHTML={{ __html: state.summary }} />
-                <p>{state.id}</p>
-                <h2> Preparation time:</h2>
-                <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
-                <h2>Serving: </h2>
-
-                {state.servings === 1 ? (
-                  <h3>{state.servings} person</h3>
-                ) : (
-                  <h3> {state.servings} people</h3>
-                )}
-                <span>
-                  <h2>Source URL:</h2>
-                  <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
-                </span>
-                <h2>Required Ingredients</h2>
-                {state.extendedIngredients &&
-                  state.extendedIngredients.map((ingredient, index) => {
-                    return (
-                      <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
-                    );
-                  })}
-                {state.analyzedInstructions &&
-                state.analyzedInstructions.length ? (
-                  <h2>Instructions</h2>
-                ) : null}
-                {state.analyzedInstructions &&
-                  state.analyzedInstructions.map((instruction, index) => {
-                    return instruction.steps.map((key2, index) => {
-                      return (
-                        <div key={index}>
-                          <ol>
-                            {" "}
-                            {index + 1}. {key2.step}
-                          </ol>
-                        </div>
-                      );
-                    });
-                  })}
-                <FacebookShareButton
-                  url={state.sourceUrl}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button
-                  onClick={e => {
-                    translateSpoonacular(
-                      e,
-                      state.title,
-                      state.summary,
-                      state.extendedIngredients.map(key => key.original),
-                      state.analyzedInstructions.length
-                        ? state.analyzedInstructions[0].steps.map(
-                            key => key.step
-                          )
-                        : null
-                    );
-                  }}
-                >
-                  Japanese
-                </button>
-                <button onClick={closeModal}>close</button>
-              </div>
-            )}
-            {isSpanish && (
-              <div>
-                <h3>{customSpoonacularSpanishState.title}</h3>
-                <img src={state.image}></img>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: customSpoonacularSpanishState.summary
-                  }}
-                />
-                <p>{state.id}</p>
-                <h2> {customSpoonacularSpanishState.preparationTime}</h2>
-                <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
-                <h2>{customSpoonacularSpanishState.serving} </h2>
-
-                {state.servings === 1 ? (
-                  <h3>
-                    {state.servings} {customSpoonacularSpanishState.person}
-                  </h3>
-                ) : (
-                  <h3>
-                    {" "}
-                    {state.servings} {customSpoonacularSpanishState.people}
-                  </h3>
-                )}
-                <span>
-                  <h2>{customSpoonacularSpanishState.sourceUrl}</h2>
-                  <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
-                </span>
-                <h2>
-                  {customSpoonacularSpanishState.requiredIngredientsTitle}
-                </h2>
-                {customSpoonacularSpanishState.ingredients
-                  ? customSpoonacularSpanishState.ingredients
-                  : null}
-                <h2>{customSpoonacularSpanishState.instructionsTitle}</h2>
-                {customSpoonacularSpanishState.instructions
-                  ? customSpoonacularSpanishState.instructions
-                  : null}
-                <button onClick={backToEnglish}>English</button>
-                <FacebookShareButton
-                  url={state.sourceUrl}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeModal}>close</button>
-              </div>
-            )}
-          </div>
-        </Modal>
-        <div className={classes.rootGrid}>
-          <Grid container spacing={2} direction="row" justify="center">
-            {customRecipes.map((recipe, index) => {
-              return (
-                <Grid item>
-                  <Card className={classes.root}>
-                    <CardActionArea>
-                      <CardContent>
-                        <CardMedia
-                          key={index}
-                          component="img"
-                          className={`${classes.media} ${classes.card}`}
-                          image={recipe.image}
-                          title={recipe.name}
-                        />
-                      </CardContent>
-                    </CardActionArea>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                    ></Typography>
-                    {recipe.name}
-                    <CardActions className={classes.actionbarcustom}>
-                      <Button
-                        className={classes.viewbtn}
-                        onClick={e => {
-                          renderCustomInfo(e, recipe.id);
-                        }}
-                        variant="contained"
-                      >
-                        View Recipe
-                      </Button>
-
-                      <Button
-                        onClick={e => {
-                          removeCustomRecipe(e, recipe.id);
-                        }}
-                        size="small"
-                        color="primary"
-                      >
-                        <DeleteTwoToneIcon />
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </div>
-        <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
-          <div>
-            {isEnglish && (
-              <div>
-                <h1>{customState.name}</h1>
-                <img src={customState.image}></img>
-                <h2>Description</h2>
-                {customState.description}
-                <h2>Ingredients</h2>
-                {customState.ingredients}
-
-                <h2>Instructions</h2>
-                {customState.instruction}
-                <button
-                  onClick={e => {
-                    console.log("consol ", customState.ingredients);
-                    translate(
-                      e,
-                      customState.name,
-                      customState.description,
-                      customState.ingredients,
-                      customState.instruction
-                    );
-                  }}
-                >
-                  Japanese
-                </button>
-                <FacebookShareButton
-                  url={"www.yahoo.com"}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeCustomModal}>close</button>
-              </div>
-            )}
-            {isSpanish && (
-              <div>
-                <h3>{customSpanishState.name} </h3>
-                <img src={customState.image}></img>
-                <h3>{customSpanishState.descriptionTitle} </h3>
-                <p>{customSpanishState.description} </p>
-                <h3>{customSpanishState.ingredientsTitle} </h3>
-                <p>{customSpanishState.ingredients} </p>
-
-                {customSpanishState.instructions !== null ? (
-                  <h3>{customSpanishState.instructionsTitle} </h3>
-                ) : (
-                  ""
-                )}
-
-                <p>{customSpanishState.instructions} </p>
-                <button onClick={backToEnglish}>English</button>
-                <FacebookShareButton
-                  url={"www.yahoo.com"}
-                  children={
-                    <FacebookIcon size={32} round={true}></FacebookIcon>
-                  }
-                />
-                <button onClick={closeCustomModal}>close</button>
-              </div>
-            )}
-          </div>
-        </Modal>
+                    <Button
+                      className={classes.viewbtn}
+                      onClick={e => {
+                        renderInfo(e, recipe.spoonacular_id);
+                      }}
+                      variant="contained"
+                    >
+                      View Recipe
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
       </div>
+
+      <TransitionsModal
+        title={title}
+        image={image}
+        searchIngredients={renderInfo}
+        description={state.summary}
+        ingredients={
+          state.extendedIngredients &&
+          state.extendedIngredients.map((ingredient, index) => {
+            return <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>;
+          })
+        }
+        instructionsTitle={
+          state.analyzedInstructions && state.analyzedInstructions.length ? (
+            <h2>Instructions</h2>
+          ) : null
+        }
+        instructions={
+          state.analyzedInstructions &&
+          state.analyzedInstructions.map((instruction, index) => {
+            return instruction.steps.map((key2, index) => {
+              return (
+                <div key={index}>
+                  <ol>
+                    {" "}
+                    {index + 1}. {key2.step}
+                  </ol>
+                </div>
+              );
+            });
+          })
+        }
+        sourceUrl={state.sourceUrl}
+        children={<FacebookIcon size={32} round={true}></FacebookIcon>}
+      />
+
+      {/* </div> <Modal isOpen={isOpen} onRequestClose={closeModal}>
+        //   <div>
+            // {isEnglish && (
+        //       <div>
+        //         <h3>{state.title}</h3>
+        //         <img src={state.image}></img>
+        //         <div dangerouslySetInnerHTML={{ __html: state.summary }} />
+        //         <p>{state.id}</p>
+        //         <h2> Preparation time:</h2>
+        //         <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
+        //         <h2>Serving: </h2>
+
+        //         {state.servings === 1 ? (
+        //           <h3>{state.servings} person</h3>
+        //         ) : (
+        //           <h3> {state.servings} people</h3>
+        //         )}
+        //         <span>
+        //           <h2>Source URL:</h2>
+        //           <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+        //         </span>
+        //         <h2>Required Ingredients</h2>
+        //         {state.extendedIngredients &&
+        //           state.extendedIngredients.map((ingredient, index) => {
+        //             return (
+        //               <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
+        //             );
+        //           })}
+        //         {state.analyzedInstructions &&
+        //         state.analyzedInstructions.length ? (
+        //           <h2>Instructions</h2>
+        //         ) : null}
+        //         {state.analyzedInstructions &&
+        //           state.analyzedInstructions.map((instruction, index) => {
+        //             return instruction.steps.map((key2, index) => {
+        //               return (
+        //                 <div key={index}>
+        //                   <ol>
+        //                     {" "}
+        //                     {index + 1}. {key2.step}
+        //                   </ol>
+        //                 </div>
+        //               );
+        //             });
+        //           })}
+        //         <FacebookShareButton
+        //           url={state.sourceUrl}
+        //           children={
+        //             <FacebookIcon size={32} round={true}></FacebookIcon>
+        //           }
+        //         />
+        //         <button
+        //           onClick={e => {
+        //             translateSpoonacular(
+        //               e,
+        //               state.title,
+        //               state.summary,
+        //               state.extendedIngredients.map(key => key.original),
+        //               state.analyzedInstructions.length
+        //                 ? state.analyzedInstructions[0].steps.map(
+        //                     key => key.step
+        //                   )
+        //                 : null
+        //             );
+        //           }}
+        //         >
+        //           Japanese
+        //         </button>
+        //         <button onClick={closeModal}>close</button>
+        //       </div>
+        //     )}
+        //     {isSpanish && (
+        //       <div>
+        //         <h3>{customSpoonacularSpanishState.title}</h3>
+        //         <img src={state.image}></img>
+        //         <div
+        //           dangerouslySetInnerHTML={{
+        //             __html: customSpoonacularSpanishState.summary
+        //           }}
+        //         />
+        //         <p>{state.id}</p>
+        //         <h2> {customSpoonacularSpanishState.preparationTime}</h2>
+        //         <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
+        //         <h2>{customSpoonacularSpanishState.serving} </h2>
+
+        //         {state.servings === 1 ? (
+        //           <h3>
+        //             {state.servings} {customSpoonacularSpanishState.person}
+        //           </h3>
+        //         ) : (
+        //           <h3>
+        //             {" "}
+        //             {state.servings} {customSpoonacularSpanishState.people}
+        //           </h3>
+        //         )}
+        //         <span>
+        //           <h2>{customSpoonacularSpanishState.sourceUrl}</h2>
+        //           <a href={state.sourceUrl}> {<p>{state.sourceUrl}</p>}</a>
+        //         </span>
+        //         <h2>
+        //           {customSpoonacularSpanishState.requiredIngredientsTitle}
+        //         </h2>
+        //         {customSpoonacularSpanishState.ingredients
+        //           ? customSpoonacularSpanishState.ingredients
+        //           : null}
+        //         <h2>{customSpoonacularSpanishState.instructionsTitle}</h2>
+        //         {customSpoonacularSpanishState.instructions
+        //           ? customSpoonacularSpanishState.instructions
+        //           : null}
+        //         <button onClick={backToEnglish}>English</button>
+        //         <FacebookShareButton
+        //           url={state.sourceUrl}
+        //           children={
+        //             <FacebookIcon size={32} round={true}></FacebookIcon>
+        //           }
+        //         />
+        //         <button onClick={closeModal}>close</button>
+        //       </div>
+        //     )}
+        //   </div>
+        // </Modal>
+        // <div className={classes.rootGrid}>
+        //   <Grid container spacing={2} direction="row" justify="center">
+        //     {customRecipes.map((recipe, index) => {
+        //       return (
+        //         <Grid item>
+        //           <Card className={classes.root}>
+        //             <CardActionArea>
+        //               <CardContent>
+        //                 <CardMedia
+        //                   key={index}
+        //                   component="img"
+        //                   className={`${classes.media} ${classes.card}`}
+        //                   image={recipe.image}
+        //                   title={recipe.name}
+        //                 />
+        //               </CardContent>
+        //             </CardActionArea>
+        //             <Typography
+        //               gutterBottom
+        //               variant="h5"
+        //               component="h2"
+        //             ></Typography>
+        //             {recipe.name}
+        //             <CardActions className={classes.actionbarcustom}>
+        //               <Button
+        //                 className={classes.viewbtn}
+        //                 onClick={e => {
+        //                   renderCustomInfo(e, recipe.id);
+        //                 }}
+        //                 variant="contained"
+        //               >
+        //                 View Recipe
+        //               </Button>
+
+        //               <Button
+        //                 onClick={e => {
+        //                   removeCustomRecipe(e, recipe.id);
+        //                 }}
+        //                 size="small"
+        //                 color="primary"
+        //               >
+        //                 <DeleteTwoToneIcon />
+        //               </Button>
+        //             </CardActions>
+        //           </Card>
+        //         </Grid>
+        //       );
+        //     })}
+        //   </Grid>
+        // </div>
+        // <Modal isOpen={customIsOpen} onRequestClose={closeCustomModal}>
+        //   <div>
+        //     {isEnglish && (
+        //       <div>
+        //         <h1>{customState.name}</h1>
+        //         <img src={customState.image}></img>
+        //         <h2>Description</h2>
+        //         {customState.description}
+        //         <h2>Ingredients</h2>
+        //         {customState.ingredients}
+
+        //         <h2>Instructions</h2>
+        //         {customState.instruction}
+        //         <button
+        //           onClick={e => {
+        //             console.log("consol ", customState.ingredients);
+        //             translate(
+        //               e,
+        //               customState.name,
+        //               customState.description,
+        //               customState.ingredients,
+        //               customState.instruction
+        //             );
+        //           }}
+        //         >
+        //           Japanese
+        //         </button>
+        //         <FacebookShareButton
+        //           url={"www.yahoo.com"}
+        //           children={
+        //             <FacebookIcon size={32} round={true}></FacebookIcon>
+        //           }
+        //         />
+        //         <button onClick={closeCustomModal}>close</button>
+        //       </div>
+        //     )}
+        //     {isSpanish && (
+        //       <div>
+        //         <h3>{customSpanishState.name} </h3>
+        //         <img src={customState.image}></img>
+        //         <h3>{customSpanishState.descriptionTitle} </h3>
+        //         <p>{customSpanishState.description} </p>
+        //         <h3>{customSpanishState.ingredientsTitle} </h3>
+        //         <p>{customSpanishState.ingredients} </p>
+
+        //         {customSpanishState.instructions !== null ? (
+        //           <h3>{customSpanishState.instructionsTitle} </h3>
+        //         ) : (
+        //           ""
+        //         )}
+
+        //         <p>{customSpanishState.instructions} </p>
+        //         <button onClick={backToEnglish}>English</button>
+        //         <FacebookShareButton
+        //           url={"www.yahoo.com"}
+        //           children={
+        //             <FacebookIcon size={32} round={true}></FacebookIcon>
+        //           }
+        //         />
+        //         <button onClick={closeCustomModal}>close</button>
+        //       </div>
+        //     )}
+        //   </div>
+        // </Modal>
+          </div>*/}
     </Container>
   );
 }
