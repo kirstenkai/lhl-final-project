@@ -37,8 +37,8 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "30%",
-    marginTop: "12%"
-  }
+    marginTop: "12%",
+  },
 });
 function App() {
   const classes = useStyles();
@@ -47,9 +47,9 @@ function App() {
     method: "GET",
     url: "http://localhost:5000/",
     headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(res => {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
     console.log(res.data.message);
   });
 

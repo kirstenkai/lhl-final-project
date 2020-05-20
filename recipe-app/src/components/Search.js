@@ -107,28 +107,10 @@ export default function Search({ renderInfo }) {
         number: "20",
         ranking: "1",
         ignorePantry: "false",
-
-        //1. when clicked on search, setIngredients the array of values listed
-        //2. make a function that grabs the ingredients saved in Ingredients state, map
-        //  through and with %2C in between each ingredient and save it into a Variable,
-        ///  a non-array version = Array.toString()
-        //3. below input the value within that variable
-
-        //string escaping- regex
         ingredients: `${recipeName}`
-        // ingredients: "apples,flour,sugar"
       }
     })
       .then(response => {
-        //1. look at the response, and push the results into an object
-        //2. in the Component, render the parts you want from that object and
-        //   put in in the list of the pictures
-        // 3. in this case, we only want the ID of the recipe, and find (via click of pic
-        //    item?)
-        //4. make another axios request to get the full detail and instructions of the
-        //   full deets of the recipe itself to render on the component / modal
-        // console.log(response.data[0]);
-
         setRecipes(prev => {
           return [...prev, response.data];
         });
@@ -259,7 +241,6 @@ export default function Search({ renderInfo }) {
             <h1>Sorry, no recipes found</h1>
           ) : (
             nestedRecipes.map((recipe, index) => {
-              //console.log("recipe name: ", recipe.title);
               return (
                 <Grid item>
                   <div key={index}>
@@ -276,7 +257,6 @@ export default function Search({ renderInfo }) {
           )}
         </Grid>
       </div>
-      {/* </form> */}
     </Container>
   );
 }

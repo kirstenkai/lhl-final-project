@@ -10,17 +10,19 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
+// import Modal from "./Modal";
+import TransitionsModal from "./TransitionsModal";
+import { FacebookIcon } from "react-share";
 
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
-import { FacebookShareButton } from "react-share";
-import { FacebookIcon } from "react-share";
-import ReactToPrint from "react-to-print";
+// import { FacebookShareButton } from "react-share";
+// import { FacebookIcon } from "react-share";
 import axios from "axios";
 
 import { useAuth0 } from "../react-auth0-spa";
 
-import Modal from "react-modal";
+// import Modal from "react-modal";
 
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
@@ -28,21 +30,21 @@ const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
   },
   media: {
-    height: 200
+    height: 200,
   },
   modalTop: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   viewbtn: {
     fontSize: "0.7rem",
     height: "30px",
     textTransform: "0",
-    backgroundColor: "whitesmoke"
-  }
+    backgroundColor: "whitesmoke",
+  },
   // modal: {
   //   maxWidth: "100%"
   // }
@@ -50,7 +52,6 @@ const useStyles = makeStyles({
 
 export default function RecipeCard({ image, title, id }) {
   const classes = useStyles();
-  const [currentId, setCurrentId] = useState(null);
   const [state, setState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,11 +64,11 @@ export default function RecipeCard({ image, title, id }) {
     ingredientsTitle: "",
     ingredients: "",
     instructionsTitle: "",
-    instructions: ""
+    instructions: "",
   });
   const [
     customSpoonacularSpanishState,
-    setcustomSpoonacularSpanishState
+    setcustomSpoonacularSpanishState,
   ] = useState({
     title: "",
     preparationTime: "",
@@ -81,15 +82,14 @@ export default function RecipeCard({ image, title, id }) {
     instructions: "",
     person: "",
     people: "",
-    minute: ""
+    minute: "",
   });
 
-  Modal.setAppElement("#root");
+  // Modal.setAppElement("#root");
 
-  const renderInfo = e => {
+  const renderInfo = (e) => {
     e.preventDefault();
-    setIsOpen(true);
-    setCurrentId(id);
+    // setIsOpen(true);
     Axios({
       method: "GET",
       url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
@@ -98,13 +98,14 @@ export default function RecipeCard({ image, title, id }) {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         "x-rapidapi-key": `${SPOONACULAR_API}`,
-        useQueryString: true
-      }
+        useQueryString: true,
+      },
     })
-      .then(response => {
+      .then((response) => {
         setState(response.data);
+        console.log("AXIOS RESPONSE STATE", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -113,23 +114,22 @@ export default function RecipeCard({ image, title, id }) {
     setIsOpen(false);
   }
   const { user } = useAuth0();
-  const save = e => {
+  const save = (e) => {
     e.preventDefault();
     alert("saved!");
 
     const user_id = user.email;
-    //console.log(title, user_id);
 
     Axios.post("http://localhost:5000/api/saved", {
       user_id,
       id,
       title,
-      image
+      image,
     })
-      .then(res => {
+      .then((res) => {
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -141,12 +141,12 @@ export default function RecipeCard({ image, title, id }) {
     extendedIngredients,
     analyzedInstructions
   ) => {
-    e.preventDefault();
+    console.log("has been clicked");
     axios({
       method: "POST",
-      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, persons, minute`
+      url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, persons, minute`,
     })
-      .then(response => {
+      .then((response) => {
         const translatedSpoonacularText1 = response.data.data.translations[0].translatedText.split(
           ", "
         );
@@ -169,7 +169,7 @@ export default function RecipeCard({ image, title, id }) {
           instructionsTitle: translatedSpoonacularText[5],
           person: translatedSpoonacularText[6],
           people: translatedSpoonacularText[7],
-          minute: translatedSpoonacularText[8]
+          minute: translatedSpoonacularText[8],
         });
         setIsEnglish(false);
         setIsSpanish(true);
@@ -177,13 +177,13 @@ export default function RecipeCard({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${title}`
-        }).then(response => {
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${title}`,
+        }).then((response) => {
           const translatedName =
             response.data.data.translations[0].translatedText;
-          setcustomSpoonacularSpanishState(prev => ({
+          setcustomSpoonacularSpanishState((prev) => ({
             ...prev,
-            title: translatedName
+            title: translatedName,
           }));
         });
       })
@@ -191,41 +191,41 @@ export default function RecipeCard({ image, title, id }) {
       .then(() => {
         axios({
           method: "POST",
-          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${summary}`
+          url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${summary}`,
         })
-          .then(response => {
+          .then((response) => {
             const translatedSummaryText =
               response.data.data.translations[0].translatedText;
-            setcustomSpoonacularSpanishState(prev => ({
+            setcustomSpoonacularSpanishState((prev) => ({
               ...prev,
-              summary: translatedSummaryText
+              summary: translatedSummaryText,
             }));
           })
           .then(() => {
             axios({
               method: "POST",
-              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${extendedIngredients}`
+              url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${extendedIngredients}`,
             })
-              .then(response => {
+              .then((response) => {
                 const translatedIngredientsText =
                   response.data.data.translations[0].translatedText;
                 console.log("LOS INGREDIENTES: ", translatedIngredientsText);
-                setcustomSpoonacularSpanishState(prev => ({
+                setcustomSpoonacularSpanishState((prev) => ({
                   ...prev,
-                  ingredients: translatedIngredientsText
+                  ingredients: translatedIngredientsText,
                 }));
               })
               .then(() => {
                 axios({
                   method: "POST",
-                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${analyzedInstructions}`
-                }).then(response => {
+                  url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${analyzedInstructions}`,
+                }).then((response) => {
                   const translatedInstructionsText =
                     response.data.data.translations[0].translatedText;
                   console.log("Instructions??", translatedInstructionsText);
-                  setcustomSpoonacularSpanishState(prev => ({
+                  setcustomSpoonacularSpanishState((prev) => ({
                     ...prev,
-                    instructions: translatedInstructionsText
+                    instructions: translatedInstructionsText,
                   }));
                 });
               });
@@ -233,11 +233,12 @@ export default function RecipeCard({ image, title, id }) {
       });
   };
 
-  const backToEnglish = e => {
+  const backToEnglish = (e) => {
     e.preventDefault();
     setIsSpanish(false);
     setIsEnglish(true);
   };
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -247,17 +248,56 @@ export default function RecipeCard({ image, title, id }) {
             component="img"
             image={image}
             title={title}
+            id={id}
+          />
+          <TransitionsModal
+            title={title}
+            image={image}
+            searchIngredients={renderInfo}
+            description={state.summary}
+            ingredients={
+              state.extendedIngredients &&
+              state.extendedIngredients.map((ingredient, index) => {
+                return (
+                  <div key={index}>{<h3>☞ {ingredient.original}</h3>}</div>
+                );
+              })
+            }
+            instructionsTitle={
+              state.analyzedInstructions &&
+              state.analyzedInstructions.length ? (
+                <h2>Instructions</h2>
+              ) : null
+            }
+            instructions={
+              state.analyzedInstructions &&
+              state.analyzedInstructions.map((instruction, index) => {
+                return instruction.steps.map((key2, index) => {
+                  return (
+                    <div key={index}>
+                      <ol>
+                        {" "}
+                        {index + 1}. {key2.step}
+                      </ol>
+                    </div>
+                  );
+                });
+              })
+            }
+            translateSpoonacular={translateSpoonacular(
+              state.title,
+              state.summary
+            )}
+            sourceUrl={state.sourceUrl}
+            children={<FacebookIcon size={32} round={true}></FacebookIcon>}
           />
 
-          <Modal
-            style={{ width: "50%" }}
-            isOpen={isOpen}
-            onRequestClose={closeModal}
-          >
-            <div>
+          {/* 
+          
+   
               {isEnglish && (
-                <Container style={{ width: "50%" }}>
-                  <div className={classes.modalTop}>
+                <Container>
+                  <div>
                     <h3>{state.title}</h3>
                     <IconButton aria-label="delete" onClick={closeModal}>
                       <CloseIcon />
@@ -267,7 +307,7 @@ export default function RecipeCard({ image, title, id }) {
                   <div dangerouslySetInnerHTML={{ __html: state.summary }} />
                   <p>{state.id}</p>
                   <h2> Preparation time:</h2>
-                  <div>
+ 
                     {
                       <h3>
                         {state.readyInMinutes} {state.minute}
@@ -335,6 +375,10 @@ export default function RecipeCard({ image, title, id }) {
                     Finnish
                   </button>
                 </Container>
+
+
+
+                ///////////
               )}
               {isSpanish && (
                 <div>
@@ -394,7 +438,7 @@ export default function RecipeCard({ image, title, id }) {
                 </div>
               )}
             </div>
-          </Modal>
+          </Modal> */}
 
           <Typography gutterBottom variant="h5" component="h2"></Typography>
           {(title = title)}
