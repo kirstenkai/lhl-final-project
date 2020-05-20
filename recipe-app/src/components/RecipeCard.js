@@ -42,10 +42,15 @@ const useStyles = makeStyles({
     height: "30px",
     textTransform: "0",
     backgroundColor: "whitesmoke"
+  },
+  modal: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
   }
-  // modal: {
-  //   maxWidth: "100%"
-  // }
 });
 
 export default function RecipeCard({ image, title, id }) {
@@ -249,11 +254,7 @@ export default function RecipeCard({ image, title, id }) {
             title={title}
           />
 
-          <Modal
-            style={{ width: "50%" }}
-            isOpen={isOpen}
-            onRequestClose={closeModal}
-          >
+          <Modal isOpen={isOpen} onRequestClose={closeModal}>
             <div>
               {isEnglish && (
                 <Container style={{ width: "50%" }}>
@@ -423,3 +424,7 @@ export default function RecipeCard({ image, title, id }) {
 // {recipe.instructions && (
 //   <h1>Instructions: {<p>{recipe.instructions}</p>}</h1>
 // )}
+
+//check the function, translate spoonacular => why it isnt passed in as a function
+// default State for Recipe Card, should not be empty object- spread it so it won't overwrite
+//verify if state is actually being updated

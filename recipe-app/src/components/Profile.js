@@ -2,10 +2,24 @@
 
 import React, { Fragment } from "react";
 import { useAuth0 } from "../react-auth0-spa";
-import {Typography, Container} from "@material-ui/core"
+import { Typography, Container } from "@material-ui/core";
+import { makeStyles, Button } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginBottom: "63px",
+    width: "100%"
+  }
+}));
 
 const Profile = () => {
   const { loading, user } = useAuth0();
+
+  const classes = useStyles();
 
   // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
@@ -15,10 +29,15 @@ const Profile = () => {
   return (
     <Container maxWidth="lg">
       <Fragment>
-      <Typography>
+        <Typography>
           <h1>My Profile</h1>
         </Typography>
-        <img src={user.picture} alt="Profile" />
+        <img
+          src={
+            "https://storage.cloud.google.com/final_project_recipeapp/avatar.jpg?folder&organizationId"
+          }
+          alt="Profile"
+        />
 
         <h2>{user.name}</h2>
         <p>{user.email}</p>

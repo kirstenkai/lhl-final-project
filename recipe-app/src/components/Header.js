@@ -87,40 +87,60 @@ export default function ButtonAppBar() {
           {/* NEW - add a link to the home and profile pages */}
           {isAuthenticated && (
             <span>
-          <Hidden smDown implementation="css">
-              <Link to="/inventory" className={classes.navLink}>Inventory</Link>&nbsp;
-              <Link to="/saved" className={classes.navLink}>Saved Recipes</Link>
-              <Link to="/create" className={classes.navLink}>Create Recipe</Link>
-              <Link to="/search" className={classes.navLink}>Search</Link>
-              <IconButton 
-              aria-controls="profile-tray"
-              aria-haspopup="true"
-              onClick={handleClick}
-              className={classes.navLink}>
-                <Avatar src={user.picture} />
-              </IconButton>
-              <Menu
-                id="profile-tray"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                flexDirection="column"
-                className={classes.profileTray}
+              <Hidden smDown implementation="css">
+                <Link to="/inventory" className={classes.navLink}>
+                  Inventory
+                </Link>
+                &nbsp;
+                <Link to="/saved" className={classes.navLink}>
+                  Saved Recipes
+                </Link>
+                <Link to="/create" className={classes.navLink}>
+                  Create Recipe
+                </Link>
+                <Link to="/search" className={classes.navLink}>
+                  Search
+                </Link>
+                <IconButton
+                  aria-controls="profile-tray"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  className={classes.navLink}
                 >
-                <MenuItem onClick={handleClose} className={classes.profileTray}>
-                  <img src={user.picture} width="100%"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <li>{user.name}</li>
-                </MenuItem>
-                <MenuItem>
-                  <Button className={classes.mobileMenu} onClick={() => logout()}>
-                    Logout
-                  </Button>
-              </MenuItem>
-              </Menu>
-          </Hidden>
+                  <Avatar
+                    src={
+                      "https://storage.cloud.google.com/final_project_recipeapp/avatar.jpg?folder&organizationId"
+                    }
+                  />
+                </IconButton>
+                <Menu
+                  id="profile-tray"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  flexDirection="column"
+                  className={classes.profileTray}
+                >
+                  <MenuItem
+                    onClick={handleClose}
+                    className={classes.profileTray}
+                  >
+                    <img src={user.picture} width="100%" />
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <li>{user.name}</li>
+                  </MenuItem>
+                  <MenuItem>
+                    <Button
+                      className={classes.mobileMenu}
+                      onClick={() => logout()}
+                    >
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </Hidden>
             </span>
           )}
           {/* {isAuthenticated && (

@@ -13,6 +13,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import { lightgray } from "color-name";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,12 +31,12 @@ const useStyles = makeStyles(theme => ({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    maxWidth: "100%"
+    width: "100vw"
   },
   search: {
     width: "60%",
     display: "flex",
-    marginLeft: "40%"
+    marginLeft: "16%"
   },
   upload: {
     display: "flex",
@@ -45,12 +46,12 @@ const useStyles = makeStyles(theme => ({
     display: "none"
   },
   camera: {
-    height: "55px",
-    width: "55px",
-    marginTop: "-20px"
+    height: "30px",
+    width: "30px",
+    color: "gray"
   },
   searchbutton: {
-    marginLeft: "60%",
+    marginLeft: "16%",
     marginTop: "55px"
   },
   margin: {
@@ -63,8 +64,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   field: {
-    width: "500px",
+    width: "1000px",
+    borderRadius: "20px",
     marginBottom: "45px"
+  },
+  searchborder: {
+    borderRadius: "20px"
   },
   card: {
     padding: theme.spacing(2),
@@ -196,63 +201,69 @@ export default function Search({ renderInfo }) {
         spacing={1}
         alignItems="flex-end"
       >
-        <Grid item></Grid>
+        <Grid item className={classes.searchborder}></Grid>
         <Grid>
+          <SearchIcon
+            style={{ position: "relative", top: "17px", left: "45px" }}
+            className={classes.searchicon}
+          />
           <TextField
             className={classes.field}
             name="recipeName"
+            type="submit"
             InputLabelProps={{ shrink: true }}
             id="outlined-search"
-            label="Search ingredients"
+            label="Find recipes by ingredients"
             type="search"
             variant="outlined"
             onChange={e => setInput(e.target.value)}
             value={input}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                getRecipe();
+              }
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment>
-                  <Divider orientation="vertical" flexItem />
-                  <SearchIcon
-                    className={classes.searchicon}
-                    onClick={getRecipe}
-                  />
+                  <div className={classes.upload}>
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      name="file"
+                      ref={fileInput}
+                      onChange={onChangeHandler}
+                    />
+
+                    <label htmlFor="file">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                        onClick={photoButtonClicked}
+                      >
+                        <PhotoCamera className={classes.camera} />
+                      </IconButton>
+                    </label>
+                  </div>
                 </InputAdornment>
               )
             }}
           ></TextField>
-          <div className={classes.upload}>
-            <input
-              type="file"
-              style={{ display: "none" }}
-              name="file"
-              ref={fileInput}
-              onChange={onChangeHandler}
-            />
-            <label htmlFor="file">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                onClick={photoButtonClicked}
-              >
-                <PhotoCamera className={classes.camera} />
-              </IconButton>
-              <div> {uploadedFileName}</div>
-            </label>
-            <label htmlFor="contained-button-file">
-              <Button
-                variant="contained"
-                color="primary"
-                component="span"
-                type="button"
-                onClick={processUploadedImage}
-              >
-                Add to Search Bar
-              </Button>
-            </label>
-          </div>
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              type="button"
+              onClick={processUploadedImage}
+            >
+              Add to Search Bar
+            </Button>
+          </label>
         </Grid>
       </Grid>
+      <div> {uploadedFileName}</div>
       <div className={classes.root}>
         <Grid container spacing={2} justify="center">
           {!nestedRecipes[0] && searched ? (
