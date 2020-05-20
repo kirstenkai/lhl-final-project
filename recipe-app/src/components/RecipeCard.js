@@ -412,14 +412,3 @@ export default function RecipeCard({ image, title, id }) {
     </Card>
   );
 }
-// <NavLink
-// to={{
-//   pathname: `/recipe/${id}`,
-//   state: { recipe: id, modal: true }
-// }}
-// >
-// View Recipe
-// </NavLink>
-// {recipe.instructions && (
-//   <h1>Instructions: {<p>{recipe.instructions}</p>}</h1>
-// )}
