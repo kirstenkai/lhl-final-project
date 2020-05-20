@@ -15,7 +15,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
-import ReactToPrint from "react-to-print";
+//import ReactToPrint from "react-to-print";
 import axios from "axios";
 
 import { useAuth0 } from "../react-auth0-spa";
@@ -157,8 +157,8 @@ export default function RecipeCard({ image, title, id }) {
           }
         );
 
-        console.log(translatedSpoonacularText);
-        console.log(translatedSpoonacularText[2]);
+        //console.log(translatedSpoonacularText);
+        //console.log(translatedSpoonacularText[2]);
 
         setcustomSpoonacularSpanishState({
           preparationTime: translatedSpoonacularText[0],
@@ -412,14 +412,4 @@ export default function RecipeCard({ image, title, id }) {
     </Card>
   );
 }
-// <NavLink
-// to={{
-//   pathname: `/recipe/${id}`,
-//   state: { recipe: id, modal: true }
-// }}
-// >
-// View Recipe
-// </NavLink>
-// {recipe.instructions && (
-//   <h1>Instructions: {<p>{recipe.instructions}</p>}</h1>
-// )}
+

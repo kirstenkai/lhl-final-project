@@ -13,15 +13,17 @@ import SearchIcon from "@material-ui/icons/Search";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import { red } from "@material-ui/core/colors";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
     marginBottom: "63px",
-    width: "100%"
+    width: "100%",
+    fontSize: "large",
   },
   container: {
     display: "flex",
@@ -30,46 +32,46 @@ const useStyles = makeStyles(theme => ({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    maxWidth: "100%"
+    maxWidth: "100%",
   },
   search: {
     width: "60%",
     display: "flex",
-    marginLeft: "40%"
+    marginLeft: "40%",
   },
   upload: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   input: {
-    display: "none"
+    display: "none",
   },
   camera: {
     height: "55px",
     width: "55px",
-    marginTop: "-20px"
+    marginTop: "-20px",
   },
   searchbutton: {
     marginLeft: "60%",
-    marginTop: "55px"
+    marginTop: "55px",
   },
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   searchicon: {
     marginLeft: "12px",
     "&:hover": {
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   field: {
     width: "500px",
-    marginBottom: "45px"
+    marginBottom: "45px",
   },
   card: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   }
 }));
 
@@ -280,17 +282,3 @@ export default function Search({ renderInfo }) {
     </Container>
   );
 }
-
-// <div>
-// <input type="file" name="file" onChange={onChangeHandler} />
-// <button type="button" onClick={onClickHandler}>
-//   Add your unknow ingredient to the search
-// </button>
-// </div>
-// <Typography>
-// <h1>Search</h1>
-// </Typography>
-// <input type="file" name="file" onChange={onChangeHandler} />
-// <button type="button" onClick={onClickHandler}>
-//   Search by Image
-// </button>

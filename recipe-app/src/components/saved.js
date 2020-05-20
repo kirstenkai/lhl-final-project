@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     maxWidth: 345
   },
   media: {
-    height: 140
+    height: 200
   }
 });
 
@@ -50,7 +50,7 @@ export default function RecipeCard({ image, title, id }) {
       }
     })
       .then(response => {
-        console.log("response: ", response.data);
+        //console.log("response: ", response.data);
         setState(prev => {
           return [...prev, response];
         });

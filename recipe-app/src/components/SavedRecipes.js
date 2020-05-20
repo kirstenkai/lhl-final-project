@@ -9,14 +9,14 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography, Container } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+//import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
-import ReactToPrint from "react-to-print";
+//import ReactToPrint from "react-to-print";
 import Modal from "react-modal";
 import axios from "axios";
-import RecipeCard from "./RecipeCard";
+//import RecipeCard from "./RecipeCard";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
@@ -29,8 +29,8 @@ const useStyles = makeStyles({
     margin: "6px 0",
     paddingBottom: "2px",
     "&.title": {
-      color: "red"
-    }
+      color: "red",
+    },
   },
   container: {
     display: "flex",
@@ -39,47 +39,57 @@ const useStyles = makeStyles({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    maxWidth: "100%"
+    maxWidth: "100%",
   },
   rootGrid: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   media: {
-    height: 140
+    height: "200",
+
   },
   card: {
     padding: "8px",
-    textAlign: "center"
+    textAlign: "center",
   },
   title: {
     display: "flex",
-    marginLeft: "40%"
+    marginLeft: "40%",
   },
   actionbar: {
     display: "flex",
     flexDirection: "row-reverse",
     marginRight: "-17px",
-    paddingTop: "0px"
+    paddingTop: "0px",
   },
   actionbarcustom: {
     display: "flex",
     flexDirection: "row-reverse",
     marginRight: "0px",
-    paddingTop: "0px"
+    paddingTop: "0px",
+    fontFamily: "work sans"
   },
   recipetitle: {
-    display: "flex",
-    alignItems: "center"
+    // display: "flex",
+    alignItems: "center",
+    paddingLeft: "16px",
+    paddingRight: "16px",
+    paddingBottom: "16px",
+    fontSize: "large",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   viewbtn: {
     fontSize: "0.7rem",
     height: "30px",
     textTransform: "0",
-    backgroundColor: "whitesmoke"
-  }
+    backgroundColor: "whitesmoke",
+    
+  },
 });
 
 export default function SavedRecipes({ image, title, id }) {
@@ -129,7 +139,7 @@ export default function SavedRecipes({ image, title, id }) {
     const userId = user.email;
 
     axios.get(`/api/saved/${userId}`).then(res => {
-      console.log(res.data);
+      //console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
@@ -185,7 +195,7 @@ export default function SavedRecipes({ image, title, id }) {
         return prev.filter(item => item.id !== id);
       });
     });
-    console.log("hello");
+   //console.log("hello");
   };
 
   const { loading, user } = useAuth0();
@@ -214,7 +224,7 @@ export default function SavedRecipes({ image, title, id }) {
     Axios.get(`http://localhost:5000/api/customrecipes/recipes/${id}`, { id })
       .then(response => {
         setCustomState(response.data);
-        console.log("CUSTOM RESPONSE DATA: ", response.data);
+        //console.log("CUSTOM RESPONSE DATA: ", response.data);
       })
       .catch(error => {
         console.log("there is an error");
@@ -229,7 +239,7 @@ export default function SavedRecipes({ image, title, id }) {
 
   const translate = (e, name, description, ingredients, instruction) => {
     e.preventDefault();
-    console.log("description = ", description);
+    //console.log("description = ", description);
     axios({
       method: "POST",
       url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`

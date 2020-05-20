@@ -36,10 +36,12 @@ const useStyles = makeStyles(theme => ({
   },
   navLink: {
     color: "#1c1c1c",
-    fontFamily: "roboto",
+    fontSize: "large",
+    fontFamily: "work sans",
     textDecoration: "none",
     textTransform: "uppercase",
     padding: theme.spacing(0, 1)
+
   },
   mobileMenu: {
     color: "#00C853",
