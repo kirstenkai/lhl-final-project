@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
   //     "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/inventory.jpg)"
   // },
   root: {
-    width: "15%",
+    width: "16%",
     "& > * + *": {
       marginTop: theme.spacing(2)
     }

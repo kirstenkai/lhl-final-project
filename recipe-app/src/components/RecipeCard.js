@@ -256,7 +256,7 @@ export default function RecipeCard({ image, title, id }) {
           >
             <div>
               {isEnglish && (
-                <Container style={{ width: "50%" }}>
+                <Container>
                   <div className={classes.modalTop}>
                     <h3>{state.title}</h3>
                     <IconButton aria-label="delete" onClick={closeModal}>
@@ -412,4 +412,3 @@ export default function RecipeCard({ image, title, id }) {
     </Card>
   );
 }
-
