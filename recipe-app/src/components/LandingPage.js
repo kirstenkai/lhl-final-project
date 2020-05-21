@@ -1,13 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
+//import Paper from "@material-ui/core/Paper";
+//import Box from "@material-ui/core/Box";
+//import Grid from "@material-ui/core/Grid";
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { useAuth0 } from "../react-auth0-spa";
 
 // TO DO
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   submit: {
     backgroundColor: "#00C853",
     fontSize: "18px",
-    fontWeight: 900,
+    fontWeight: "900",
     "&:hover": {
       backgroundColor: "#00C853"
     },
