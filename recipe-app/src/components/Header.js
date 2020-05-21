@@ -116,7 +116,11 @@ export default function ButtonAppBar() {
                   onClick={handleClick}
                   className={classes.navLink}
                 >
-                  <Avatar src={user.picture} />
+                  <Avatar
+                    src={
+                      "https://storage.cloud.google.com/final_project_recipeapp/avatar.jpg?folder&organizationId"
+                    }
+                  />
                 </IconButton>
                 <Menu
                   id="profile-tray"
