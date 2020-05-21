@@ -9,14 +9,14 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography, Container } from "@material-ui/core";
-//import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
-//import ReactToPrint from "react-to-print";
+import ReactToPrint from "react-to-print";
 import Modal from "react-modal";
 import axios from "axios";
-//import RecipeCard from "./RecipeCard";
+import RecipeCard from "./RecipeCard";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     flexDirection: "row"
   },
   media: {
-    height: "200"
+    height: 140
   },
   card: {
     padding: "8px",
@@ -68,19 +68,11 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row-reverse",
     marginRight: "0px",
-    paddingTop: "0px",
-    fontFamily: "work sans"
+    paddingTop: "0px"
   },
   recipetitle: {
-    // display: "flex",
-    alignItems: "center",
-    paddingLeft: "16px",
-    paddingRight: "16px",
-    paddingBottom: "16px",
-    fontSize: "large",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis"
+    display: "flex",
+    alignItems: "center"
   },
   viewbtn: {
     fontSize: "0.7rem",
@@ -137,7 +129,7 @@ export default function SavedRecipes({ image, title, id }) {
     const userId = user.email;
 
     axios.get(`/api/saved/${userId}`).then(res => {
-      //console.log(res.data);
+      console.log(res.data);
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
@@ -161,7 +153,7 @@ export default function SavedRecipes({ image, title, id }) {
     e.preventDefault();
     setIsOpen(true);
     setCurrentId(id);
-    //console.log("id=", id);
+    console.log("id=", id);
     Axios({
       method: "GET",
       url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
@@ -193,7 +185,7 @@ export default function SavedRecipes({ image, title, id }) {
         return prev.filter(item => item.id !== id);
       });
     });
-    //console.log("hello");
+    console.log("hello");
   };
 
   const { loading, user } = useAuth0();
@@ -222,7 +214,7 @@ export default function SavedRecipes({ image, title, id }) {
     Axios.get(`http://localhost:5000/api/customrecipes/recipes/${id}`, { id })
       .then(response => {
         setCustomState(response.data);
-        //console.log("CUSTOM RESPONSE DATA: ", response.data);
+        console.log("CUSTOM RESPONSE DATA: ", response.data);
       })
       .catch(error => {
         console.log("there is an error");
@@ -237,7 +229,7 @@ export default function SavedRecipes({ image, title, id }) {
 
   const translate = (e, name, description, ingredients, instruction) => {
     e.preventDefault();
-    //console.log("description = ", description);
+    console.log("description = ", description);
     axios({
       method: "POST",
       url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
@@ -576,9 +568,6 @@ export default function SavedRecipes({ image, title, id }) {
             )}
           </div>
         </Modal>
-        <Typography>
-          <h1 className={classes.title}>Custom Recipes</h1>
-        </Typography>
         <div className={classes.rootGrid}>
           <Grid container spacing={2} direction="row" justify="center">
             {customRecipes.map((recipe, index) => {

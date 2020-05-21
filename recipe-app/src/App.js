@@ -38,7 +38,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     marginLeft: "30%",
     marginTop: "12%"
-    
   }
 });
 function App() {
