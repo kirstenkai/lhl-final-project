@@ -12,6 +12,7 @@ import logo from "../components/mainlogo.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Avatar from "@material-ui/core/Avatar";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
 
@@ -116,6 +117,11 @@ export default function ButtonAppBar() {
                   onClick={handleClick}
                   className={classes.navLink}
                 >
+                  <IconButton>
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </IconButton>
+                <IconButton>
                   <Avatar
                     src={
                       "https://storage.cloud.google.com/final_project_recipeapp/avatar.jpg?folder&organizationId"
@@ -136,6 +142,11 @@ export default function ButtonAppBar() {
                     <Typography component="h6" className={classes.heading}>
                       Links
                     </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/search" className={classes.navLink}>
+                      Search
+                    </Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Link to="/saved" className={classes.navLink}>

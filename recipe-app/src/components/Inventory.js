@@ -18,6 +18,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
@@ -30,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/inventory.jpg)",
     height: "100vh"
+  },
+  btncolor: {
+    color: "red"
   },
   newcontainer: {
     display: "flex",
@@ -224,15 +229,16 @@ export default function Inventory() {
             {item.map((row, index) => (
               <TableRow key={index}>
                 <TableCell align="left" component="td" scope="row">
-                  <button
-                    onClick={e => {
-                      // remove from state
-                      remove(e, row.id);
-                    }}
-                  >
-                    {" "}
-                    x{" "}
-                  </button>
+                  <IconButton aria-label="delete">
+                    <DeleteIcon
+                      className={classes.btncolor}
+                      onClick={e => {
+                        // remove from state
+                        remove(e, row.id);
+                      }}
+                    />
+                  </IconButton>
+
                   {row.name}
                 </TableCell>
                 <TableCell align="center" component="td" scope="row">

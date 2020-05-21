@@ -32,6 +32,7 @@ const useStyles = makeStyles({
       color: "red"
     }
   },
+
   container: {
     display: "flex",
     flexDirection: "column",
@@ -605,7 +606,10 @@ export default function SavedRecipes({ image, title, id }) {
                       variant="h5"
                       component="h2"
                     ></Typography>
-                    {recipe.name}
+                    <Typography className={classes.recipetitle}>
+                      {recipe.name}
+                    </Typography>
+
                     <CardActions className={classes.actionbarcustom}>
                       <Button
                         className={classes.viewbtn}

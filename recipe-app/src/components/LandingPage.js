@@ -31,12 +31,12 @@ const useStyles = makeStyles(theme => ({
     color: "#000",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: "28em",
+    marginLeft: "20em",
     "& h1, h3": {
       padding: "20px 0"
     },
     "& h3": {
-      fontSize: "22px",
+      fontSize: "18px",
       color: "dimgray"
     }
   },
@@ -68,7 +68,7 @@ export default function LandingPage() {
     // >
     <div className={classes.root}>
       <div className={classes.introduction}>
-        <Typography component="h1" variant="h3">
+        <Typography component="h2" variant="h4">
           Don't let your food products go to waste. Let{" "}
           <strong>Kitchen Hero</strong> save your day.
         </Typography>
