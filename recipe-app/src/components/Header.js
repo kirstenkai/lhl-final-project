@@ -18,47 +18,46 @@ import Divider from "@material-ui/core/Divider";
 // New - importing useAuth0
 import { useAuth0 } from "../react-auth0-spa";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   header: {
     backgroundColor: "#fffffe",
-    padding: theme.spacing(0, 2),
-    boxShadow: "none",
+    padding: theme.spacing(0, 2)
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   title: {
     flexGrow: 1,
     color: "#00C853",
     textDecoration: "none",
     fontSize: "40px",
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   navLink: {
     color: "#1c1c1c",
     fontSize: "large",
-    textDecoration: "none",
+    textDecoration: "none"
   },
   mobileMenu: {
     color: "#E65B4E",
     textDecoration: "none",
     textTransform: "capitalize",
     fontSize: "medium",
-    padding: "6px 0",
+    padding: "6px 0"
   },
   profileTray: {
     padding: "8px",
     top: "70px",
     "& ul": {
-      padding: "0px",
-    },
+      padding: "0px"
+    }
   },
   heading: {
-    color: "#8C8C8C",
-  },
+    color: "#8C8C8C"
+  }
 }));
 
 export default function ButtonAppBar() {
@@ -68,11 +67,11 @@ export default function ButtonAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [redirect, setRedirect] = useState();
 
-  const handleRedirect = (redirect) => {
+  const handleRedirect = redirect => {
     setRedirect(redirect);
   };
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
