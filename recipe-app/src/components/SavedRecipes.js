@@ -568,6 +568,11 @@ export default function SavedRecipes({ image, title, id }) {
             )}
           </div>
         </Modal>
+        <div>
+          <Typography>
+            <h1 className={classes.title}>Custom Recipes</h1>
+          </Typography>
+        </div>
         <div className={classes.rootGrid}>
           <Grid container spacing={2} direction="row" justify="center">
             {customRecipes.map((recipe, index) => {
