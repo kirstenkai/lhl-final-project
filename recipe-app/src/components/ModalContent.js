@@ -56,7 +56,9 @@ export default function RecipeReviewCard({
   sourceUrl,
   instructionsTitle,
   translateSpoonacular,
-  children
+  children,
+  translatedTitle,
+  resetToEnglish
 }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -65,7 +67,7 @@ export default function RecipeReviewCard({
   };
 
   const onClick = () => {
-    return translateSpoonacular();
+    translateSpoonacular();
   };
 
   return (
@@ -107,11 +109,15 @@ export default function RecipeReviewCard({
             paragraph
             instructionsTitle={instructionsTitle}
             instructions={instructions}
+            translatedTitle={translatedTitle}
           >
             {instructions}
           </Typography>
           <button type="button" onClick={onClick}>
             Japanese
+          </button>
+          <button type="button" onClick={resetToEnglish}>
+            English
           </button>
         </CardContent>
       </Collapse>

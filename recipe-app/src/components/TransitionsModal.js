@@ -25,7 +25,9 @@ export default function TransitionsModal({
   searchIngredients,
   instructionsTitle,
   children,
-  translateSpoonacular
+  translateSpoonacular,
+  translatedTitle,
+  resetToEnglish
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -68,6 +70,8 @@ export default function TransitionsModal({
             sourceUrl={sourceUrl}
             children={children}
             translateSpoonacular={translateSpoonacular}
+            translatedTitle={translatedTitle}
+            resetToEnglish={resetToEnglish}
           />
         </Fade>
       </Modal>
