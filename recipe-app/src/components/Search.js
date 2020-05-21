@@ -106,7 +106,7 @@ export default function Search({ renderInfo }) {
   const getRecipe = () => {
     setSearched(false);
     const recipeName = input;
-    console.log("heloo clicked");
+    //console.log("heloo clicked");
     setRecipes([]);
     axios({
       method: "GET",

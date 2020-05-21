@@ -13,7 +13,7 @@ module.exports = db => {
         const id = data.rows
         
         res.json(data.rows);
-        console.log(res)
+        //console.log(res)
       })
       .catch(err => {
         res.status(500).json({ error: err.message });

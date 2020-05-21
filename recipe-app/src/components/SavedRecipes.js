@@ -29,8 +29,8 @@ const useStyles = makeStyles({
     margin: "6px 0",
     paddingBottom: "2px",
     "&.title": {
-      color: "red"
-    }
+      color: "red",
+    },
   },
   container: {
     display: "flex",
@@ -39,47 +39,54 @@ const useStyles = makeStyles({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    maxWidth: "100%"
+    maxWidth: "100%",
   },
   rootGrid: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   media: {
-    height: 140
+    height: 200,
   },
   card: {
     padding: "8px",
-    textAlign: "center"
+    textAlign: "center",
   },
   title: {
     display: "flex",
-    marginLeft: "40%"
+    marginLeft: "40%",
   },
   actionbar: {
     display: "flex",
     flexDirection: "row-reverse",
     marginRight: "-17px",
-    paddingTop: "0px"
+    paddingTop: "0px",
   },
   actionbarcustom: {
     display: "flex",
     flexDirection: "row-reverse",
     marginRight: "0px",
-    paddingTop: "0px"
+    paddingTop: "0px",
   },
   recipetitle: {
-    display: "flex",
-    alignItems: "center"
+    // display: "flex",
+    fontSize: "large",
+    alignItems: "center",
+    paddingLeft: "16px",
+    paddingRight: "16px",
+    paddingBottom: "16px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   viewbtn: {
     fontSize: "0.7rem",
     height: "30px",
     textTransform: "0",
-    backgroundColor: "whitesmoke"
-  }
+    backgroundColor: "whitesmoke",
+  },
 });
 
 export default function SavedRecipes({ image, title, id }) {
