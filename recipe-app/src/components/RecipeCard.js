@@ -174,40 +174,10 @@ export default function RecipeCard({ image, title, id }) {
             title={title}
             id={id}
           />
-          <TransitionsModal
-            searchIngredients={showRecipeInformation}
-            title={title}
-            image={image}
-            description={recipeCardInfo.summary}
-            ingredients={recipeCardInfo.ingredients.map((ingredient, index) => (
-              <div key={index}>{<h3>☞ {ingredient}</h3>}</div>
-            ))}
-            instructionsTitle={
-              recipeCardInfo.instructions &&
-              recipeCardInfo.instructions.length ? (
-                <h2>Instructions</h2>
-              ) : null
-            }
-            instructions={recipeCardInfo.instructions.map(
-              (instruction, index) => {
-                return (
-                  <div key={index}>
-                    <ol>
-                      {" "}
-                      {index + 1}. {instruction}
-                    </ol>
-                  </div>
-                );
-              }
-            )}
-            translateSpoonacular={translate}
-            resetToEnglish={showRecipeInformation}
-            sourceUrl={recipeCardInfo.sourceUrl}
-            children={<FacebookIcon size={32} round={true}></FacebookIcon>}
-          ></TransitionsModal>
 
-          <Typography gutterBottom variant="h5" component="h2"></Typography>
-          {(title = title)}
+          <Typography gutterBottom variant="h6" component="p" fontSize="14px">
+            {(title = title)}
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
@@ -219,9 +189,37 @@ export default function RecipeCard({ image, title, id }) {
         >
           <FavoriteBorderIcon />
         </Button>
-        <Button className={classes.viewbtn} onClick={showRecipeInformation}>
-          View Recipe
-        </Button>
+        <TransitionsModal
+          searchIngredients={showRecipeInformation}
+          title={title}
+          image={image}
+          description={recipeCardInfo.summary}
+          ingredients={recipeCardInfo.ingredients.map((ingredient, index) => (
+            <div key={index}>{<h3>☞ {ingredient}</h3>}</div>
+          ))}
+          instructionsTitle={
+            recipeCardInfo.instructions &&
+            recipeCardInfo.instructions.length ? (
+              <h2>Instructions</h2>
+            ) : null
+          }
+          instructions={recipeCardInfo.instructions.map(
+            (instruction, index) => {
+              return (
+                <div key={index}>
+                  <ol>
+                    {" "}
+                    {index + 1}. {instruction}
+                  </ol>
+                </div>
+              );
+            }
+          )}
+          translateSpoonacular={translate}
+          resetToEnglish={showRecipeInformation}
+          sourceUrl={recipeCardInfo.sourceUrl}
+          children={<FacebookIcon size={32} round={true}></FacebookIcon>}
+        ></TransitionsModal>
       </CardActions>
     </Card>
   );

@@ -4,6 +4,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import ModalContent from "./ModalContent";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -43,9 +44,9 @@ export default function TransitionsModal({
 
   return (
     <div>
-      <button type="button" onClick={onClick}>
+      <Button type="button" variant="outlined" onClick={onClick}>
         View Recipe
-      </button>
+      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
