@@ -114,7 +114,7 @@ export default function RecipeReviewCard({
             {instructions}
           </Typography>
           <button type="button" onClick={onClick}>
-            Japanese
+            Finnish
           </button>
           <button type="button" onClick={resetToEnglish}>
             English
