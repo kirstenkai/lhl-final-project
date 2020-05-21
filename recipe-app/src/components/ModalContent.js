@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     height: 0,
     paddingTop: "56.25%" // 16:9
   },
+
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -72,7 +73,12 @@ export default function RecipeReviewCard({
 
   return (
     <Card className={classes.root}>
-      <CardHeader title={title} id={id} subheader="September 14, 2016" />
+      <CardHeader
+        className={classes.header}
+        title={title}
+        id={id}
+        subheader="September 14, 2016"
+      />
       <CardMedia className={classes.media} image={image} title="Paella dish" />
       <CardContent>
         <Typography
