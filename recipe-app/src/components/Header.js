@@ -12,48 +12,53 @@ import logo from "../components/mainlogo.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Avatar from "@material-ui/core/Avatar";
+import AddIcon from "@material-ui/icons/Add";
+import Divider from "@material-ui/core/Divider";
 
 // New - importing useAuth0
 import { useAuth0 } from "../react-auth0-spa";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   header: {
     backgroundColor: "#fffffe",
-    padding: theme.spacing(0, 2)
+    padding: theme.spacing(0, 2),
+    boxShadow: "none",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
     color: "#00C853",
     textDecoration: "none",
     fontSize: "40px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   navLink: {
     color: "#1c1c1c",
     fontSize: "large",
-    fontFamily: "work sans",
     textDecoration: "none",
-    textTransform: "uppercase",
-    padding: theme.spacing(0, 1)
-
   },
   mobileMenu: {
-    color: "#00C853",
+    color: "#E65B4E",
     textDecoration: "none",
-    textTransform: "uppercase"
+    textTransform: "capitalize",
+    fontSize: "medium",
+    padding: "6px 0",
   },
   profileTray: {
-    padding: "0px",
+    padding: "8px",
+    top: "70px",
     "& ul": {
-      padding: "0px"
-    }
-  }
+      padding: "0px",
+    },
+  },
+  heading: {
+    color: "#8C8C8C",
+  },
 }));
 
 export default function ButtonAppBar() {
@@ -61,8 +66,13 @@ export default function ButtonAppBar() {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [redirect, setRedirect] = useState();
 
-  const handleClick = event => {
+  const handleRedirect = (redirect) => {
+    setRedirect(redirect);
+  };
+
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -89,40 +99,70 @@ export default function ButtonAppBar() {
           {/* NEW - add a link to the home and profile pages */}
           {isAuthenticated && (
             <span>
-          <Hidden smDown implementation="css">
-              <Link to="/inventory" className={classes.navLink}>Inventory</Link>&nbsp;
-              <Link to="/saved" className={classes.navLink}>Saved Recipes</Link>
-              <Link to="/create" className={classes.navLink}>Create Recipe</Link>
-              <Link to="/search" className={classes.navLink}>Search</Link>
-              <IconButton 
-              aria-controls="profile-tray"
-              aria-haspopup="true"
-              onClick={handleClick}
-              className={classes.navLink}>
-                <Avatar src={user.picture} />
-              </IconButton>
-              <Menu
-                id="profile-tray"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                flexDirection="column"
-                className={classes.profileTray}
+              <Hidden smDown implementation="css">
+                &nbsp;
+                <IconButton
+                  aria-controls="add-recipe"
+                  aria-haspopup="true"
+                  onClick={handleRedirect}
+                  className={classes.navLink}
                 >
-                <MenuItem onClick={handleClose} className={classes.profileTray}>
-                  <img src={user.picture} width="100%"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <li>{user.name}</li>
-                </MenuItem>
-                <MenuItem>
-                  <Button className={classes.mobileMenu} onClick={() => logout()}>
-                    Logout
-                  </Button>
-              </MenuItem>
-              </Menu>
-          </Hidden>
+                  <Link to="/create" className={classes.navLink}>
+                    <AddIcon />
+                  </Link>
+                </IconButton>
+                <IconButton
+                  aria-controls="profile-tray"
+                  aria-haspopup="false"
+                  onClick={handleClick}
+                  className={classes.navLink}
+                >
+                  <Avatar src={user.picture} />
+                </IconButton>
+                <Menu
+                  id="profile-tray"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  flexDirection="column"
+                  className={classes.profileTray}
+                  style={{ top: "70px" }}
+                >
+                  <MenuItem>
+                    <Typography component="h6" className={classes.heading}>
+                      Links
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/saved" className={classes.navLink}>
+                      Your Recipes
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/inventory" className={classes.navLink}>
+                      Your Fridge
+                    </Link>
+                  </MenuItem>
+                  <Divider variant="middle" />
+                  <MenuItem>
+                    <Typography component="h6" className={classes.heading}>
+                      Account
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <li>{user.name}</li>
+                  </MenuItem>
+                  <MenuItem>
+                    <Button
+                      className={classes.mobileMenu}
+                      onClick={() => logout()}
+                    >
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </Hidden>
             </span>
           )}
           {/* {isAuthenticated && (

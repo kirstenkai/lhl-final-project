@@ -1,17 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
 
 import { useAuth0 } from "../react-auth0-spa";
 
-// NEW - IMPLEMENT SEARCH BAR
 import { makeStyles, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Grid, Container, InputAdornment, Divider } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import IconButton from "@material-ui/core/IconButton";
+import Link from "@material-ui/core/Link";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { red } from "@material-ui/core/colors";
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    maxWidth: "100%",
+    width: "100%",
   },
   search: {
     width: "60%",
@@ -51,12 +50,8 @@ const useStyles = makeStyles((theme) => ({
     width: "55px",
     marginTop: "-20px",
   },
-  searchbutton: {
-    marginLeft: "60%",
-    marginTop: "55px",
-  },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(0, 3),
   },
   searchicon: {
     marginLeft: "12px",
@@ -72,7 +67,25 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary,
-  }
+  },
+  headerLinks: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    "& button": {
+      color: "#1C1C1C",
+      textDecoration: "none",
+      fontWeight: "900",
+    },
+    width: "50%",
+  },
+  headerDecoration: {
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "#CDE1CC",
+    width: "100%",
+    height: "200px",
+  },
 }));
 
 require("dotenv").config();
@@ -103,40 +116,22 @@ export default function Search({ renderInfo }) {
         "Access-Control-Allow-Origin": "*",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": `${SPOONACULAR_API}`
+        "x-rapidapi-key": `${SPOONACULAR_API}`,
       },
       params: {
         number: "20",
         ranking: "1",
         ignorePantry: "false",
-
-        //1. when clicked on search, setIngredients the array of values listed
-        //2. make a function that grabs the ingredients saved in Ingredients state, map
-        //  through and with %2C in between each ingredient and save it into a Variable,
-        ///  a non-array version = Array.toString()
-        //3. below input the value within that variable
-
-        //string escaping- regex
-        ingredients: `${recipeName}`
-        // ingredients: "apples,flour,sugar"
-      }
+        ingredients: `${recipeName}`,
+      },
     })
-      .then(response => {
-        //1. look at the response, and push the results into an object
-        //2. in the Component, render the parts you want from that object and
-        //   put in in the list of the pictures
-        // 3. in this case, we only want the ID of the recipe, and find (via click of pic
-        //    item?)
-        //4. make another axios request to get the full detail and instructions of the
-        //   full deets of the recipe itself to render on the component / modal
-        // console.log(response.data[0]);
-
-        setRecipes(prev => {
+      .then((response) => {
+        setRecipes((prev) => {
           return [...prev, response.data];
         });
         setSearched(true);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -144,12 +139,11 @@ export default function Search({ renderInfo }) {
   const nestedRecipes = recipes.flat();
   const classes = useStyles();
 
-  // Show the loading state if the page is loading or if there is no user currently authenticated
   if (loading || !user) {
     return <div>Loading...</div>;
   }
 
-  const onChangeHandler = e => {
+  const onChangeHandler = (e) => {
     setFile(e.target.files);
     setUploadedFileName(e.target.files[0].name);
   };
@@ -172,18 +166,18 @@ export default function Search({ renderInfo }) {
 
     return axios
       .post("https://api.cloudinary.com/v1_1/dva8dqtxn/image/upload", data, {
-        headers: { "X-Requested-With": "XMLHttpRequest" } // receive two    parameter endpoint url ,form data
+        headers: { "X-Requested-With": "XMLHttpRequest" }, // receive two    parameter endpoint url ,form data
       })
-      .then(res => {
+      .then((res) => {
         return res.data.secure_url;
       })
-      .then(res => {
+      .then((res) => {
         return axios
           .post("http://localhost:5000/api/imagerecognition", {
-            imageURL: res
+            imageURL: res,
           })
-          .then(res => {
-            setInput(prev =>
+          .then((res) => {
+            setInput((prev) =>
               prev ? (prev += `, ${res.data.output}`) : res.data.output
             );
           });
@@ -191,13 +185,32 @@ export default function Search({ renderInfo }) {
   };
 
   return (
-    <Container className={classes.container}>
-      <Grid
-        container
-        className={classes.searchbutton}
-        spacing={1}
-        alignItems="flex-end"
-      >
+    <Fragment>
+      <div className={classes.headerDecoration}>
+        <div className={classes.headerLinks}>
+          <Link
+            component="button"
+            underline="none"
+            variant="h5"
+            onClick={() => {
+              console.info("I'm a button.");
+            }}
+          >
+            Browse Recipes
+          </Link>
+          <Link
+            component="button"
+            underline="none"
+            variant="h5"
+            onClick={() => {
+              console.info("I'm a button.");
+            }}
+          >
+            View Saved Recipes
+          </Link>
+        </div>
+      </div>
+      <Grid container alignItems="flex-end" justify="center">
         <Grid item></Grid>
         <Grid>
           <TextField
@@ -205,10 +218,10 @@ export default function Search({ renderInfo }) {
             name="recipeName"
             InputLabelProps={{ shrink: true }}
             id="outlined-search"
-            label="Search ingredients"
+            placeholder="Find recipes by ingredients"
             type="search"
             variant="outlined"
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             value={input}
             InputProps={{
               endAdornment: (
@@ -219,7 +232,7 @@ export default function Search({ renderInfo }) {
                     onClick={getRecipe}
                   />
                 </InputAdornment>
-              )
+              ),
             }}
           ></TextField>
           <div className={classes.upload}>
@@ -256,7 +269,7 @@ export default function Search({ renderInfo }) {
         </Grid>
       </Grid>
       <div className={classes.root}>
-        <Grid container spacing={2} justify="center">
+        <Grid container spacing={3} justify="center" width="100%">
           {!nestedRecipes[0] && searched ? (
             <h1>Sorry, no recipes found</h1>
           ) : (
@@ -278,7 +291,6 @@ export default function Search({ renderInfo }) {
           )}
         </Grid>
       </div>
-      {/* </form> */}
-    </Container>
+    </Fragment>
   );
 }
