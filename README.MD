@@ -1,3 +1,6 @@
+
+![](image/test.gif)
+
 To use DB:
 
 A. you can run db using Vagrant
