@@ -1,5 +1,5 @@
 
-![](image/test.gif)
+!["gif of app authorization"](images/test.gif)
 
 To use DB:
 
