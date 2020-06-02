@@ -4,8 +4,9 @@ A Full-stack web application that allows users to search for both food and cockt
 
 ## Final Product
 
-![](images/recepiDetails.gif)
-![](images/recepiDetails.gif)
+!["login"](images/login.gif)
+!["image recognition feauture"](images/imagerecognition.gif)
+!["recepi details"](images/recepiDetails.gif)
 
 ## Getting Started
 

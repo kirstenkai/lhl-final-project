@@ -39,8 +39,3 @@ const imageRecognition = require("./routes/imagerecognition");
 app.use("/api/imagerecognition", imageRecognition());
 
 app.listen(port, () => console.log("Backend server live on " + port));
-
-//testing routes in console!
-// app.get("/", (req, res) => {
-//   res.send({ message: "We did it!" });
-// });
