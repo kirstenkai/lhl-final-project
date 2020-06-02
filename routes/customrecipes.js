@@ -43,7 +43,6 @@ module.exports = db => {
   });
 
   router.get("/:userId", (req, res) => {
-    //table is called recipes
     db.query(`SELECT * FROM custom_recipes WHERE user_id = ($1);`, [
       req.params.userId
     ])

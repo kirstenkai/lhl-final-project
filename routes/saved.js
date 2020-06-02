@@ -3,24 +3,20 @@ const router = express.Router();
 
 module.exports = db => {
   router.post("/", (req, res) => {
-    // console.log(res);
     const { id, title, image, user_id } = req.body;
     let query = `INSERT INTO recipes (spoonacular_id, title, image, user_id) 
     VALUES ($1::integer, $2::text, $3::text, $4::text);`;
 
     db.query(query, [id, title, image, user_id])
       .then(data => {
-        const id = data.rows
-        
+        const id = data.rows     
         res.json(data.rows);
-        //console.log(res)
       })
       .catch(err => {
         res.status(500).json({ error: err.message });
       });
   });
   router.get("/:userId", (req, res) => {
-    //table is called recipes
     db.query(`SELECT * FROM recipes WHERE user_id = ($1) ORDER BY id DESC`, [
       req.params.userId
     ])
@@ -42,6 +38,5 @@ module.exports = db => {
       return res.json(response.rows[0] || null);
     });
   });
-
   return router;
 };

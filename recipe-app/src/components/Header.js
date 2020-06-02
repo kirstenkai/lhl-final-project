@@ -14,7 +14,6 @@ import Avatar from "@material-ui/core/Avatar";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 import Divider from "@material-ui/core/Divider";
-
 // New - importing useAuth0
 import { useAuth0 } from "../react-auth0-spa";
 
@@ -65,7 +64,7 @@ export default function ButtonAppBar() {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [redirect, setRedirect] = useState();
+  const [setRedirect] = useState();
 
   const handleRedirect = (redirect) => {
     setRedirect(redirect);
@@ -84,7 +83,7 @@ export default function ButtonAppBar() {
       <AppBar position="static" className={classes.header}>
         <Toolbar>
           <NavLink to="/" className={classes.title}>
-            <img src={logo} />
+            <img src={logo} alt="" />
           </NavLink>
           {!isAuthenticated && (
             <Button

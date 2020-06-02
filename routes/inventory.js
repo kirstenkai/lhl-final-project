@@ -37,6 +37,5 @@ module.exports = (db) => {
       return res.json(response.rows[0] || null);
     });
   });
-
   return router;
 };

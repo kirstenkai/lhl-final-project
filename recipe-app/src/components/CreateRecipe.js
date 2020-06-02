@@ -1,9 +1,7 @@
-import React, { Fragment } from "react";
-
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Paper } from "@material-ui/core";
 import { useAuth0 } from "../react-auth0-spa";
-
 import UploadButton from "./UploadButton";
 import Axios from "axios";
 
@@ -46,20 +44,17 @@ export default function CreateRecipe() {
   const classes = useStyles();
   const { loading, user } = useAuth0();
   const user_id = user.email;
-
   if (loading || !user) {
     return <div>Loading...</div>;
   }
 
   const save = (e) => {
     e.preventDefault();
-
     const name = e.target.elements.title.value;
     const description = e.target.elements.description.value;
     const ingredients = e.target.elements.ingredients.value;
     const instruction = e.target.elements.instructions.value;
     const image = e.target.elements.image.value;
-
     Axios.post("http://localhost:5000/api/customrecipes", {
       user_id,
       name,

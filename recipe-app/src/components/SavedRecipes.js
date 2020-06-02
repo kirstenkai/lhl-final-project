@@ -9,14 +9,10 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography, Container } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import { FacebookShareButton } from "react-share";
 import { FacebookIcon } from "react-share";
-import ReactToPrint from "react-to-print";
 import Modal from "react-modal";
-import axios from "axios";
-import RecipeCard from "./RecipeCard";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
 require("dotenv").config();
@@ -32,7 +28,6 @@ const useStyles = makeStyles({
       color: "red"
     }
   },
-
   container: {
     display: "flex",
     flexDirection: "column",
@@ -75,7 +70,6 @@ const useStyles = makeStyles({
     textOverflow: "ellipsis"
   },
   recipetitle: {
-    // display: "flex",
     fontSize: "large",
     alignItems: "center",
     paddingLeft: "16px",
@@ -95,10 +89,8 @@ const useStyles = makeStyles({
 
 export default function SavedRecipes({ image, title, id }) {
   const [recipes, setRecipes] = useState([]); // this is from saved recipe
-
   const classes = useStyles();
-
-  const [currentId, setCurrentId] = useState(null);
+  const [setCurrentId] = useState(null);
   const [state, setState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isEnglish, setIsEnglish] = useState(true);
@@ -135,12 +127,9 @@ export default function SavedRecipes({ image, title, id }) {
   });
 
   //----------------------------------useEffects--------------------------------
-
   useEffect(() => {
     const userId = user.email;
-
-    axios.get(`/api/saved/${userId}`).then(res => {
-      console.log(res.data);
+    Axios.get(`/api/saved/${userId}`).then(res => {
       setRecipes(prev => {
         return [...prev, ...res.data];
       });
@@ -149,8 +138,7 @@ export default function SavedRecipes({ image, title, id }) {
 
   useEffect(() => {
     const userId = user.email;
-    axios.get(`/api/customrecipes/${userId}`).then(res => {
-      // console.log(res.data);
+    Axios.get(`/api/customrecipes/${userId}`).then(res => {
       setCustomRecipes(prev => {
         return [...prev, ...res.data];
       });
@@ -158,13 +146,11 @@ export default function SavedRecipes({ image, title, id }) {
   }, []);
 
   Modal.setAppElement("#root");
-
   //-------------------------------Spoonacular Recipe Functions--------------------
   const renderInfo = (e, id) => {
     e.preventDefault();
     setIsOpen(true);
     setCurrentId(id);
-    console.log("id=", id);
     Axios({
       method: "GET",
       url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
@@ -183,32 +169,25 @@ export default function SavedRecipes({ image, title, id }) {
         console.log(error);
       });
   };
-
   function closeModal() {
     setIsOpen(false);
   }
-
   const remove = (e, id) => {
     e.preventDefault();
-
     Axios.delete(`http://localhost:5000/api/saved/${id}`, {}).then(res => {
       setRecipes(prev => {
         return prev.filter(item => item.id !== id);
       });
     });
-    console.log("hello");
   };
 
   const { loading, user } = useAuth0();
-
   if (loading || !user) {
     return <div>Loading...</div>;
   }
   //------------------------------Custom Recipe Functions------------------
-
   const removeCustomRecipe = (e, id) => {
     e.preventDefault();
-    console.log("removed!");
     Axios.delete(`http://localhost:5000/api/customrecipes/${id}`, {}).then(
       res => {
         setCustomRecipes(prev => {
@@ -221,31 +200,27 @@ export default function SavedRecipes({ image, title, id }) {
   const renderCustomInfo = (e, id) => {
     e.preventDefault();
     setCustomIsOpen(true);
-
     Axios.get(`http://localhost:5000/api/customrecipes/recipes/${id}`, { id })
       .then(response => {
         setCustomState(response.data);
-        console.log("CUSTOM RESPONSE DATA: ", response.data);
       })
       .catch(error => {
         console.log("there is an error");
       });
   };
-
   function closeCustomModal() {
     setCustomIsOpen(false);
   }
 
   //-------------------------------Translate Hook------------------------------
-
   const translate = (e, name, description, ingredients, instruction) => {
     e.preventDefault();
-    console.log("description = ", description);
-    axios({
+    Axios({
       method: "POST",
       url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${name}, Description, Ingredients, Instructions`
     })
       .then(response => {
+        //delete console.log()?
         console.log(
           "custom response.data=",
           response.data.data.translations[0]
@@ -254,9 +229,6 @@ export default function SavedRecipes({ image, title, id }) {
         const translatedText = response.data.data.translations[0].translatedText.split(
           ", "
         );
-
-        // console.log("arr: ", translatedText);
-        // console.log("arr index 0: ", translatedText[0]);
         setcustomSpanishState({
           name: translatedText[0],
           descriptionTitle: translatedText[1],
@@ -267,7 +239,7 @@ export default function SavedRecipes({ image, title, id }) {
         setIsSpanish(true);
       })
       .then(() => {
-        axios({
+        Axios({
           method: "POST",
           url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${description}`
         })
@@ -280,21 +252,20 @@ export default function SavedRecipes({ image, title, id }) {
             }));
           })
           .then(() => {
-            axios({
+            Axios({
               method: "POST",
               url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${ingredients}`
             })
               .then(response => {
                 const ingredientsText =
                   response.data.data.translations[0].translatedText;
-
                 setcustomSpanishState(prev => ({
                   ...prev,
                   ingredients: ingredientsText
                 }));
               })
               .then(() => {
-                axios({
+                Axios({
                   method: "POST",
                   url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${instruction}`
                 }).then(response => {
@@ -321,7 +292,7 @@ export default function SavedRecipes({ image, title, id }) {
     analyzedInstructions
   ) => {
     e.preventDefault();
-    axios({
+    Axios({
       method: "POST",
       url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${title}, Preparation Time, Serving, Source URL, Summary, Required Ingredients, Instructions, person, people`
     })
@@ -351,7 +322,7 @@ export default function SavedRecipes({ image, title, id }) {
         setIsSpanish(true);
       })
       .then(() => {
-        axios({
+        Axios({
           method: "POST",
           url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${summary}`
         })
@@ -364,7 +335,7 @@ export default function SavedRecipes({ image, title, id }) {
             }));
           })
           .then(() => {
-            axios({
+            Axios({
               method: "POST",
               url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${extendedIngredients}`
             })
@@ -378,7 +349,7 @@ export default function SavedRecipes({ image, title, id }) {
                 }));
               })
               .then(() => {
-                axios({
+                Axios({
                   method: "POST",
                   url: `https://translation.googleapis.com/language/translate/v2?target=ja&key=${GOOGLE_API}&q=${analyzedInstructions}`
                 }).then(response => {
@@ -393,7 +364,6 @@ export default function SavedRecipes({ image, title, id }) {
           });
       });
   };
-
   const backToEnglish = e => {
     e.preventDefault();
     setIsSpanish(false);
@@ -406,7 +376,6 @@ export default function SavedRecipes({ image, title, id }) {
         <Typography>
           <h1 className={classes.title}>Saved Recipes</h1>
         </Typography>
-
         <div className={classes.rootGrid}>
           <Grid container spacing={2} justify="center">
             {recipes.map((recipe, index) => {
@@ -430,7 +399,6 @@ export default function SavedRecipes({ image, title, id }) {
                       component="h2"
                     ></Typography>
                     <div className={classes.recipetitle}> {recipe.title}</div>
-
                     <CardActions className={classes.recipetitle}>
                       <Button
                         onClick={e => {
@@ -463,13 +431,12 @@ export default function SavedRecipes({ image, title, id }) {
             {isEnglish && (
               <div>
                 <h3>{state.title}</h3>
-                <img src={state.image}></img>
+                <img src={state.image} alt=""></img>
                 <div dangerouslySetInnerHTML={{ __html: state.summary }} />
                 <p>{state.id}</p>
                 <h2> Preparation time:</h2>
                 <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
                 <h2>Serving: </h2>
-
                 {state.servings === 1 ? (
                   <h3>{state.servings} person</h3>
                 ) : (
@@ -532,7 +499,7 @@ export default function SavedRecipes({ image, title, id }) {
             {isSpanish && (
               <div>
                 <h3>{customSpoonacularSpanishState.title}</h3>
-                <img src={state.image}></img>
+                <img src={state.image} alt=""></img>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: customSpoonacularSpanishState.summary
@@ -542,7 +509,6 @@ export default function SavedRecipes({ image, title, id }) {
                 <h2> {customSpoonacularSpanishState.preparationTime}</h2>
                 <div>{<h3>{state.readyInMinutes} minutes</h3>} </div>
                 <h2>{customSpoonacularSpanishState.serving} </h2>
-
                 {state.servings === 1 ? (
                   <h3>
                     {state.servings} {customSpoonacularSpanishState.person}
@@ -609,7 +575,6 @@ export default function SavedRecipes({ image, title, id }) {
                     <Typography className={classes.recipetitle}>
                       {recipe.name}
                     </Typography>
-
                     <CardActions className={classes.actionbarcustom}>
                       <Button
                         className={classes.viewbtn}
@@ -620,7 +585,6 @@ export default function SavedRecipes({ image, title, id }) {
                       >
                         View Recipe
                       </Button>
-
                       <Button
                         onClick={e => {
                           removeCustomRecipe(e, recipe.id);
@@ -642,12 +606,11 @@ export default function SavedRecipes({ image, title, id }) {
             {isEnglish && (
               <div>
                 <h1>{customState.name}</h1>
-                <img src={customState.image}></img>
+                <img src={customState.image} alt=""></img>
                 <h2>Description</h2>
                 {customState.description}
                 <h2>Ingredients</h2>
                 {customState.ingredients}
-
                 <h2>Instructions</h2>
                 {customState.instruction}
                 <button
@@ -676,7 +639,7 @@ export default function SavedRecipes({ image, title, id }) {
             {isSpanish && (
               <div>
                 <h3>{customSpanishState.name} </h3>
-                <img src={customState.image}></img>
+                <img src={customState.image} alt=""></img>
                 <h3>{customSpanishState.descriptionTitle} </h3>
                 <p>{customSpanishState.description} </p>
                 <h3>{customSpanishState.ingredientsTitle} </h3>
@@ -687,7 +650,6 @@ export default function SavedRecipes({ image, title, id }) {
                 ) : (
                   ""
                 )}
-
                 <p>{customSpanishState.instructions} </p>
                 <button onClick={backToEnglish}>English</button>
                 <FacebookShareButton

@@ -1,20 +1,16 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, useRef } from "react";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
-
 import { useAuth0 } from "../react-auth0-spa";
-
 import { makeStyles, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import { Grid, Container, InputAdornment, Divider } from "@material-ui/core";
+import { Grid, InputAdornment, Divider } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
-import Link from "@material-ui/core/Link";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import { red } from "@material-ui/core/colors";
+require("dotenv").config();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
@@ -22,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     marginBottom: "63px",
     width: "100%",
-    fontSize: "large"
+    fontSize: "large",
   },
   container: {
     display: "flex",
@@ -31,43 +27,43 @@ const useStyles = makeStyles(theme => ({
     background:
       "linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)), url(img/landingpage.jpg)",
     height: "100vh",
-    width: "100%"
+    width: "100%",
   },
   search: {
     width: "60%",
     display: "flex",
-    marginLeft: "40%"
+    marginLeft: "40%",
   },
   upload: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   input: {
-    display: "none"
+    display: "none",
   },
   camera: {
     height: "55px",
     width: "55px",
-    marginTop: "-20px"
+    marginTop: "-20px",
   },
   margin: {
-    margin: theme.spacing(0, 3)
+    margin: theme.spacing(0, 3),
   },
   searchicon: {
     marginLeft: "12px",
     "&:hover": {
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   field: {
     width: "500px",
     marginBottom: "45px",
-    marginTop: "50px"
+    marginTop: "50px",
   },
   card: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   headerLinks: {
     display: "flex",
@@ -76,26 +72,23 @@ const useStyles = makeStyles(theme => ({
     "& button": {
       color: "#1C1C1C",
       textDecoration: "none",
-      fontWeight: "900"
+      fontWeight: "900",
     },
-    width: "50%"
+    width: "50%",
   },
   headerDecoration: {
     display: "flex",
     justifyContent: "center",
     backgroundColor: "#CDE1CC",
     width: "100%",
-    height: "200px"
-  }
+    height: "200px",
+  },
 }));
 
-require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
-
 export default function Search({ renderInfo }) {
   const [recipes, setRecipes] = useState([]);
   const [file, setFile] = useState();
-  const [imageURL, setimageURL] = useState();
   const { loading, user } = useAuth0();
   const [input, setInput] = useState();
   const [searched, setSearched] = useState(false);
@@ -105,9 +98,8 @@ export default function Search({ renderInfo }) {
 
   const getRecipe = () => {
     setSearched(false);
-    const recipeName = input;
-    //console.log("heloo clicked");
     setRecipes([]);
+    const recipeName = input;
     axios({
       method: "GET",
       url:
@@ -117,34 +109,33 @@ export default function Search({ renderInfo }) {
         "Access-Control-Allow-Origin": "*",
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": `${SPOONACULAR_API}`
+        "x-rapidapi-key": `${SPOONACULAR_API}`,
       },
       params: {
         number: "20",
         ranking: "1",
         ignorePantry: "false",
-        ingredients: `${recipeName}`
-      }
+        ingredients: `${recipeName}`,
+      },
     })
-      .then(response => {
-        setRecipes(prev => {
+      .then((response) => {
+        setRecipes((prev) => {
           return [...prev, response.data];
         });
         setSearched(true);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
   const nestedRecipes = recipes.flat();
   const classes = useStyles();
-
   if (loading || !user) {
     return <div>Loading...</div>;
   }
 
-  const onChangeHandler = e => {
+  const onChangeHandler = (e) => {
     setFile(e.target.files);
     setUploadedFileName(e.target.files[0].name);
   };
@@ -155,10 +146,9 @@ export default function Search({ renderInfo }) {
 
   const processUploadedImage = () => {
     const data = new FormData();
-
     setTimeout(() => {
       setUploadedFileName("");
-    }, 1500);
+    }, 1000);
 
     data.append("file", file[0]);
     data.append("upload_preset", "djf7hmxw");
@@ -167,24 +157,23 @@ export default function Search({ renderInfo }) {
 
     return axios
       .post("https://api.cloudinary.com/v1_1/dva8dqtxn/image/upload", data, {
-        headers: { "X-Requested-With": "XMLHttpRequest" } // receive two    parameter endpoint url ,form data
+        headers: { "X-Requested-With": "XMLHttpRequest" }, // receive two    parameter endpoint url ,form data
       })
-      .then(res => {
+      .then((res) => {
         return res.data.secure_url;
       })
-      .then(res => {
+      .then((res) => {
         return axios
           .post("http://localhost:5000/api/imagerecognition", {
-            imageURL: res
+            imageURL: res,
           })
-          .then(res => {
-            setInput(prev =>
+          .then((res) => {
+            setInput((prev) =>
               prev ? (prev += `, ${res.data.output}`) : res.data.output
             );
           });
       });
   };
-
   return (
     <div className={classes.container}>
       <Grid container alignItems="flex-end" justify="center">
@@ -198,7 +187,7 @@ export default function Search({ renderInfo }) {
             placeholder="Find recipes by ingredients"
             type="search"
             variant="outlined"
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             value={input}
             InputProps={{
               endAdornment: (
@@ -209,7 +198,7 @@ export default function Search({ renderInfo }) {
                     onClick={getRecipe}
                   />
                 </InputAdornment>
-              )
+              ),
             }}
           ></TextField>
           <div className={classes.upload}>

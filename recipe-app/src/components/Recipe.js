@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Modal from "react-modal";
-
 require("dotenv").config();
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 
-const Recipe = props => {
+const Recipe = (props) => {
   const [state, setState] = useState([]);
-
   const id = props.location.state.recipe;
-  console.log("id: ", id);
-
   useEffect(() => {
     Axios({
       method: "GET",
@@ -20,20 +16,18 @@ const Recipe = props => {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
         "x-rapidapi-key": `${SPOONACULAR_API}`,
-        useQueryString: true
-      }
+        useQueryString: true,
+      },
     })
-      .then(response => {
-        console.log("response: ", response.data);
-        setState(prev => {
+      .then((response) => {
+        setState((prev) => {
           return [...prev, response];
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
-
   return (
     <div>
       {state.map((recipes, index) => {
@@ -43,7 +37,6 @@ const Recipe = props => {
             <h3>Title: {recipe.title}</h3>
             <img src={recipe.image}></img>
             <div dangerouslySetInnerHTML={{ __html: recipe.summary }} />
-
             <p>Preparation time: {recipe.readyInMinutes} minutes</p>
             <p>Serving: {recipe.servings}</p>
             <span>
@@ -59,4 +52,3 @@ const Recipe = props => {
 };
 
 export default Recipe;
-
