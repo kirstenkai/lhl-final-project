@@ -1,6 +1,7 @@
 
-![](images/recepiDetails.gif)
-![](images/recepiDetails.gif)
+!["login"](images/login.gif)
+!["image recognition feauture"](images/imagerecognition.gif)
+!["recepi details"](images/recepiDetails.gif)
 
 To use DB:
 

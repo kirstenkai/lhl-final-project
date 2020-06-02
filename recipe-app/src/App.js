@@ -83,13 +83,3 @@ function App() {
 }
 
 export default App;
-
-//random notes
-
-// const [state, setState] = useState({
-//   id: 0,
-//   title: "",
-//   image: ""
-// });
-
-// feature/spoonacular-second-api-call
