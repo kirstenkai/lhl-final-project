@@ -2,11 +2,11 @@
 A Full-stack web application that allows users to search for both food and cocktail recipes based on the ingredients that they have by either typing them in the search bar, or by uploading a picture of their food product. Users can save any recipes that were found, translate to another language, create own custom recipes . Lastly, it also allows users to add and keep track of their food product expiry dates
 
 ## Final Product
-Login page
+### Login page
 !["login"](images/login.gif)
-The image recognition feuture
+### The image recognition feuture
 !["image recognition feauture"](images/imagerecognition.gif)
-Recipe details
+### Recipe details
 !["recipe details"](images/recepiDetails.gif)
 
 ## Dependencies
@@ -33,4 +33,4 @@ Recipe details
 4. Run DB using pg_ctl -D /usr/local/var/postgres start
 5. Run backend server using nodemon server
 6. Run frontend server from recipe-app folder using npm start
-7 .Open app in a browser with localhost:3000/
+7. Open app in a browser with localhost:3000/
