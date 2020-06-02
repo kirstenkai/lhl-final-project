@@ -1,5 +1,6 @@
 
-![](image/test.gif)
+![](images/recepiDetails.gif)
+![](images/recepiDetails.gif)
 
 To use DB:
 
