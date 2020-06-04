@@ -82,7 +82,7 @@ export default function Inventory() {
   const [currentItem, setCurrentItem] = useState("");
   const { loading, user } = useAuth0();
   const userId = user.email;
-  const [setCurrentDate] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
 
   //-----------------------save to do a REMOVE request--------------------
   const remove = (e, id) => {
