@@ -172,6 +172,7 @@ export default function RecipeCard({ image, title, id }) {
             component="p"
             fontSize="14px"
           >
+            {(title = title)}
           </Typography>
         </CardContent>
       </CardActionArea>
