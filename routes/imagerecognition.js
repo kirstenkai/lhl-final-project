@@ -1,16 +1,10 @@
 const express = require("express");
 const router = express.Router();
-
 const { ClarifaiStub } = require("clarifai-nodejs-grpc");
 const grpc = require("@grpc/grpc-js");
 
 require("dotenv").config();
-//const key = process.env.CLARIFAY_KEY;
-
-// Construct one of the stubs you want to use
 const stub = ClarifaiStub.json();
-// This will be used by every Clarifai endpoint call.
-
 const metadata = new grpc.Metadata();
 metadata.set("authorization", process.env.CLARIFAY_KEY);
 

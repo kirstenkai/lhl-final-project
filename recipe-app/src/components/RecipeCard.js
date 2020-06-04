@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -9,18 +9,14 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import TransitionsModal from "./TransitionsModal";
 import { FacebookIcon } from "react-share";
-import ModalContent from "./ModalContent";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Axios from "axios";
 import axios from "axios";
-
 import { useAuth0 } from "../react-auth0-spa";
-
 require("dotenv").config();
 
 const SPOONACULAR_API = process.env.REACT_APP_SPOONACULAR_API;
 const GOOGLE_API = process.env.REACT_APP_GOOGLE_API;
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 345
@@ -65,8 +61,6 @@ const defaultCardInfo = {
   instructions: []
 };
 
-const defaultLanguage = "en";
-
 const generateSpoonacularParams = id => ({
   method: "GET",
   url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
@@ -79,24 +73,21 @@ const generateSpoonacularParams = id => ({
 });
 
 const onError = err => console.warn(err);
-
 export default function RecipeCard({ image, title, id }) {
   const { user } = useAuth0();
   const classes = useStyles();
   const [recipeCardInfo, setRecipeCardInfo] = useState(defaultCardInfo);
   const [color, setColor] = useState();
-
   const getRecipe = () => {
     Axios(generateSpoonacularParams(id))
       .then(response => {
         const { data } = response;
-        console.log(data.extendedIngredients);
-        let instructions = [];
-        if (data.analyzedInstructions && data.analyzedInstructions.length > 0) {
-          instructions = data.analyzedInstructions[0].steps.map(
-            each => each.step
-          );
-        }
+       // let instructions = [];
+        // if (data.analyzedInstructions && data.analyzedInstructions.length > 0) {
+          // let instructions = data.analyzedInstructions[0].steps.map(
+            // each => each.step
+          // );
+        // }
         setRecipeCardInfo(prev => {
           return {
             ...prev,
@@ -108,11 +99,9 @@ export default function RecipeCard({ image, title, id }) {
       })
       .catch(onError);
   };
-
   const showRecipeInformation = e => {
     getRecipe();
   };
-
   const user_id = user.email;
   const saveRecipeOnClick = e => {
     Axios.post("http://localhost:5000/api/saved", {
@@ -123,7 +112,6 @@ export default function RecipeCard({ image, title, id }) {
     })
       .then(res => {
         setColor(classes.color);
-        console.log(res.data);
       })
       .catch(error => {
         console.log(error);
@@ -142,14 +130,11 @@ export default function RecipeCard({ image, title, id }) {
       url: `https://translation.googleapis.com/language/translate/v2?target=fi&key=${GOOGLE_API}&q=${fields}`
     }).then(response => {
       const text = response.data.data.translations[0].translatedText;
-
       const fieldsArray = text.split("---").map(each => {
         const processed = each.trim();
         return processed.charAt(0).toUpperCase() + processed.slice(1);
       });
-
       const [headers, title, summary, rawIngredients] = fieldsArray;
-
       const [
         summaryTitle,
         requiredIngredientsTitle,
@@ -158,9 +143,6 @@ export default function RecipeCard({ image, title, id }) {
         const h = word.charAt(0).toUpperCase() + word.slice(1);
         return h.trim();
       });
-
-      debugger;
-
       setRecipeCardInfo(prev => ({
         ...prev,
         summaryTitle,
@@ -172,7 +154,6 @@ export default function RecipeCard({ image, title, id }) {
       }));
     });
   };
-
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -184,7 +165,6 @@ export default function RecipeCard({ image, title, id }) {
             title={title}
             id={id}
           />
-
           <Typography
             className={classes.header}
             gutterBottom
